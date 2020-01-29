@@ -1,0 +1,45 @@
+:root {
+    --color-primary: rgba(0, 128, 83, 1);
+    --color-secondary: rgba(0, 77, 50, 1);
+    --color-accent: rgba(0, 156, 101, 1);
+}
+
+.title-primary {
+    color: var(--color-primary) !important;
+}
+
+.title-secondary {
+    color: var(--color-secondary) !important;
+}
+
+.btn {
+    background-color: var(--color-secondary);
+}
+
+.btn:hover {
+    background-color: var(--color-primary);
+}
+
+nav {
+    background: var(--color-primary);
+    border-bottom: 10px solid var(--color-accent);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.collapsible-header-right {
+    float: right;
+    position: absolute;
+    right: 10px;
+    font-style: italic;
+}
+
+.collapsible-header-root {
+    position: relative;
+}
+
+.secondary-content {
+    font-weight: bold;
+}
