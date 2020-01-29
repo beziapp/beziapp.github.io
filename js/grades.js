@@ -1,6 +1,8 @@
 const API_ENDPOINT = "https://gimb.tk/test.php";
 // const API_ENDPOINT = "http://localhost:5000/test.php";
 
+let checkbox_state = false;
+
 async function checkLogin() {
     localforage.getItem("logged_in").then((value) => {
         // This code runs once the value has been loaded
@@ -167,8 +169,8 @@ function displayGrades() {
             grade_node.appendChild(grade_node_div);
 
 
-            // Count the grade only if it's not temprary
-            if (!grade["temporary"]) {
+            // Count the grade only if it's not temporary or explicitly enabled
+            if (!grade["temporary"] || !checkbox_state) {
                 grade_sum += grade["grade"];
                 grade_tot += 1;
             }
@@ -205,9 +207,9 @@ function clearGrades() {
     }
 }
 
-function refreshGrades() {
+function refreshGrades(force) {
     clearGrades();
-    loadGrades(true);
+    loadGrades(force);
 }
 
 function refreshClickHandlers() {
@@ -252,8 +254,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Setup refresh handler
     $("#refresh-icon").click(function () {
-        refreshGrades();
+        refreshGrades(true);
     });
+
+    // Setup checkbox handler
+    $("#permanent-grades-checkbox").change(function () {
+        checkbox_state = this.checked;
+        refreshGrades(false);
+    });
+
+    let elems = document.querySelectorAll('.modal');
+    let instances = M.Modal.init(elems, {});
 
     // Setup side menu
     const menus = document.querySelectorAll('.side-menu');
