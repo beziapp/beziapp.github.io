@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Grades</title>
 
@@ -88,8 +88,27 @@
         <li><a class="waves-effect" id="grade-type"></a></li>
     </ul>
 
+    <div id="help-modal" class="modal bottom-sheet">
+        <div class="modal-content">
+            <h4>Use only permanent grades</h4>
+            <p>If checked, only permanent grades will be used in the average grade calculation.</p>
+            <p>If left unchecked, the calculation will include every available grade.</p>
+        </div>
+        <!-- <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div> -->
+    </div>
+
     <br>
     <div class="container">
+        <p>
+            <label>
+                <input id="permanent-grades-checkbox" type="checkbox" />
+                <span style="vertical-align: sub;">Use only permanent grades <a id="help-icon" class="modal-trigger"
+                        href="#help-modal"><i class="material-icons"
+                            style="vertical-align: sub;">help_outline</i></a></span>
+
+            </label></p>
         <ul class="collapsible" id="grades-collapsible"></ul>
     </div>
 

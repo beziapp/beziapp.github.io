@@ -2,6 +2,7 @@
     --color-primary: rgba(0, 128, 83, 1);
     --color-secondary: rgba(0, 77, 50, 1);
     --color-accent: rgba(0, 156, 101, 1);
+    --color-primary-light: rgba(230, 250, 231, 1);
 }
 
 .title-primary {
@@ -59,4 +60,33 @@ a {
 
 a.collection-item {
     color: var(--color-primary) !important;
+}
+
+.datepicker-date-display {
+    background-color: var(--color-primary);
+}
+
+.datepicker-table td.is-today {
+    color: var(--color-primary);
+}
+
+.datepicker-table td.is-selected {
+    background-color: var(--color-primary);
+}
+
+.datepicker-table td.is-selected.is-today {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.datepicker-cancel {
+    color: var(--color-primary);
+}
+
+.datepicker-done {
+    color: var(--color-primary);
+}
+
+.fc-unthemed td.fc-today {
+    background: var(--color-primary-light);
 }
