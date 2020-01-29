@@ -42,4 +42,21 @@ nav {
 
 .secondary-content {
     font-weight: bold;
+    color: var(--color-secondary) !important;
+}
+
+.about-text {
+    font-size: 1.3em !important;
+}
+
+.button-theme-gimb {
+    background-color: var(--color-primary);
+}
+
+a {
+    color: var(--color-accent);
+}
+
+a.collection-item {
+    color: var(--color-primary) !important;
 }

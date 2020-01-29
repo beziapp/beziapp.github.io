@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     calendar_obj.render();
 
-    loadGradings(true);
+    loadGradings();
 
     // Setup refresh handler
     $("#refresh-icon").click(() => {

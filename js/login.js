@@ -49,7 +49,7 @@ function login() {
                 Promise.all(promises_to_run).then(function () {
                     window.location.replace("/pages/teachers.html");
                 });
-                
+
             }
         },
 
