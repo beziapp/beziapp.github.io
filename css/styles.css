@@ -86,3 +86,7 @@ a.collection-item {
 .datepicker-done {
     color: var(--color-primary);
 }
+
+.fc-unthemed td.fc-today {
+    background: var(--color-primary-light);
+}
