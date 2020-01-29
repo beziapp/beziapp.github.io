@@ -21,6 +21,7 @@ const assets = [
     "/pages/timetable.html",
     "/pages/tos.html",
     "/pages/privacypolicy.html",
+    "/pages/changelog.html",
 
     "/fonts/materialicons.woff2",
     "/fonts/fa-regular-400.eot",
@@ -51,6 +52,7 @@ const assets = [
     "/js/absences.js",
     "/js/tos.js",
     "/js/privacypolicy.js",
+    "/js/changelog.js",
 
     "/js/lib/materialize.min.js",
     "/js/lib/fullcalendar/daygrid/main.min.js",
