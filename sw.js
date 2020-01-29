@@ -1,5 +1,5 @@
 // Change version to cause cache refresh
-const static_cache_name = "site-static-v1";
+const static_cache_name = "site-static-v1.0.3";
 // Got them with du -a and minor cleaning up
 const assets = [
     "/img/avatars/asijanec.png",
@@ -24,12 +24,9 @@ const assets = [
 
     "/fonts/materialicons.woff2",
     "/fonts/fa-regular-400.eot",
-    "/fonts/fa-regular-400.woff",
     "/fonts/fa-regular-400.woff2",
-    "/fonts/fa-solid-900.woff",
     "/fonts/fa-solid-900.woff2",
     "/fonts/fa-solid-900.eot",
-    "/fonts/fa-brands-400.woff",
     "/fonts/fa-brands-400.woff2",
     "/fonts/fa-brands-400.eot",
 
