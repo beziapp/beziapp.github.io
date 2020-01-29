@@ -1,5 +1,5 @@
 // Change version to cause cache refresh
-const static_cache_name = "site-static-v1.0.1";
+const static_cache_name = "site-static-v1.0.2";
 // Got them with du -a and minor cleaning up
 const assets = [
     "/img/avatars/asijanec.png",
@@ -72,22 +72,29 @@ const assets = [
     "/",
     "/index.html",
     "/login.html",
-    "/logout.js"
+    "/logout.html"
 ];
 
 importScripts("/js/lib/localforage.min.js");
 
 self.addEventListener("install", (evt) => {
     // Add localforage.clear() if storage purge is required
-    evt.waitUntil(
-        localforage.clear()
-    );
-
-    evt.waitUntil(
+    evt.waitUntil(async function () {
+        localforage.clear();
         caches.open(static_cache_name).then((cache) => {
             cache.addAll(assets);
-        })
-    );
+        });
+
+        if (!evt.clientId) return;
+        const client = await clients.get(event.clientId);
+
+        if (!client) return;
+
+        client.postMessage({
+            msg: "install"
+        });
+
+    });
 });
 
 // Delete old caches

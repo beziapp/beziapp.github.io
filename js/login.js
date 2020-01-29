@@ -47,7 +47,7 @@ function login() {
                     localforage.setItem("password", password)
                 ];
                 Promise.all(promises_to_run).then(function () {
-                    window.location.replace("/pages/teachers.html");
+                    window.location.replace("/pages/timetable.html");
                 });
 
             }
