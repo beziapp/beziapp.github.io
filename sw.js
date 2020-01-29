@@ -73,22 +73,15 @@ importScripts("/js/lib/localforage.min.js");
 
 self.addEventListener("install", (evt) => {
     // Add localforage.clear() if storage purge is required
-    evt.waitUntil(async function () {
-        localforage.clear();
+    evt.waitUntil(
+        localforage.clear()
+    );
+
+    evt.waitUntil(
         caches.open(static_cache_name).then((cache) => {
             cache.addAll(assets);
-        });
-
-        if (!evt.clientId) return;
-        const client = await clients.get(event.clientId);
-
-        if (!client) return;
-
-        client.postMessage({
-            msg: "install"
-        });
-
-    });
+        })
+    );
 });
 
 // Delete old caches
