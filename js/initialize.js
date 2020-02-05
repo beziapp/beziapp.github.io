@@ -28,7 +28,7 @@ localforage.getItem("logged_in")
             } else if (value === false) {
                 window.location.replace("/login.html");
             } else {
-                window.location.replace("/pages/teachers.html");
+                window.location.replace("/pages/timetable.html");
             }
         }
     ).catch(
