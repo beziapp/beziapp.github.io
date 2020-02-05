@@ -1,5 +1,5 @@
 // Change version to cause cache refresh
-const static_cache_name = "site-static-v1.0.5";
+const static_cache_name = "site-static-v1.0.6";
 // Got them with du -a and minor cleaning up
 const assets = [
     "/img/avatars/asijanec.png",
