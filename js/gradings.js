@@ -91,51 +91,52 @@ async function loadGradings(force_refresh = false) {
         })
     ];
 
-    await Promise.all(promises_to_run);
+    Promise.all(promises_to_run).then(() => {
 
-    if (gradings === null || force_refresh) {
-        $.ajax({
-            url: API_ENDPOINT,
-            crossDomain: true,
+        if (gradings === null || force_refresh) {
+            $.ajax({
+                url: API_ENDPOINT,
+                crossDomain: true,
 
-            data: {
-                "u": username,
-                "p": password,
-                "m": "fetchocenjevanja"
-            },
-            dataType: "json",
+                data: {
+                    "u": username,
+                    "p": password,
+                    "m": "fetchocenjevanja"
+                },
+                dataType: "json",
 
-            cache: false,
-            type: "GET",
+                cache: false,
+                type: "GET",
 
-            success: (data) => {
+                success: (data) => {
 
-                // If data is null, the credentials were incorrect
-                if (data === null) {
-                    M.toast({ html: "Request failed!" });
-                    setLoading(false);
-                } else {
-                    // Save gradings & populate calendar
-                    localforage.setItem("gradings", data).then((value) => {
-                        gradings = value;
-                        displayData();
+                    // If data is null, the credentials were incorrect
+                    if (data === null) {
+                        M.toast({ html: "Request failed!" });
                         setLoading(false);
-                    });
+                    } else {
+                        // Save gradings & populate calendar
+                        localforage.setItem("gradings", data).then((value) => {
+                            gradings = value;
+                            displayData();
+                            setLoading(false);
+                        });
+                    }
+
+                },
+
+                error: () => {
+                    M.toast({ html: "No internet connection!" });
+                    setLoading(false);
                 }
 
-            },
+            })
 
-            error: () => {
-                M.toast({ html: "No internet connection!" });
-                setLoading(false);
-            }
-
-        })
-
-    } else {
-        displayData();
-        setLoading(false);
-    }
+        } else {
+            displayData();
+            setLoading(false);
+        }
+    });
 
 }
 
