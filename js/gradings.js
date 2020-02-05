@@ -130,7 +130,7 @@ async function loadGradings(force_refresh = false) {
                     setLoading(false);
                 }
 
-            })
+            });
 
         } else {
             displayData();
