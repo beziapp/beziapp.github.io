@@ -93,7 +93,7 @@ async function loadGradings(force_refresh = false) {
 
     Promise.all(promises_to_run).then(() => {
 
-        if (gradings === null || force_refresh) {
+        if (gradings === null || gradings === [] || gradings === -1 || force_refresh) {
             $.ajax({
                 url: API_ENDPOINT,
                 crossDomain: true,
