@@ -10,6 +10,14 @@ function setupEventListeners() {
     $("#login-button").click(function () {
         login();
     });
+	// če kliknemo enter, klikni gumb
+	window.addEventListener("keyup", function(event) {
+	  // Number 13 is the "Enter" key on the keyboard
+	  if (event.keyCode === 13) {
+	    event.preventDefault();
+	    document.getElementById("login-button").click();
+	  }
+	});
 }
 
 // Handle login button click
