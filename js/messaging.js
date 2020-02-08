@@ -198,7 +198,7 @@ filterXSS(element["id"])+
 filterXSS(element["posiljatelj"])+
 '";document.getElementById("msg_subject").value="Re: '+
 filterXSS(element["zadeva"])+
-'";document.getElementById("navigation-main").scrollIntoView();\'><i class="material-icons">reply</i></a>'+
+'";M.updateTextFields();document.getElementById("navigation-main").scrollIntoView();\'><i class="material-icons">reply</i></a>'+
 filterXSS(element["posiljatelj"])+" &raquo; "+filterXSS(element["datum"]["dan"])+". "+filterXSS(element["datum"]["mesec"])+". "+filterXSS(element["datum"]["leto"])+" at "+
 filterXSS(element["cas"]["ura"])+":"+filterXSS(element["cas"]["minuta"])+
 '</div></div></div>';
