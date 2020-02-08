@@ -1,6 +1,7 @@
 // Change version to cause cache refresh
 const static_cache_name = "site-static-v1.0.8";
-// Got them with find . -not -path '*/\.*' | sed "s/.*/\"&\",/"
+// Got them with find . -not -path '*/\.*' | sed "s/.*/\"&\",/" | grep -v sw.js
+// sw.js NE SME BITI CACHAN, ker vsebuje verzijo!
 const assets = [
 ".",
 "./login.html",
@@ -28,7 +29,6 @@ const assets = [
 "./fonts/fa-brands-400.eot",
 "./fonts/materialicons.woff2",
 "./index.html",
-"./sw.js",
 "./img",
 "./img/avatars",
 "./img/avatars/asijanec.png",
@@ -146,6 +146,30 @@ self.addEventListener("activate", evt => {
             );
         })
     );
+});
+
+self.addEventListener('message', event => {
+  if (event.data) {
+    let data = JSON.parse(event.data); // parse the message back to JSON
+    if (data.action == "addtocache") { // check the action
+	  event.waitUntil(
+	    caches.open(static_cache_name).then(function(cache) {
+		try {
+		      return cache.add([data.url]);
+		}
+		catch(error) {
+		  console.error("[sw.js] error: "+error);
+		}
+	    })
+	  );
+    } else if (data.action == "deletecaches") {
+	caches.keys().then(function(names) {
+	    for (let name of names)
+		console.log("[sw.js] deleting cache named "+name);
+	        caches.delete(name);
+	});
+    }
+  }
 });
 
 self.addEventListener("fetch", (evt) => {
