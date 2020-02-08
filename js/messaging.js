@@ -12,7 +12,10 @@ const API_ENDPOINT = "https://gimb.tk/test.php";
 // const API_ENDPOINT = "http://localhost:5000/test.php";
 
 var receivedmessages = null;
-
+if(window.location.search.substring(1)) {
+	document.getElementById("full_name").value = window.location.search.substring(1);
+	validateName();
+}
 loadMessages(true, 0);
 
 localforage.setItem('directory', {
