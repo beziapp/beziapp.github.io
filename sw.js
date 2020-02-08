@@ -1,5 +1,5 @@
 // Change version to cause cache refresh
-const static_cache_name = "site-static-v1.0.8";
+const static_cache_name = "site-static-v1.0.9";
 // Got them with find . -not -path '*/\.*' | sed "s/.*/\"&\",/" | grep -v sw.js
 // sw.js NE SME BITI CACHAN, ker vsebuje verzijo!
 const assets = [
@@ -54,6 +54,7 @@ const assets = [
 "./js/lib/materialize.min.js",
 "./js/lib/jquery.min.js",
 "./js/lib/localforage.min.js",
+"./js/lib/xss.js",
 "./js/lib/fullcalendar",
 "./js/lib/fullcalendar/daygrid",
 "./js/lib/fullcalendar/daygrid/main.min.js",
@@ -67,45 +68,6 @@ const assets = [
 "./js/initialize.js",
 "./js/absences.js",
 "./js/changelog.js",
-"./node_modules",
-"./node_modules/commander",
-"./node_modules/commander/CHANGELOG.md",
-"./node_modules/commander/Readme.md",
-"./node_modules/commander/typings",
-"./node_modules/commander/typings/index.d.ts",
-"./node_modules/commander/LICENSE",
-"./node_modules/commander/index.js",
-"./node_modules/commander/package.json",
-"./node_modules/cssfilter",
-"./node_modules/cssfilter/lib",
-"./node_modules/cssfilter/lib/css.js",
-"./node_modules/cssfilter/lib/util.js",
-"./node_modules/cssfilter/lib/default.js",
-"./node_modules/cssfilter/lib/index.js",
-"./node_modules/cssfilter/lib/parser.js",
-"./node_modules/cssfilter/LICENSE",
-"./node_modules/cssfilter/package.json",
-"./node_modules/cssfilter/README.md",
-"./node_modules/xss",
-"./node_modules/xss/README.zh.md",
-"./node_modules/xss/dist",
-"./node_modules/xss/dist/test.html",
-"./node_modules/xss/dist/xss.js",
-"./node_modules/xss/dist/xss.min.js",
-"./node_modules/xss/lib",
-"./node_modules/xss/lib/cli.js",
-"./node_modules/xss/lib/util.js",
-"./node_modules/xss/lib/default.js",
-"./node_modules/xss/lib/xss.js",
-"./node_modules/xss/lib/index.js",
-"./node_modules/xss/lib/parser.js",
-"./node_modules/xss/typings",
-"./node_modules/xss/typings/xss.d.ts",
-"./node_modules/xss/LICENSE",
-"./node_modules/xss/package.json",
-"./node_modules/xss/bin",
-"./node_modules/xss/bin/xss",
-"./node_modules/xss/README.md",
 "./manifest.json",
 "./pages",
 "./pages/timetable.html",
@@ -117,8 +79,7 @@ const assets = [
 "./pages/gradings.html",
 "./pages/grades.html",
 "./pages/privacypolicy.html",
-"./pages/tos.html",
-"./package-lock.json"
+"./pages/tos.html"
 ];
 
 importScripts("/js/lib/localforage.min.js");
