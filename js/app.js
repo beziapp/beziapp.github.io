@@ -5,10 +5,10 @@ if ("serviceWorker" in navigator) {
 }
 
 // Listen to messages from service workers.
-if(navigator.serviceWorker)(
+if(navigator.serviceWorker) {
 navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data.msg === "install") {
         window.location.replace("/index.html");
     }
 });
-)
+}
