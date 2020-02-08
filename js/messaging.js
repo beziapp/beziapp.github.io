@@ -1,3 +1,16 @@
+async function checkLogin() {
+    localforage.getItem("logged_in").then(function (value) {
+        // This code runs once the value has been loaded
+        // from the offline store.
+        if (value !== true) {
+            window.location.replace("/index.html");
+        }
+    }).catch(function (err) {
+        // This code runs if there were any errors
+        console.log(err);
+    });
+}
+
 function htmlEncode(value){
   // Create a in-memory element, set its inner text (which is automatically encoded)
   // Then grab the encoded contents back out. The element never exists on the DOM.
@@ -263,8 +276,9 @@ function validateName() {
             console.log(err);
         });
 }
-var additionalstufftoaddtomessage;
+var additionalstufftoaddtomessage = "";
   document.addEventListener('DOMContentLoaded', function() {
+	checkLogin();
     var elems = document.querySelectorAll('.autocomplete-fullname');
 		localforage.getItem('directory').then(function(value) {
 			// vse editam v nanotu
@@ -325,6 +339,4 @@ var additionalstufftoaddtomessage;
 		}
 		input.click();
 	});
-
-
   });
