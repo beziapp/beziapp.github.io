@@ -151,15 +151,19 @@ function safeAttrValue(tag, name, value, cssFilter) {
 
   if (name === "href" || name === "src") {
     // filter `href` and `src` attribute
-    // only allow the value that starts with `http://` | `https://` | `mailto:` | `/` | `#`
+    // only allow the value that starts with `http://` | `https://` | `mailto:` | `/` | `#` | and others
     value = _.trim(value);
     if (value === "#") return "#";
     if (
       !(
         value.substr(0, 7) === "http://" ||
         value.substr(0, 8) === "https://" ||
+        value.substr(0, 6) === "ftp://" ||
         value.substr(0, 7) === "mailto:" ||
         value.substr(0, 4) === "tel:" ||
+        value.substr(0, 11) === "data:image/" ||
+        value.substr(0, 2) === "./" ||
+        value.substr(0, 3) === "../" ||
         value[0] === "#" ||
         value[0] === "/"
       )
@@ -504,7 +508,7 @@ function isClosing(html) {
  * @return {String}
  */
 function parseTag(html, onTag, escapeHtml) {
-  "user strict";
+  "use strict";
 
   var rethtml = "";
   var lastPos = 0;
@@ -574,7 +578,7 @@ var REGEXP_ILLEGAL_ATTR_NAME = /[^a-zA-Z0-9_:\.\-]/gim;
  * @return {String}
  */
 function parseAttr(html, onAttr) {
-  "user strict";
+  "use strict";
 
   var lastPos = 0;
   var retAttrs = [];
@@ -1607,3 +1611,4 @@ module.exports = {
 };
 
 },{}]},{},[2]);
+

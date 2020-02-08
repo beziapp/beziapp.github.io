@@ -11,9 +11,6 @@ function htmlDecode(value){
 const API_ENDPOINT = "https://gimb.tk/test.php";
 // const API_ENDPOINT = "http://localhost:5000/test.php";
 
-var receivedmessages = null;
-loadMessages(true, 0);
-
 localforage.setItem('directory', {
 "Anton Luka Šijanec": 6326,
 "Rok Štular": 5313
@@ -25,6 +22,7 @@ localforage.setItem('directory', {
     M.toast({ html: "Unable to set fake directory."});
     console.log(err);
 });
+
 function setLoading(state) {
     if (state) {
         $("#loading-bar").removeClass("hidden");
@@ -265,7 +263,7 @@ function validateName() {
             console.log(err);
         });
 }
-
+var additionalstufftoaddtomessage;
   document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.autocomplete-fullname');
 		localforage.getItem('directory').then(function(value) {
@@ -294,7 +292,11 @@ function validateName() {
 	document.getElementById("msg_send").addEventListener("click", function() {
 		localforage.getItem('directory').then(function(value) {
 		    sendMessage(value[document.getElementById("full_name").value], document.getElementById("msg_subject").value,
-			htmlEncode(document.getElementById("msg_body").value));
+			htmlEncode(document.getElementById("msg_body").value+additionalstufftoaddtomessage));
+		    document.getElementById("msg_body").value = "";
+		    document.getElementById("full_name").value = "";
+		    document.getElementById("msg_subject").value = "";
+		    additionalstufftoaddtomessage = "";
 		}).catch(function(err) {
 		    M.toast({ html: "Unable to read directory of people. Message could not be sent."});
 		    console.log(err);
@@ -303,5 +305,26 @@ function validateName() {
 	    // Setup side menu
 	    const menus = document.querySelectorAll(".side-menu");
 	    M.Sidenav.init(menus, { edge: "right", draggable: true });
+	var receivedmessages = null;
+	loadMessages(true, 0);
+
+	document.getElementById("msg_add_a_photo").addEventListener("click", function() {
+		var input = document.createElement('input');
+		input.type = 'file';
+		input.onchange = e => {
+		   // getting a hold of the file reference
+		   var file = e.target.files[0];
+		   // setting up the reader
+		   var reader = new FileReader();
+		   reader.readAsDataURL(file); // this is reading as data url
+		   // here we tell the reader what to do when it's done reading...
+		   reader.onload = readerEvent => {
+		      additionalstufftoaddtomessage += '<br><img src="' + readerEvent.target.result + '" />'; // this is the content!
+		      M.toast({html:"Image added as an attachment."});
+		   }
+		}
+		input.click();
+	});
+
 
   });
