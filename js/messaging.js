@@ -12,10 +12,6 @@ const API_ENDPOINT = "https://gimb.tk/test.php";
 // const API_ENDPOINT = "http://localhost:5000/test.php";
 
 var receivedmessages = null;
-if(window.location.search.substring(1)) {
-	document.getElementById("full_name").value = window.location.search.substring(1);
-	validateName();
-}
 loadMessages(true, 0);
 
 localforage.setItem('directory', {
@@ -289,7 +285,11 @@ function validateName() {
 		    M.toast({ html: "Unable to read directory of people. Unable to autocomplete the name of the person."});
 		    console.log(err);
 		});
-
+	if(window.location.search.substring(1)) {
+		document.getElementById("full_name").value = decodeURIComponent(window.location.search.substring(1));
+		M.updateTextFields();
+		validateName();
+	}
 	document.getElementById("full_name").addEventListener("blur", validateName);
 	document.getElementById("msg_send").addEventListener("click", function() {
 		localforage.getItem('directory').then(function(value) {
