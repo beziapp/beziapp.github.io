@@ -1,3 +1,15 @@
+function getUrlParameter(sParam) {
+  var sPageURL = window.location.search.substring(1),
+    sURLVariables = sPageURL.split('&'),
+    sParameterName,
+    i;
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+    }
+};
 function setupStorage() {
     promises_to_run = [
         localforage.setItem("logged_in", false),
@@ -28,7 +40,11 @@ localforage.getItem("logged_in")
             } else if (value === false) {
                 window.location.replace("/login.html");
             } else {
-                window.location.replace("/pages/timetable.html");
+		if(getUrlParameter("m")) {
+			window.location.replace("pages/messaging.html?"+getUrlParameter("m"));
+		} else {
+	                window.location.replace("/pages/timetable.html");
+		}
             }
         }
     ).catch(
