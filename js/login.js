@@ -17,7 +17,7 @@ function setupEventListeners() {
 	    event.preventDefault();
 	    login();
 	  }
-});
+	});
 }
 
 // Handle login button click

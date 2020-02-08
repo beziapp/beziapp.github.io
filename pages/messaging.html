@@ -1,0 +1,141 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Messaging</title>
+
+    <!-- Materialize -->
+    <link type="text/css" href="/css/materialize.min.css" rel="stylesheet">
+    <link href="/css/materialicons.css" rel="stylesheet">
+    <script type="text/javascript" src="/js/lib/materialize.min.js"></script>
+
+    <script src="/js/lib/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/lib/localforage.min.js"></script>
+
+    <link type="text/css" href="/css/styles.css" rel="stylesheet">
+    <script type="text/javascript" src="../js/messaging.js"></script>
+
+    <link rel="manifest" href="/manifest.json">
+    <script src="/js/app.js"></script>
+    <script src="../node_modules/xss/dist/xss.min.js"></script>
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+
+    <!-- iOS support -->
+    <link rel="apple-touch-icon" href="/img/icons/icon_96.png">
+    <link rel="apple-touch-icon" href="/img/icons/icon_512.png">
+    <meta name="apple-mobile-web-app-status-bar" content="#004d32">
+</head>
+
+<body>
+    <nav class="z-depth-0" id="navigation-main">
+        <div class="nav-wrapper container">
+            <b>Beži</b><span>App</span>
+            <span class="right white-text">
+                <i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
+            </span>
+        </div>
+        <div id="loading-bar" class="progress hidden">
+            <div class="indeterminate"></div>
+        </div>
+    </nav>
+
+    <ul id="side-menu" class="sidenav side-menu">
+        <li>
+            <a class="subheader">
+                <h4><b>Beži</b>App</h4>
+            </a>
+        </li>
+        <li><a href="/pages/timetable.html" class="waves-effect">Timetable</a></li>
+        <li><a href="/pages/gradings.html" class="waves-effect">Gradings</a></li>
+        <li><a href="/pages/grades.html" class="waves-effect">Grades</a></li>
+        <li><a href="/pages/teachers.html" class="waves-effect">Teachers</a></li>
+        <li><a href="/pages/absences.html" class="waves-effect">Absences</a></li>
+        <li><a href="/pages/messaging.html" class="waves-effect">Messaging</a></li>
+        <li>
+            <div class="divider"></div>
+        </li>
+        <li><a href="/pages/about.html" class="waves-effect">
+                <i class="material-icons">info</i>About</a>
+        </li>
+        <li>
+            <div class="divider"></div>
+        </li>
+        <li><a href="/logout.html" class="waves-effect">
+                <i class="material-icons">exit_to_app</i>Log out</a>
+        </li>
+    </ul>
+
+    <div class="container">
+        <h2 class="code-line" data-line-start=0 data-line-end=1><a id="Messaging_0">Messaging</a>
+        </h2>
+        <h3 class="code-line" data-line-start=2 data-line-end=3><a id="Send_a_message_2"></a>Send a message</h3>
+          <div class="row">
+            <form class="col s12">
+              <div class="row">
+                <div class="input-field col s5">
+                  <i class="material-icons prefix">account_circle</i>
+                  <input id="full_name" type="text" class="autocomplete-fullname validate">
+                  <label for="full_name">Recipient</label>
+                </div>
+                <div class="input-field col s5">
+                  <i class="material-icons prefix">subject</i>
+                  <input id="msg_subject" type="text" class="">
+                  <label for="msg_subject">Subject</label>
+                </div>
+                <div class="input-field col s2">
+                  <button class="btn waves-effect waves-light" id="msg_send" type="submit" disabled="disabled" name="action">Send
+                    <i class="material-icons right">send</i>
+                  </button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <i class="material-icons prefix">mode_edit</i>
+                  <textarea id="msg_body" class="materialize-textarea"></textarea>
+                  <label for="msg_body">Message body</label>
+                </div>
+              </div>
+            </form>
+          </div>
+        <h3 class="code-line" data-line-start=16 data-line-end=17><a id="Recently_received_messages_16"></a>Messages</h3>
+                  <button class="btn waves-effect waves-light" id="msg_load-btn" onclick="loadMessages(true, 0);" type="submit">Received
+                    <i class="material-icons right">system_update</i>
+                  </button>
+                  <button class="btn waves-effect waves-light" id="msg_load-btn" onclick="loadMessages(true, 1);" type="submit">Sent
+                    <i class="material-icons right">system_update</i>
+                  </button>
+                  <button class="btn waves-effect waves-light" id="msg_load-btn" onclick="loadMessages(true, 2);" type="submit">Deleted
+                    <i class="material-icons right">system_update</i>
+                  </button>
+<!--
+          <div class="row">
+            <div class="col s12 m6">
+              <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                  <span class="card-title">Subject of the message</span>
+                  <p>
+                        Message body
+                  </p>
+                </div>
+                <div class="card-action">
+                  <a href="#">
+                        <i class="material-icons">delete</i>
+                  </a>
+                  <a href="#">
+                        <i class="material-icons">reply</i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+-->
+<div id="msg_list"></div>
+    </div>
+
+
+
+</body>
+
+</html>
