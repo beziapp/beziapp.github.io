@@ -109,7 +109,7 @@ async function loadTimetable(date_object, force_refresh = false) {
 
     await Promise.all(promises_to_run);
 
-    if (force_refresh || timetable === null || !(date_string in timetable)) {
+    if (force_refresh || timetable == null || !(date_string in timetable)) {
         $.ajax({
             url: API_ENDPOINT,
             crossDomain: true,
