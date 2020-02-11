@@ -177,6 +177,25 @@ function gradingClickHandler(eventClickInfo) {
     M.Sidenav.getInstance(modal).open();
 }
 
+function setupPickers() {
+    // Setup pickers
+    var date_object = new Date();
+
+    let elems = document.querySelectorAll('#datepicker-add');
+    let options = {
+        autoClose: true,
+        format: "dd.mm.yyyy",
+        defaultDate: date_object,
+        setDefaultDate: true,
+        firstDay: 1
+    }
+    let instances = M.Datepicker.init(elems, options);
+
+
+    instances = M.Datepicker.init(elems, options);
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
     checkLogin();
 
@@ -192,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
         height: "parent"
     });
     calendar_obj.render();
-
+    setupPickers();
     loadGradings();
 
     // Setup refresh handler

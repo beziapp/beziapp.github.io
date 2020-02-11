@@ -149,8 +149,7 @@ async function deleteMsg(id) {
     let promises_to_run = [
         localforage.getItem("username").then((value) => {
             username = value;
-        }),
-        localforage.getItem("password").then((value) => {
+        }),        localforage.getItem("password").then((value) => {
             password = value;
         }),
     ];
@@ -194,6 +193,7 @@ function displayData() {
 	var msg_list = document.getElementById("msg_list");
 	msg_list.innerHTML = "";
     messages.forEach(element => {
+	if(element["zadeva"].substr(0, 14) != "beziapp-ctlmsg")
 	msg_list.innerHTML += '<div class="col s12 m6" id="msg_box-'+
 filterXSS(element["id"])+
 '"><div class="card blue-grey darken-1"><div class="card-content white-text"><span class="card-title">'+

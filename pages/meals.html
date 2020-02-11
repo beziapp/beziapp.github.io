@@ -5,19 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="google" content="notranslate">
-    <title>About &laquo; BežiApp</title>
+    <title>Meals &laquo; BežiApp</title>
 
     <!-- Materialize -->
     <link type="text/css" href="/css/materialize.min.css" rel="stylesheet">
     <link href="/css/materialicons.css" rel="stylesheet">
-    <link href="/css/fontawesome.min.css" rel="stylesheet">
     <script type="text/javascript" src="/js/lib/materialize.min.js"></script>
 
     <script src="/js/lib/jquery.min.js"></script>
     <script type="text/javascript" src="/js/lib/localforage.min.js"></script>
 
     <link type="text/css" href="/css/styles.css" rel="stylesheet">
-    <script type="text/javascript" src="/js/about.js"></script>
+    <script type="text/javascript" src="/js/meals.js"></script>
 
     <link rel="manifest" href="/manifest.json">
     <script src="/js/app.js"></script>
@@ -32,9 +31,12 @@
 <body>
     <nav class="z-depth-0" id="navigation-main">
         <div class="nav-wrapper container">
-            <b>Beži</b><span>App</span> &raquo; About
+            <b>Beži</b><span>App</span> &raquo; Meals
             <span class="right white-text">
                 <i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
+            </span>
+            <span class="right white-text" id="refresh-icon">
+                <a href="#"><i class="material-icons">refresh</i></a>
             </span>
         </div>
         <div id="loading-bar" class="progress hidden">
@@ -69,49 +71,72 @@
         </li>
     </ul>
 
-    <div class="container">
-        <div class="row">
-            <div class="col s12">
-                <h3><b class="title-secondary">Beži</b><span class="title-primary">App</span>
-                </h3>
-                <h5 class="subheader">Version 1.0.9-beta</h5>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s12">
-                <ul class="collection with-header">
-                    <li class="collection-header">
-                        <h5>Authors</h5>
-                    </li>
-                    <li class="collection-item avatar">
-                        <img src="/img/avatars/rstular.png" class="circle">
-                        <span class="title about-text">Rok Štular</span>
-                        <a target="_blank" href="https://instagram.com/rstular/"
-                            class="secondary-content btn-floating btn-medium waves-effect waves-light button-theme-gimb"><i
-                                class="fab fa-instagram"></i></a>
-                    </li>
+    <ul id="grade-info" class="sidenav side-modal">
+        <br>
+        <li><a class="header">
+                <h5 id="meal-header"></h5>
+            </a></li>
+        <br>
+        <li id="meal-subheader-root"><a class="subheader">
+                <h6 id="meal-subheader"></h6>
+            </a></li>
+        <li><a class="subheader" id="meal-date">
+            </a></li>
+        <li>
+            <div class="divider"></div>
+        </li>
+        <li><a class="waves-effect" id="meal-option1"></a></li>
+        <li><a class="waves-effect" id="meal-option2"></a></li>
+        <li><a class="waves-effect" id="meal-option3"></a></li>
+        <li><a class="waves-effect" id="meal-option4"></a></li>
+        <li><a class="waves-effect" id="meal-option5"></a></li>
+        <li><a class="waves-effect" id="meal-option6"></a></li>
+        <li><a class="waves-effect" id="meal-option7"></a></li>
+    </ul>
 
-                    <li class="collection-item avatar">
-                        <img src="/img/avatars/asijanec.png" class="circle">
-                        <span class="title about-text">Anton Luka Šijanec</span>
-                        <a target="_blank" href="https://instagram.com/asijanec/"
-                            class="secondary-content btn-floating btn-medium waves-effect waves-light button-theme-gimb"><i
-                                class="fab fa-instagram"></i></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s12">
-                <div class="collection">
-                    <a href="/pages/changelog.html" class="collection-item">What's new</a>
-                    <a href="/pages/tos.html" class="collection-item">Terms of Service</a>
-                    <a href="/pages/privacypolicy.html" class="collection-item">Privacy policy</a>
-                    <a href="https://instagram.com/beziapp/" target="_blank" class="collection-item">Report a bug / Send
-                        a suggestion</a>
-                </div>
-            </div>
-        </div>
+    <br>
+    <div class="container login" style="display:none;">
+	<h4>Login to Lopolis</h4>
+	<p>
+		You have a different username and password combination used for applying and opting out from menus. In order to use this feature, you
+		have to log in with your Lopolis account.
+	</p>
+	  <div class="row">
+	    <div class="col s12">
+	      <div class="row">
+	        <div class="input-field col s12">
+	          <input id="meals_username" type="text" value="" required="required" name="meals_password" class="validate">
+	          <label for="meals_username">Lopolis username</label>
+	        </div>
+	      </div>
+	      <div class="row">
+	        <div class="input-field col s12">
+	          <input id="meals_password" type="password" value="" required="required" name="meals_password" class="validate">
+	          <label for="meals_password">Lopolis password</label>
+	        </div>
+	      </div>
+	      <div class="row">
+	        <div class="input-field col s12">
+	          <button id="meals_login" type="button" class="waves-effect waves-light btn">
+			Log in to Lopolis
+			<i class="material-icons right">arrow_right_alt</i>
+		  </button>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+    </div>
+	<small style="position:absolute;top:1;left:1;color:#FFF"><small>Meals section is powered by https://github.com/rstular/lopolis-api, licensed under MIT.</small></small>
+    <div class="meals-container container" style="display: block">
+	<h4>Meals
+		<button id="meals_login" type="button" class="waves-effect waves-light btn" style="float: right">
+	           Log out from Lopolis
+        	   <i class="material-icons right">exit_to_app</i>
+	        </button>
+	</h4>
+	<p>
+		Not done yet => not working.
+	</p>
     </div>
 </body>
 
