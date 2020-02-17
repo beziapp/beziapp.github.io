@@ -3,6 +3,12 @@
     --color-secondary: rgba(0, 77, 50, 1);
     --color-accent: rgba(0, 156, 101, 1);
     --color-primary-light: rgba(230, 250, 231, 1);
+    --color-invalid: rgba(192, 0, 0, 1);
+    --background-color: rgba(255, 255, 255, 1);
+}
+
+body {
+    background: var(--background-color);
 }
 
 .title-primary {
@@ -99,4 +105,46 @@ a.collection-item {
     -ms-user-select: none;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+}
+
+/* label focus color */
+
+.input-field input[type=text]:focus+label {
+    color: var(--color-primary);
+}
+
+/* label underline focus color */
+
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid var(--color-primary) !important;
+    box-shadow: 0 1px 0 0 var(--color-primary) !important;
+}
+
+/* valid color */
+
+.input-field input[type=text].valid {
+    border-bottom: 1px solid var(--color-secondary);
+    box-shadow: 0 1px 0 0 var(--color-secondary);
+}
+
+/* invalid color */
+
+.input-field input[type=text].invalid {
+    border-bottom: 1px solid var(--color-invalid);
+    box-shadow: 0 1px 0 0 var(--color-invalid);
+}
+
+/* icon prefix focus color */
+
+.input-field .prefix.active {
+    color: var(--color-primary);
+}
+
+.input-field textarea:not([readonly]):focus+label {
+    color: var(--color-primary) !important;
+}
+
+.input-field textarea:not([readonly]):focus {
+    border-bottom: 1px solid var(--color-primary) !important;
+    box-shadow: 0 1px 0 0 var(--color-primary) !important;
 }

@@ -80,7 +80,7 @@ function getDateString(date) {
 
 function getLastMonday(date_object) {
     if (date_object.getDay() === 0) {
-        date_object.setDate(asdf.getDate() - 6);
+        date_object.setDate(date_object.getDate() - 6);
     } else {
         date_object.setDate(date_object.getDate() - date_object.getDay() + 1);
     }

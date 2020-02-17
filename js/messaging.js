@@ -1,3 +1,10 @@
+const API_ENDPOINT = "https://gimb.tk/test.php";
+const DIRECTORY_URL = "/directory.json";
+// const API_ENDPOINT = "http://localhost:5000/test.php";
+
+// "Global" object for name directory
+var directory = null;
+
 async function checkLogin() {
     localforage.getItem("logged_in").then(function (value) {
         // This code runs once the value has been loaded
@@ -11,31 +18,72 @@ async function checkLogin() {
     });
 }
 
-function htmlEncode(value){
-  // Create a in-memory element, set its inner text (which is automatically encoded)
-  // Then grab the encoded contents back out. The element never exists on the DOM.
-  return $('<textarea/>').text(value).html();
+// -----------HTML HELPERS-----------
+function htmlEncode(value) {
+    // Create a in-memory element, set its inner text (which is automatically encoded)
+    // Then grab the encoded contents back out. The element never exists on the DOM.
+    return $("<textarea/>").text(value).html();
 }
 
-function htmlDecode(value){
-  return $('<textarea/>').html(value).text();
+function htmlDecode(value) {
+    return $("<textarea/>").html(value).text();
+}
+// ---------------------------------
+
+// Try to fetch name:id directory
+function loadDirectory() {
+    $.ajax({
+        url: DIRECTORY_URL,
+        crossDomain: true,
+
+        dataType: "json",
+        cache: false,
+        type: "GET",
+
+        success: (data) => {
+            // If we were able to retrieve it, update the saved directory
+            localforage.setItem("directory", data);
+            directory = data;
+            // Populate autocomplete
+            populateAutocomplete();
+        },
+
+        error: () => {
+            // Otherwise, try to retrieve stored directory
+            localforage.getItem("directory").then((stored_directory) => {
+                if (stored_directory === null) {
+                    // If unable, set directory to null (so other functions know that we don't have it)
+                    M.toast({ html: "Name directory not set, sending disabled" });
+                    directory = null;
+                    // Disable send button
+                    document.getElementById("msg-send").disabled = true;
+                } else {
+                    directory = stored_directory;
+                    // Populate autocomplete
+                    populateAutocomplete();
+                }
+            });
+        }
+    });
 }
 
-const API_ENDPOINT = "https://gimb.tk/test.php";
-// const API_ENDPOINT = "http://localhost:5000/test.php";
+function populateAutocomplete() {
+    let elems = document.querySelectorAll('.autocomplete-fullname');
 
-localforage.setItem('directory', {
-"Anton Luka Šijanec": 6326,
-"Rok Štular": 5313
-}).then(function (value) {
-    // Do other things once the value has been saved.
-    console.log("fake directory set");
-}).catch(function(err) {
-    // This code runs if there were any errors
-    M.toast({ html: "Unable to set fake directory."});
-    console.log(err);
-});
+    // vse editam v nanotu
+    let autocomplete_entries = directory;
+    for (let variableKey in autocomplete_entries) {
+        autocomplete_entries[variableKey] = null;
+    }
 
+    M.Autocomplete.init(elems, {
+        data: autocomplete_entries,
+        onAutocomplete: validateName,
+        minLength: 0
+    });
+}
+
+// Function to toggle loading bar
 function setLoading(state) {
     if (state) {
         $("#loading-bar").removeClass("hidden");
@@ -43,6 +91,7 @@ function setLoading(state) {
         $("#loading-bar").addClass("hidden");
     }
 }
+
 // Function, responsible for fetching and displaying data
 async function loadMessages(force_refresh = true, katera = 0) {
     setLoading(true);
@@ -58,8 +107,9 @@ async function loadMessages(force_refresh = true, katera = 0) {
             messages = value;
         })
     ];
+
     Promise.all(promises_to_run).then(() => {
-        // If we don't have a list of teachers, query it
+
         if (messages === null || force_refresh) {
             $.ajax({
                 url: API_ENDPOINT,
@@ -68,18 +118,20 @@ async function loadMessages(force_refresh = true, katera = 0) {
                     "u": username,
                     "p": password,
                     "m": "fetchsporocilaseznam",
-		    "a": katera // prejeta
+                    "a": katera // Message type, see API doc for details
                 },
                 dataType: "json",
                 cache: false,
                 type: "GET",
+
                 success: (data) => {
                     // If data is null, the request failed
                     if (data === null) {
                         M.toast({ html: "Request failed!" });
                         setLoading(false);
                     } else {
-                        // Save teachers & populate table
+                        // Save messages & populate view
+                        console.log(data);
                         localforage.setItem("messages", data).then((value) => {
                             messages = value;
                             displayData();
@@ -100,6 +152,7 @@ async function loadMessages(force_refresh = true, katera = 0) {
         }
     });
 }
+
 async function loadMsg(id) {
     setLoading(true);
     // Load required data
@@ -111,111 +164,116 @@ async function loadMsg(id) {
             password = value;
         }),
     ];
-    Promise.all(promises_to_run).then(() => {
-            $.ajax({
-                url: API_ENDPOINT,
-                crossDomain: true,
-                data: {
-                    "u": username,
-                    "p": password,
-                    "m": "fetchsporocilo",
-		    "a": id
-                },
-                dataType: "json",
-                cache: false,
-                type: "GET",
-                success: (data) => {
-                    // If data is null, the request failed
-                    if (data === null) {
-                        M.toast({ html: "Unable to receive the message, Request failed!" });
-                        setLoading(false);
-                    } else {
-                        displayMessage(id, data);
-                        setLoading(false);
-                    }
-                },
 
-                error: () => {
-                    M.toast({ html: "Error fetching message, No Internet connnection?" });
+    Promise.all(promises_to_run).then(() => {
+        $.ajax({
+            url: API_ENDPOINT,
+            crossDomain: true,
+            data: {
+                "u": username,
+                "p": password,
+                "m": "fetchsporocilo",
+                "a": id
+            },
+            dataType: "json",
+            cache: false,
+            type: "GET",
+            success: (data) => {
+                // If data is null, the request failed
+                if (data === null) {
+                    M.toast({ html: "Unable to receive the message, Request failed!" });
+                    setLoading(false);
+                } else {
+                    displayMessage(id, data);
                     setLoading(false);
                 }
+            },
 
-            })
+            error: () => {
+                M.toast({ html: "Error fetching message, No Internet connnection?" });
+                setLoading(false);
+            }
+
+        })
     });
 }
+
+
 async function deleteMsg(id) {
     setLoading(true);
     // Load required data
     let promises_to_run = [
         localforage.getItem("username").then((value) => {
             username = value;
-        }),        localforage.getItem("password").then((value) => {
+        }), localforage.getItem("password").then((value) => {
             password = value;
         }),
     ];
     Promise.all(promises_to_run).then(() => {
-            $.ajax({
-                url: API_ENDPOINT,
-                crossDomain: true,
-                data: {
-                    "u": username,
-                    "p": password,
-                    "m": "izbrisisporocilo",
-		    "a": id
-                },
-                dataType: "json",
-                cache: false,
-                type: "GET",
-                success: (data) => {
-                    // If data is null, the request failed
-                    if (data === null) {
-                        M.toast({ html: "Unable to delete the message, Request failed!" });
-                        setLoading(false);
-                    } else {
-			document.getElementById("msg_box-"+id).remove();
-                        setLoading(false);
-                    }
-                },
-
-                error: () => {
-                    M.toast({ html: "Unable to delete the message, No Internet connnection?" });
+        $.ajax({
+            url: API_ENDPOINT,
+            crossDomain: true,
+            data: {
+                "u": username,
+                "p": password,
+                "m": "izbrisisporocilo",
+                "a": id
+            },
+            dataType: "json",
+            cache: false,
+            type: "GET",
+            success: (data) => {
+                // If data is null, the request failed
+                if (data === null) {
+                    M.toast({ html: "Unable to delete the message, Request failed!" });
+                    setLoading(false);
+                } else {
+                    document.getElementById("msg-box-" + id).remove();
                     setLoading(false);
                 }
+            },
 
-            })
+            error: () => {
+                M.toast({ html: "Unable to delete the message, No Internet connnection?" });
+                setLoading(false);
+            }
+
+        })
     });
 }
+
 function displayMessage(id, data) {
-	document.getElementById("msg_body-"+id).innerHTML = filterXSS(data["telo"]);
+    document.getElementById("msg-body-" + id).innerHTML = filterXSS(data["telo"]);
 }
+
 // Function for displaying data
 function displayData() {
-	var msg_list = document.getElementById("msg_list");
-	msg_list.innerHTML = "";
+    let msg_list = document.getElementById("msg_list");
+    msg_list.innerHTML = "";
     messages.forEach(element => {
-	if(element["zadeva"].substr(0, 14) != "beziapp-ctlmsg")
-	msg_list.innerHTML += '<div class="col s12 m6" id="msg_box-'+
-filterXSS(element["id"])+
-'"><div class="card blue-grey darken-1"><div class="card-content white-text"><span class="card-title">'+
-filterXSS(element["zadeva"])+
-'</span><p id="msg_body-'+
-filterXSS(element["id"])+
-'"><button class="btn waves-effect waves-light" onclick=loadMsg("'+
-filterXSS(element["id"])+
-'"); type="submit">Load message body<i class="material-icons right">system_update</i></button></p></div><div class="card-action"><a href=javascript:deleteMsg("'+
-filterXSS(element["id"])+
-'");><i class="material-icons">delete</i></a><a href=\'javascript:document.getElementById("full_name").value="'+
-filterXSS(element["posiljatelj"])+
-'";document.getElementById("msg_subject").value="Re: '+
-filterXSS(element["zadeva"])+
-'";M.updateTextFields();document.getElementById("navigation-main").scrollIntoView();\'><i class="material-icons">reply</i></a>'+
-filterXSS(element["posiljatelj"])+" &raquo; "+filterXSS(element["datum"]["dan"])+". "+filterXSS(element["datum"]["mesec"])+". "+filterXSS(element["datum"]["leto"])+" at "+
-filterXSS(element["cas"]["ura"])+":"+filterXSS(element["cas"]["minuta"])+
-'</div></div></div>';
+        if (element["zadeva"].substr(0, 14) != "beziapp-ctlmsg")
+            msg_list.innerHTML += '<div class="col s12 m6" id="msg_box-' +
+                filterXSS(element["id"]) +
+                '"><div class="card blue-grey darken-1"><div class="card-content white-text"><span class="card-title">' +
+                filterXSS(element["zadeva"]) +
+                '</span><p id="msg_body-' +
+                filterXSS(element["id"]) +
+                '"><button class="btn waves-effect waves-light" onclick=loadMsg("' +
+                filterXSS(element["id"]) +
+                '"); type="submit">Load message body<i class="material-icons right">system_update</i></button></p></div><div class="card-action"><a href=javascript:deleteMsg("' +
+                filterXSS(element["id"]) +
+                '");><i class="material-icons">delete</i></a><a href=\'javascript:document.getElementById("full_name").value="' +
+                filterXSS(element["posiljatelj"]) +
+                '";document.getElementById("msg_subject").value="Re: ' +
+                filterXSS(element["zadeva"]) +
+                '";M.updateTextFields();document.getElementById("navigation-main").scrollIntoView();\'><i class="material-icons">reply</i></a>' +
+                filterXSS(element["posiljatelj"]) + " &raquo; " + filterXSS(element["datum"]["dan"]) + ". " + filterXSS(element["datum"]["mesec"]) + ". " + filterXSS(element["datum"]["leto"]) + " at " +
+                filterXSS(element["cas"]["ura"]) + ":" + filterXSS(element["cas"]["minuta"]) +
+                '</div></div></div>';
     });
 }
 
-async function sendMessage(number, subject, bofdy) {
+async function sendMessage(recipient_number, subject, body) {
     setLoading(true);
     let promises_to_run = [
         localforage.getItem("username").then((value) => {
@@ -226,117 +284,113 @@ async function sendMessage(number, subject, bofdy) {
         }),
     ];
     Promise.all(promises_to_run).then(() => {
-            $.ajax({
-                url: API_ENDPOINT,
-                crossDomain: true,
-                data: {
-                    "u": username,
-                    "p": password,
-                    "m": "posljisporocilo",
-		    "a": number,
-		    "b": subject,
-		    "c": bofdy
-                },
-                dataType: "json",
-                cache: false,
-                type: "POST", // big data not good, maybe u wanna many charzz
-                success: (data) => {
-			// we CAN't know wether the mesgg was delievered
-                        M.toast({ html: "Message was probably sent, but check the Sent folder to be sure!" });
-                        setLoading(false);
-                },
-                error: () => {
-                    M.toast({ html: "Error sending message, No Internet connnection?" });
-                    setLoading(false);
-                }
-            })
+        $.ajax({
+            url: API_ENDPOINT,
+            crossDomain: true,
+            data: {
+                "u": username,
+                "p": password,
+                "m": "posljisporocilo",
+                "a": recipient_number,
+                "b": subject,
+                "c": body
+            },
+
+            dataType: "json",
+            cache: false,
+
+            type: "POST",
+            success: () => {
+                // we CAN'T know wether the mesgg was delievered
+                M.toast({ html: "Message was <i>probably</i> sent, check the Sent folder to be sure!" });
+                setLoading(false);
+            },
+            error: () => {
+                M.toast({ html: "Error sending message, no Internet connnection?" });
+                setLoading(false);
+            }
+        })
     });
 }
+
 function validateName() {
-        localforage.getItem('directory').then(function(value) {
-            if(value == null) {
-                    M.toast({ html: "Unable to read directory of people. Name could not be verified. Directory is empty."});
+    if (directory !== null) {
+
+        if ($("#full-name").val() in directory) {
+            $("#full-name").addClass("valid");
+            $("#full-name").removeClass("invalid");
+            document.getElementById("msg-send").disabled = false;
+        } else {
+            $("#full-name").addClass("invalid");
+            $("#full-name").removeClass("valid");
+            document.getElementById("msg-send").disabled = true;
+        }
+
+    }
+}
+
+// Setup event listeners for buttons
+function setupEventListeners() {
+    // Button to add a photo
+    $("#msg-add-photo").click(() => {
+        let input = document.createElement("input");
+        input.type = "file";
+        input.onchange = (e) => {
+            // getting a hold of the file reference
+            let file = e.target.files[0];
+            // setting up the reader
+            let reader = new FileReader();
+            reader.readAsDataURL(file); // this is reading as data url
+            // here we tell the reader what to do when it's done reading...
+            reader.onload = readerEvent => {
+                additionalstufftoaddtomessage += '<br><img src="' + readerEvent.target.result + '" />'; // this is the content!
+                M.toast({ html: "Image added as an attachment." });
             }
-                var evals = value;
-                for (var variableKey in evals){
-                    if (evals.hasOwnProperty(variableKey)){
-                        evals[variableKey] = null;
-                    }
-                }
-                array =Object.getOwnPropertyNames(evals);
-            if(array.includes(document.getElementById("full_name").value)) {
-		document.getElementById("full_name").classList.add("valid");
-		document.getElementById("msg_send").disabled = false;
-            } else {
-		document.getElementById("full_name").classList.add("invalid");
-		document.getElementById("msg_send").disabled = true;
-	    }
-        }).catch(function(err) {
-            M.toast({ html: "Unable to read directory of people. Name could not be verified."});
+        }
+        input.click();
+    });
+
+    // Verify recipient when input loses focus
+    $("#full-name").on("blur", validateName);
+
+    // Button to send message
+    $("#msg-send").click(() => {
+        localforage.getItem("directory").then(function (value) {
+            sendMessage(value[document.getElementById("full-name").value], document.getElementById("msg-subject").value,
+                htmlEncode(document.getElementById("msg-body").value + additionalstufftoaddtomessage));
+            document.getElementById("msg-body").value = "";
+            document.getElementById("full-name").value = "";
+            document.getElementById("msg-subject").value = "";
+            additionalstufftoaddtomessage = "";
+        }).catch(function (err) {
+            M.toast({ html: "Unable to read directory of people. Message could not be sent." });
             console.log(err);
         });
+    });
 }
-var additionalstufftoaddtomessage = "";
-  document.addEventListener('DOMContentLoaded', function() {
-	checkLogin();
-    var elems = document.querySelectorAll('.autocomplete-fullname');
-		localforage.getItem('directory').then(function(value) {
-			// vse editam v nanotu
-			var evals = value;
-			for (var variableKey in evals){
-			    if (evals.hasOwnProperty(variableKey)){
-			        evals[variableKey] = null;
-			    }
-			}
-		    var instances = M.Autocomplete.init(elems, {
-			data: evals,
-			onAutocomplete: validateName,
-			minLength: 0
-		    });
-		}).catch(function(err) {
-		    M.toast({ html: "Unable to read directory of people. Unable to autocomplete the name of the person."});
-		    console.log(err);
-		});
-	if(window.location.search.substring(1)) {
-		document.getElementById("full_name").value = decodeURIComponent(window.location.search.substring(1));
-		M.updateTextFields();
-		validateName();
-	}
-	document.getElementById("full_name").addEventListener("blur", validateName);
-	document.getElementById("msg_send").addEventListener("click", function() {
-		localforage.getItem('directory').then(function(value) {
-		    sendMessage(value[document.getElementById("full_name").value], document.getElementById("msg_subject").value,
-			htmlEncode(document.getElementById("msg_body").value+additionalstufftoaddtomessage));
-		    document.getElementById("msg_body").value = "";
-		    document.getElementById("full_name").value = "";
-		    document.getElementById("msg_subject").value = "";
-		    additionalstufftoaddtomessage = "";
-		}).catch(function(err) {
-		    M.toast({ html: "Unable to read directory of people. Message could not be sent."});
-		    console.log(err);
-		});
-	});
-	    // Setup side menu
-	    const menus = document.querySelectorAll(".side-menu");
-	    M.Sidenav.init(menus, { edge: "right", draggable: true });
-	var receivedmessages = null;
-	loadMessages(true, 0);
 
-	document.getElementById("msg_add_a_photo").addEventListener("click", function() {
-		var input = document.createElement('input');
-		input.type = 'file';
-		input.onchange = e => {
-		   // getting a hold of the file reference
-		   var file = e.target.files[0];
-		   // setting up the reader
-		   var reader = new FileReader();
-		   reader.readAsDataURL(file); // this is reading as data url
-		   // here we tell the reader what to do when it's done reading...
-		   reader.onload = readerEvent => {
-		      additionalstufftoaddtomessage += '<br><img src="' + readerEvent.target.result + '" />'; // this is the content!
-		      M.toast({html:"Image added as an attachment."});
-		   }
-		}
-		input.click();
-	});
-  });
+function getUrlParameter(sParam) {
+    const url_params = new URLSearchParams(window.location.search);
+    const found_param = url_params.get(sParam);
+    return found_param
+}
+
+var additionalstufftoaddtomessage = "";
+document.addEventListener("DOMContentLoaded", () => {
+
+    checkLogin();
+    loadDirectory();
+    setupEventListeners();
+
+    var receivedmessages = null;
+    loadMessages(true, 0);
+
+    document.getElementById("full-name").value = getUrlParameter("m");
+    M.updateTextFields();
+    validateName();
+
+    // Setup side menu
+    const menus = document.querySelectorAll(".side-menu");
+    M.Sidenav.init(menus, { edge: "right", draggable: true });
+
+});

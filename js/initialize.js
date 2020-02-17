@@ -1,15 +1,13 @@
 function getUrlParameter(sParam) {
-  var sPageURL = window.location.search.substring(1),
-    sURLVariables = sPageURL.split('&'),
-    sParameterName,
-    i;
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
-        }
+    const url_params = new URLSearchParams(window.location.search);
+    const found_param = url_params.get(sParam);
+    if (found_param === null) {
+        return ""
+    } else {
+        return found_param
     }
-};
+}
+
 function setupStorage() {
     promises_to_run = [
         localforage.setItem("logged_in", false),
@@ -21,7 +19,8 @@ function setupStorage() {
         localforage.setItem("gradings", []),
         localforage.setItem("grades", []),
         localforage.setItem("absences", {}),
-        localforage.setItem("messages", {})
+        localforage.setItem("messages", {}),
+        localforage.setItem("directory", {})
     ];
 
     Promise.all(promises_to_run)
@@ -36,15 +35,20 @@ localforage.getItem("logged_in")
             // This code runs once the value has been loaded
             // from the offline store.
             if (value === null) {
+                // Setup the storage if it doesn't exist
                 setupStorage();
             } else if (value === false) {
+                // If storage exists, but user isn't logged in, redirect to login
                 window.location.replace("/login.html");
             } else {
-		if(getUrlParameter("m")) {
-			window.location.replace("pages/messaging.html?"+getUrlParameter("m"));
-		} else {
-	                window.location.replace("/pages/timetable.html");
-		}
+                // User is logged in, execute appropriate action
+
+                if (getUrlParameter("m") !== "") {
+                    window.location.replace("/pages/messaging.html?m=" + getUrlParameter("m"));
+                } else {
+                    window.location.replace("/pages/timetable.html");
+                }
+
             }
         }
     ).catch(
