@@ -131,7 +131,7 @@ async function loadMessages(force_refresh = true, katera = 0) {
                         setLoading(false);
                     } else {
                         // Save messages & populate view
-                        console.log(data);
+                        // console.log(data); // debug
                         localforage.setItem("messages", data).then((value) => {
                             messages = value;
                             displayData();
