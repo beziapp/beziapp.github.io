@@ -228,7 +228,7 @@ async function deleteMsg(id) {
                     M.toast({ html: "Unable to delete the message, Request failed!" });
                     setLoading(false);
                 } else {
-                    document.getElementById("msg_box-" + id).remove();
+                    document.getElementById("msg-box-" + id).remove();
                     setLoading(false);
                 }
             },
@@ -243,7 +243,7 @@ async function deleteMsg(id) {
 }
 
 function displayMessage(id, data) {
-    document.getElementById("msg_body-" + id).innerHTML = filterXSS(data["telo"]);
+    document.getElementById("msg-body-" + id).innerHTML = filterXSS(data["telo"]);
 }
 
 // Function for displaying data
