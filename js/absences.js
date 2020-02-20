@@ -62,7 +62,7 @@ async function loadAbsences(force_refresh = false) {
             success: function (data) {
                 // If data is null, the credentials were incorrect
                 if (data === null) {
-                    M.toast({ html: "Request failed!" });
+                    M.toast({ html: "No absences in this time span." });
                     setLoading(false);
                 } else {
                     // Save absences & populate UI
