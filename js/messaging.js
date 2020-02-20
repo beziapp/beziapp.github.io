@@ -69,13 +69,14 @@ function loadDirectory() {
 
 function populateAutocomplete() {
     let elems = document.querySelectorAll('.autocomplete-fullname');
-
-    // vse editam v nanotu
-    let autocomplete_entries = directory;
+    // če se uporablja globalna var directory, ki je shranjena kot objekt (vedno shranjen kot reference), bo pri let x=y x le pointer na object y
+    // in se bo spremenil z spremembo "originala". spodnja stvar itak ni preveč efficent, loop čez vseh 7000 ljudi bi lahko delal težave...
+    // kakšen Object.keys bi bila boljša varianta ampak raje napišem tale komentar... idk, to se mi je zdelo uporabno ampak sedaj obžalujem
+    // samo guglal sem "copying an object js"
+    let autocomplete_entries = Object.assign({}, directory);
     for (let variableKey in autocomplete_entries) {
         autocomplete_entries[variableKey] = null;
     }
-
     M.Autocomplete.init(elems, {
         data: autocomplete_entries,
         onAutocomplete: validateName,
