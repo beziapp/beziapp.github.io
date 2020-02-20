@@ -302,7 +302,7 @@ async function sendMessage(recipient_number, subject, body) {
             type: "POST",
             success: () => {
                 // we CAN'T know wether the mesgg was delievered
-                M.toast({ html: "Message was <i>probably</i> sent, check the Sent folder to be sure!" });
+                M.toast({ html: "Message was probably sent, check the Sent folder to be sure!" });
                 setLoading(false);
             },
             error: () => {
