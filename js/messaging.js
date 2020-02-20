@@ -53,7 +53,7 @@ function loadDirectory() {
             localforage.getItem("directory").then((stored_directory) => {
                 if (stored_directory === null) {
                     // If unable, set directory to null (so other functions know that we don't have it)
-                    M.toast({ html: "Name directory not set, sending disabled" });
+                    M.toast({ html: "Name directory not set, sending unavailable" });
                     directory = null;
                     // Disable send button
                     document.getElementById("msg-send").disabled = true;
@@ -248,7 +248,7 @@ function displayMessage(id, data) {
 
 // Function for displaying data
 function displayData() {
-    let msg_list = document.getElementById("msg_list");
+    let msg_list = document.getElementById("msg-list");
     msg_list.innerHTML = "";
     messages.forEach(element => {
         if (element["zadeva"].substr(0, 14) != "beziapp-ctlmsg")
