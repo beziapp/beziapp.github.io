@@ -128,7 +128,7 @@ async function loadTimetable(date_object, force_refresh = false) {
             success: (data) => {
                 // Check if operation was successful
                 if (data === null) {
-                    M.toast({ html: "Timetable not available!" });
+                    M.toast({ html: "No periods in selected week." });
                     setLoading(false);
                 } else {
 
