@@ -84,7 +84,7 @@ async function loadMeals(force_refresh = false) {
 				}
 			},
 			error: () => {
-				M.toast({html:"No internet connection or the server fucking crashed! )-:<"});
+				M.toast({html:"No internet connection! (-:"});
 				setLoading(false);
 			}
 		    });
@@ -92,7 +92,7 @@ async function loadMeals(force_refresh = false) {
             },
 
             error: () => {
-                M.toast({ html: "No internet connection!" });
+                M.toast({ html: "Authentication failed (not logged in) or connection problem." });
                 setLoading(false);
             }
 
@@ -267,7 +267,7 @@ function lopolisLogin() {
 			}
 		},
 		error: () => {
-			M.toast({html:"No internet connection!"});
+			M.toast({html:"Authentication failed!"});
 			setLoading(false);
 		}
 	});
