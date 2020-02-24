@@ -272,6 +272,9 @@ function displayData() {
                 filterXSS(element["cas"]["ura"]) + ":" + filterXSS(element["cas"]["minuta"]) +
                 '</div></div></div>';
     });
+    document.getElementById("storage-bar").hidden = false;
+    document.getElementById("storage-progressbar").style.width = Number(Number(messages.length/120)*100).toFixed(2)+"%";
+    document.getElementById("storage-desc").innerHTML = messages.length+"/120 messages "+document.getElementById("storage-progressbar").style.width;
 }
 
 async function sendMessage(recipient_number, subject, body) {
@@ -345,6 +348,14 @@ function setupEventListeners() {
             // here we tell the reader what to do when it's done reading...
             reader.onload = readerEvent => {
                 additionalstufftoaddtomessage += '<br><img src="' + readerEvent.target.result + '" />'; // this is the content!
+                if(document.getElementById("msg-added-image").innerHTML.length > 1) {
+			document.getElementById("msg-added-image").innerHTML += '<img style=width:20mm src="' + readerEvent.target.result + '" />'; // this is the content!
+		} else {
+			document.getElementById("msg-added-image").innerHTML = "<input type=button value='Remove images' class='btn waves-effect waves-light' "
+			+"onclick=additionalstufftoaddtomessage='';document.getElementById('msg-added-image').innerHTML='' /><br>Note: GimB servers don't like large messages, "
+			+"so only very small images may be attached or your message will not be delivered.<br>Attached images:<br><img style=width:20mm "
+			+"src='"+readerEvent.target.result+"' />"; // ravno obratni narekovaji
+		}
                 M.toast({ html: "Image added as an attachment." });
             }
         }
@@ -362,7 +373,9 @@ function setupEventListeners() {
             document.getElementById("msg-body").value = "";
             document.getElementById("full-name").value = "";
             document.getElementById("msg-subject").value = "";
+            document.getElementById("msg-send").disabled = true;
             additionalstufftoaddtomessage = "";
+	    document.getElementById("msg-added-image").innerHTML = "";
         }).catch(function (err) {
             M.toast({ html: "Unable to read directory of people. Message could not be sent." });
             console.log(err);
