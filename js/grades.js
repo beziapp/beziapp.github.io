@@ -273,4 +273,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Setup side modal
     const modals = document.querySelectorAll('.side-modal');
     M.Sidenav.init(modals, { edge: 'left', draggable: false });
+    await loadGrades();
 });

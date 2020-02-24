@@ -20,7 +20,8 @@ function setupStorage() {
         localforage.setItem("grades", []),
         localforage.setItem("absences", {}),
         localforage.setItem("messages", {}),
-        localforage.setItem("directory", {})
+        localforage.setItem("directory", {}),
+        localforage.setItem("meals", {})
     ];
 
     Promise.all(promises_to_run)

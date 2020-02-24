@@ -95,11 +95,11 @@
     </ul>
 
     <br>
-    <div class="container login" style="display:none;">
+    <div class="container login" hidden="hidden" id="meals-login">
 	<h4>Login to Lopolis</h4>
 	<p>
-		You have a different username and password combination used for applying and opting out from menus. In order to use this feature, you
-		have to log in with your Lopolis account.
+		It seems like you're not currently logged in to eRestavracija, so this form has been presented to you. You have a different username and password combination used
+		for applying and opting out from menus. In order to use this feature, you have to log in with your Lopolis account.
 	</p>
 	  <div class="row">
 	    <div class="col s12">
@@ -117,7 +117,7 @@
 	      </div>
 	      <div class="row">
 	        <div class="input-field col s12">
-	          <button id="meals_login" type="button" class="waves-effect waves-light btn">
+	          <button id="meals_login" type="button" class="waves-effect waves-light btn" onclick="lopolisLogin();">
 			Log in to Lopolis
 			<i class="material-icons right">arrow_right_alt</i>
 		  </button>
@@ -127,16 +127,14 @@
 	  </div>
     </div>
 	<small style="position:absolute;top:1;left:1;color:#FFF"><small>Meals section is powered by https://github.com/rstular/lopolis-api, licensed under MIT.</small></small>
-    <div class="meals-container container" style="display: block">
+    <div class="meals-container container" hidden="hidden" id="meals-container">
 	<h4>Meals
-		<button id="meals_login" type="button" class="waves-effect waves-light btn" style="float: right">
+		<button id="meals_logout" onclick="lopolisLogout();" type="button" class="waves-effect waves-light btn" style="float: right">
 	           Log out from Lopolis
         	   <i class="material-icons right">exit_to_app</i>
 	        </button>
 	</h4>
-	<p>
-		Not done yet => not working.
-	</p>
+	<div id="meals-collapsible"></div>
     </div>
 </body>
 

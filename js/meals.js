@@ -1,9 +1,16 @@
 const API_ENDPOINT = "https://lopolis-api.gimb.tk/";
+var token, meals;
+const jsDateDayString = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Freeday", "Day when you can finnaly rest", "Day when you get a girlfriend"];
+const jsDateMonthString = ["January", "February", "March", "April", "May", "June", "July", "August", "October", "November", "December", "Elevener", "Zwölfer", "Teener", "14er"];
 async function checkLogin() {
-    localforage.getItem("logged_in").then((value) => {
+    localforage.getItem("logged_in_lopolis").then((value) => {
         if (value !== true) {
-            window.location.replace("/index.html");
-        }
+		document.getElementById("meals-container").hidden = true;
+		document.getElementById("meals-login").hidden = false;
+        } else {
+		document.getElementById("meals-container").hidden = false;
+		document.getElementById("meals-login").hidden = true;
+	}
     }).catch((err) => {
         console.log(err);
     });
@@ -29,35 +36,58 @@ async function loadMeals(force_refresh = false) {
         })
     ];
     await Promise.all(promises_to_run);
-    if (meals === null || grades === [] || force_refresh) {
+    if (meals === null || meals === [] || force_refresh) {
 
         $.ajax({
-            url: API_ENDPOINT,
+            url: API_ENDPOINT+"gettoken",
             crossDomain: true,
 	    contentType: "application/json",
 	    data: JSON.stringify({ "username": username, "password": password         }),
             dataType: "json",
             cache: false,
             type: "POST",
-            success: (data) => {
+            success: (dataauth) => {
                 // If data is null, the request failed
-                if (data === null) {
+                if (dataauth === null) {
                     M.toast({ html: "Authentication request failed!" });
                     setLoading(false);
-                } else if(data["error"] == true) {
+                } else if(dataauth.error == true) {
                     M.toast({ html: "Authentication error!" });
                     setLoading(false);
+		    localforage.setItem("logged_in_lopolis", false).then(()=>{checkLogin();});
 		} else {
+		    d = new Date();
 		    $.ajax({
-			url: API_ENDPOINT,
-			crossDomain: true
-// ##############################################################################################od tu dalje je meals.js aka ni narejeno
+			url: API_ENDPOINT+"getmenus",
+			crossDomain: true,
+			contentType: "application/json",
+			data: JSON.stringify({"month": d.getMonth()+1, "year": d.getFullYear()}),
+			headers: {
+				"Authorization": "Bearer "+dataauth.data
+			},
+			dataType: "json",
+			cache: false,
+			type: "POST",
+			success: (data) => {
+				if(data == null) {
+                		    M.toast({ html: "Request to get menus failed!" });
+		                    setLoading(false);
+				} else if(data.error == true) {
+				    M.toast({html:"Lopolis refused to serve menus"});
+				    setLoading(false);
+				} else {
+       	        		    localforage.setItem("meals", data).then((value) => {
+        	                	meals = value;
+		                        displayMeals();
+                		        setLoading(false);
+		                    });
+				}
+			},
+			error: () => {
+				M.toast({html:"No internet connection or the server fucking crashed! )-:<"});
+				setLoading(false);
+			}
 		    });
-                    localforage.setItem("meals", data).then((value) => {
-                        meals = value;
-                        displayMeals();
-                        setLoading(false);
-                    });
                 }
             },
 
@@ -69,35 +99,17 @@ async function loadMeals(force_refresh = false) {
         });
 
     } else {
-        displayGrades();
+        displayMeals();
         setLoading(false);
     }
 }
 
-function displayGrades() {
-    let grades_by_subject = {};
-    grades.forEach((grade, index) => {
-        if (!(grade["predmet"] in grades_by_subject)) {
-            grades_by_subject[grade["predmet"]] = [];
-        }
-        let grade_object = {
-            date: grade["datum"],
-            teacher: grade["profesor"],
-            subject: grade["predmet"],
-            title: grade["naslov"],
-            type: grade["vrsta"],
-            term: grade["rok"],
-            grade: grade["ocena"],
-            temporary: grade["zacasna"],
-            index: index
-        }
-        grades_by_subject[grade["predmet"]].push(grade_object);
-    });
+function displayMeals() {
+    let root_element = document.getElementById("meals-collapsible");
 
-    let root_element = document.getElementById("grades-collapsible");
-
-    Object.keys(grades_by_subject).forEach((subject) => {
-        // Create root element for a subject entry
+    for(const [date, mealzz] of Object.entries(meals.data)) {
+	var datum = new Date(date);
+        // Create root element for a date entry
         let subject_entry = document.createElement("li");
         // Create subject collapsible header
         let subject_header = document.createElement("div");
@@ -105,74 +117,57 @@ function displayGrades() {
         subject_header.classList.add("collapsible-header-root");
         // Create header text element
         let subject_header_text = document.createElement("span");
-        subject_header_text.innerText = subject;
+        subject_header_text.innerText = jsDateDayString[datum.getDay()]+", "+datum.getDate()+". "+jsDateMonthString[datum.getMonth()]+" "+datum.getFullYear()+" ("+mealzz.meal+"@"
+		+mealzz.location+")";
 
-        // Create collection for displaying individuals grades
+        // Create collection for displaying individuals meals
         let subject_body = document.createElement("div");
         subject_body.className = "collapsible-body";
         let subject_body_root = document.createElement("ul");
         subject_body_root.className = "collection";
 
-        // Setup variables for calculating average
-        let grade_sum = 0;
-        let grade_tot = 0;
+        for(const [dindex, dmil] of Object.entries(mealzz.menu_options)) {
+            // Create element for individual meal
+            let meal_node = document.createElement("li");
+            meal_node.className = "collection-item";
+            meal_node.classList.add("collection-item")
+            meal_node.classList.add("meal-node");
+            meal_node.dataset["index"] = dindex;
+	    meal_node.onclick = function () {
+		setMenu(date, dmil.value);
+	    }
+            let meal_node_div = document.createElement("div");
 
-        grades_by_subject[subject].forEach((grade) => {
-            // Create element for individual grade
-            let grade_node = document.createElement("li");
-            grade_node.className = "collection-item";
-            grade_node.classList.add("collection-item")
-            grade_node.classList.add("grade-node");
-            grade_node.dataset["index"] = grade["index"];
-            let grade_node_div = document.createElement("div");
-
-            // Node for date and subject text
-            let grade_text = document.createElement("span");
-            // Node for the actual number
-            let grade_number = document.createElement("div");
-            grade_number.className = "secondary-content";
+            // Node for left text
+            let meal_lefttext = document.createElement("span");
+            // Node for the right text
+            let meal_righttext = document.createElement("div");
+            meal_lefttext.className = "secondary-content";
 
             // Apply different style, if the grade is temporary
-            if (grade["temporary"]) {
-                // Styling for text
-                let grade_text_italic = document.createElement("i");
-                grade_text_italic.innerText = grade["date"] + " - " + grade["title"];
-                grade_text.appendChild(grade_text_italic);
-
-                // Styling for number
-                let grade_number_italic = document.createElement("i");
-                grade_number_italic.innerText = grade["grade"].toString();
-                grade_number.appendChild(grade_number_italic);
+            if (dmil.selected) {
+                // Text
+                meal_lefttext.innerHTML = "<i>"+dmil.text+"</i>";
+                // Number
+                meal_righttext.innerText = "selected";
             } else {
                 // Text
-                grade_text.innerText = grade["date"] + " - " + grade["title"];
+                meal_lefttext.innerText = dmil.text;
                 // Number
-                grade_number.innerText = grade["grade"].toString();
+                meal_righttext.innerText = "";
             }
 
-            grade_node_div.appendChild(grade_text);
-            grade_node_div.appendChild(grade_number);
+            meal_node_div.appendChild(meal_lefttext);
+            meal_node_div.appendChild(meal_righttext);
 
-            grade_node.appendChild(grade_node_div);
+            meal_node.appendChild(meal_node_div);
 
 
-            // Count the grade only if it's not temporary or explicitly enabled
-            if (!grade["temporary"] || !checkbox_state) {
-                grade_sum += grade["grade"];
-                grade_tot += 1;
-            }
+            subject_body_root.appendChild(meal_node);
 
-            subject_body_root.appendChild(grade_node);
-
-        });
-
-        let grade_average = (grade_tot === 0) ? "N/A" : (Math.round(((grade_sum / grade_tot) + Number.EPSILON) * 100) / 100);
-        let subject_header_average = document.createElement("div");
-        subject_header_average.className = "collapsible-header-right";
-        subject_header_average.innerText = grade_average.toString();
+        }
 
         subject_header.appendChild(subject_header_text);
-        subject_header.appendChild(subject_header_average);
 
         subject_body.append(subject_body_root);
 
@@ -180,27 +175,27 @@ function displayGrades() {
         subject_entry.append(subject_body);
 
         root_element.append(subject_entry);
-    });
+    }
 
     $("#grades-collapsible").append(root_element);
 
-    refreshClickHandlers();
+    // refreshClickHandlers();
 }
 
-function clearGrades() {
-    const table = document.getElementById("grades-collapsible");
+function clearMeals() {
+    const table = document.getElementById("meals-collapsible");
     while (table.firstChild) {
         table.removeChild(table.firstChild);
     }
 }
 
-function refreshGrades(force) {
-    clearGrades();
-    loadGrades(force);
+function refreshMeals(force) {
+    clearMeals();
+    loadMeals(force);
 }
 
-function refreshClickHandlers() {
-    $("#grades-collapsible").find(".collection-item.grade-node").click(function () {
+function refreshClickHandlers() { // unused
+    $("#meals-collapsible").find(".collection-item.meal-node").click(function () {
         let grade_obj = grades[parseInt(this.dataset["index"])];
         document.getElementById("grade-header").innerText = grade_obj["predmet"] + ": " + grade_obj["ocena"];
         document.getElementById("grade-date").innerText = grade_obj["datum"];
@@ -231,23 +226,129 @@ function refreshClickHandlers() {
     });
 }
 
+function lopolisLogout() {
+	localforage.setItem("logged_in_lopolis", false);
+	checkLogin();
+}
+
+function lopolisLogin() {
+	setLoading(true);
+	var usernameEl = document.getElementById("meals_username");
+	var passwordEl = document.getElementById("meals_password");
+	$.ajax({
+		url: API_ENDPOINT+"gettoken",
+		crossDomain: true,
+		contentType: "application/json",
+		data: JSON.stringify({"username": usernameEl.value, "password": passwordEl.value}),
+		dataType: "json",
+		cache: false,
+		type: "POST",
+		success: (data) => {
+			if(data == null) {
+                		M.toast({ html: "Request for Authentication failed!" });
+		        	setLoading(false);
+				usernameEl.value = "";
+				passwordEl.value = "";
+			} else if(data.error == true) {
+				M.toast({html:"Authentication failed"});
+				usernameEl.value = "";
+				passwordEl.value = "";
+				setLoading(false);
+			} else {
+         			localforage.setItem("logged_in_lopolis", true).then((value) => {
+         			localforage.setItem("lopolis_username", usernameEl.value).then((value) => {
+         			localforage.setItem("lopolis_password", passwordEl.value).then((value) => {
+					setLoading(false);
+					M.toast({html:"Credentials match!"});
+					checkLogin();
+                    		});
+                    		});
+                    		});
+			}
+		},
+		error: () => {
+			M.toast({html:"No internet connection!"});
+			setLoading(false);
+		}
+	});
+}
+async function setMenu(date, menu) {
+    setLoading(true);
+    let promises_to_run = [
+        localforage.getItem("lopolis_username").then((value) => {
+            username = value;
+        }),
+        localforage.getItem("lopolis_password").then((value) => {
+            password = value;
+        })
+    ];
+    await Promise.all(promises_to_run);
+	$.ajax({
+		url: API_ENDPOINT+"gettoken",
+		crossDomain: true,
+		contentType: "application/json",
+		data: JSON.stringify({"username": username, "password": password}),
+		dataType: "json",
+		cache: false,
+		type: "POST",
+		success: (dataauth) => {
+			if(dataauth == null) {
+                		M.toast({ html: "Request for Authentication failed!" });
+		        	setLoading(false);
+			        localforage.settItem("logged_in_lopolis", false).then(()=>{checkLogin();})
+			} else if(dataauth.error == true) {
+				M.toast({html:"Authentication failed"});
+				setLoading(false);
+			        localforage.settItem("logged_in_lopolis", false).then(()=>{checkLogin();})
+			} else {
+				$.ajax({
+					url: API_ENDPOINT+"setmenus",
+					crossDomain: true,
+					contentType: "application/json",
+					headers: {
+						"Authorization": "Bearer "+dataauth.data
+					},
+					data: JSON.stringify({"choices": {[date]: menu}}),
+					dataType: "json",
+					cache: false,
+					type: "POST",
+					success: (data) => {
+						if(data == null) {
+			                		M.toast({ html: "Request for Setting the menu failed!" });
+					        	setLoading(false);
+						} else if(data.error == true) {
+							M.toast({html:"Setting the menu errored out"});
+							setLoading(false);
+						} else {
+							M.toast({html:"Success? It looks like one. Refresh the menus to be sure."});
+							setLoading(false);
+						}
+					},
+					error: () => {
+						M.toast({html:"No internet connection! Are you fucking kidding me??!?!?!"});
+						setLoading(false);
+					}
+				});
+
+			}
+		},
+		error: () => {
+			M.toast({html:"No internet connection!"});
+			setLoading(false);
+		}
+	});
+}
+
 // Initialization code
 document.addEventListener("DOMContentLoaded", async () => {
     checkLogin();
-    //	 await loadGrades();
 
     let coll_elem = document.querySelectorAll('.collapsible');
     let coll_instance = M.Collapsible.init(coll_elem, {});
 
     // Setup refresh handler
     $("#refresh-icon").click(function () {
-        refreshGrades(true);
-    });
-
-    // Setup checkbox handler
-    $("#permanent-grades-checkbox").change(function () {
-        checkbox_state = this.checked;
-        refreshGrades(false);
+        refreshMeals(true);
     });
 
     let elems = document.querySelectorAll('.modal');
@@ -260,4 +361,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Setup side modal
     const modals = document.querySelectorAll('.side-modal');
     M.Sidenav.init(modals, { edge: 'left', draggable: false });
+    await loadMeals();
 });
