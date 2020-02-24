@@ -10,7 +10,7 @@ async function checkLogin() {
         } else {
 		document.getElementById("meals-container").hidden = false;
 		document.getElementById("meals-login").hidden = true;
-		await loadMeals();
+		loadMeals();
 	}
     }).catch((err) => {
         console.log(err);
