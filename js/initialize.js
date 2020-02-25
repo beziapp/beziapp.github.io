@@ -45,7 +45,7 @@ localforage.getItem("logged_in")
                 // User is logged in, execute appropriate action
 
                 if (getUrlParameter("m") !== "") {
-                    window.location.replace("/pages/messaging.html?m=" + getUrlParameter("m"));
+                    window.location.replace("/pages/messaging.html#" + getUrlParameter("m"));
                 } else {
                     window.location.replace("/pages/timetable.html");
                 }

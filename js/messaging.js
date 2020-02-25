@@ -82,6 +82,13 @@ function populateAutocomplete() {
         onAutocomplete: validateName,
         minLength: 0
     });
+    if(window.location.hash.length > 1) {
+    	document.getElementById("full-name").value = decodeURIComponent(window.location.hash.substring(1));
+    } else {
+    	document.getElementById("full-name").value = getUrlParameter("m");
+    }
+    M.updateTextFields();
+    validateName();
 }
 
 // Function to toggle loading bar
@@ -317,9 +324,8 @@ async function sendMessage(recipient_number, subject, body) {
     });
 }
 
-function validateName() {
+async function validateName() {
     if (directory !== null) {
-
         if ($("#full-name").val() in directory) {
             $("#full-name").addClass("valid");
             $("#full-name").removeClass("invalid");
@@ -329,7 +335,6 @@ function validateName() {
             $("#full-name").removeClass("valid");
             document.getElementById("msg-send").disabled = true;
         }
-
     }
 }
 
@@ -398,10 +403,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     var receivedmessages = null;
     loadMessages(true, 0);
-
-    document.getElementById("full-name").value = getUrlParameter("m");
     M.updateTextFields();
-    validateName();
 
     // Setup side menu
     const menus = document.querySelectorAll(".side-menu");

@@ -109,6 +109,8 @@ function displayMeals() {
     let root_element = document.getElementById("meals-collapsible");
 
     for(const [date, mealzz] of Object.entries(meals.data)) {
+	let unabletochoosequestionmark = "";
+	let readonly = mealzz.readonly;
 	var datum = new Date(date);
         // Create root element for a date entry
         let subject_entry = document.createElement("li");
@@ -118,8 +120,11 @@ function displayMeals() {
         subject_header.classList.add("collapsible-header-root");
         // Create header text element
         let subject_header_text = document.createElement("span");
+	if(mealzz.readonly) {
+		unabletochoosequestionmark = "*Read only*";
+	}
         subject_header_text.innerText = jsDateDayString[datum.getDay()]+", "+datum.getDate()+". "+jsDateMonthString[datum.getMonth()]+" "+datum.getFullYear()+" ("+mealzz.meal+"@"
-		+mealzz.location+")";
+		+mealzz.location+") "+unabletochoosequestionmark;
 
         // Create collection for displaying individuals meals
         let subject_body = document.createElement("div");
@@ -134,8 +139,10 @@ function displayMeals() {
             meal_node.classList.add("collection-item")
             meal_node.classList.add("meal-node");
             meal_node.dataset["index"] = dindex;
-	    meal_node.onclick = function () {
-		setMenu(date, dmil.value);
+	    if(!readonly) {
+		    meal_node.onclick = function () {
+			setMenu(date, dmil.value);
+		    }
 	    }
             let meal_node_div = document.createElement("div");
 
@@ -193,38 +200,6 @@ function clearMeals() {
 function refreshMeals(force) {
     clearMeals();
     loadMeals(force);
-}
-
-function refreshClickHandlers() { // unused
-    $("#meals-collapsible").find(".collection-item.meal-node").click(function () {
-        let grade_obj = grades[parseInt(this.dataset["index"])];
-        document.getElementById("grade-header").innerText = grade_obj["predmet"] + ": " + grade_obj["ocena"];
-        document.getElementById("grade-date").innerText = grade_obj["datum"];
-        document.getElementById("grade-title").innerText = grade_obj["naslov"];
-        document.getElementById("grade-type").innerText = "Type: " + grade_obj["vrsta"];
-
-        let term_element = document.getElementById("grade-term");
-        if (grade_obj["rok"] !== "") {
-            term_element.innerText = "Term: " + grade_obj["rok"];
-            term_element.style["display"] = "";
-        } else {
-            term_element.style["display"] = "none";
-        }
-
-        document.getElementById("grade-teacher").innerText = "Teacher: " + grade_obj["profesor"];
-
-        let temporary_object = document.getElementById("grade-temporary");
-        let temporary_object_root = document.getElementById("grade-temporary-root");
-        if (grade_obj["zacasna"]) {
-            temporary_object.innerText = "(zacasna)";
-            temporary_object_root.style["display"] = "";
-        } else {
-            temporary_object_root.style["display"] = "none";
-        }
-
-        const modal = document.querySelectorAll('.side-modal')[0];
-        M.Sidenav.getInstance(modal).open();
-    });
 }
 
 function lopolisLogout() {
