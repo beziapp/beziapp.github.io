@@ -21,6 +21,7 @@
     <link rel="manifest" href="/manifest.json">
     <script src="/js/app.js"></script>
     <script src="/js/lib/xss.js"></script>
+    <script src="/js/lib/sjcl.js"></script>
     <link rel="shortcut icon" type="image/png" href="/favicon.png" />
 
     <!-- iOS support -->
@@ -96,7 +97,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="input-field col s10">
+                    <div class="input-field col s8">
                         <i class="material-icons prefix">mode_edit</i>
                         <textarea id="msg-body" class="materialize-textarea"></textarea>
                         <label for="msg-body">Message body</label>
@@ -106,7 +107,19 @@
                             <i class="material-icons" style="margin: 0 auto">add_a_photo</i>
                         </button>
                     </div>
+                    <div class="input-field col s2">
+                        <button onclick="document.getElementById('msg-e2ee-pass').hidden = false" class="btn waves-effect waves-light" id="msg-use-e2ee" type="button">
+                            <i class="material-icons" style="margin: 0 auto">vpn_key</i>
+                        </button>
+                    </div>
                 </div>
+		<div hidden="hidden" class="row" id="msg-e2ee-pass">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">lock</i>
+                        <input id="msg-e2ee-pass-input" type="password" autocomplete="new-password" class="">
+                        <label for="msg-e2ee-pass-input">Password for encrypting the message</label>
+                    </div>
+		</div>
             </div>
             <div id="msg-added-image"></div>
         </div>
@@ -135,6 +148,8 @@
 			<div class="progress col s5">
 				<div class="determinate" id="storage-progressbar" style="width: 0%"></div>
 			</div>
+		</div>
+		<div class="row">
 			<p>
 				You can only have 120 messages per message folder, older messages will not be shown. Remember to delete read and sent
 				messages regulary to avoid any issues.

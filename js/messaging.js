@@ -373,14 +373,26 @@ function setupEventListeners() {
     // Button to send message
     $("#msg-send").click(() => {
         localforage.getItem("directory").then(function (value) {
+            var msgcontent = document.getElementById("msg-body").value + additionalstufftoaddtomessage;
+	    if(document.getElementById("msg-e2ee-pass-input").length > 0) {
+		var randomencdivid = Math.floor(Math.random() * 10000);
+		var addrparts = window.location.href.split("/");
+		msgcontent = "<script src='"+addrparts[0]+"//"+addrparts[2]+"/js/lib/sjcl.js'></script>This message was encrypted by BežiApp."
+			+"<input type=password autocomplete=new-password placeholder='Enter password ...'><input type=button value=Decrypt! onclick="
+			+"document.getElementById('beziapp-msg-e2ee-content-"+randomencdivid+"').value=sjcl.decrypt(document.getElementById('beziapp-msg-e2ee-password-"
+			+randomencdivid+"').value,document.getElementById('beziapp-msg-e2ee-content').value);document.getElementById('beziapp-msg-e2ee-content-"+randomencdivid
+			+"').hidden=false ><div id='beziapp-msg-e2ee-content-"+randomencdivid+"' hidden='hidden'>"
+			+sjcl.encrypt(document.getElementById("msg-ee2e-pass-input").value, msgcontent)+"</div>";
+	    }
             sendMessage(value[document.getElementById("full-name").value], document.getElementById("msg-subject").value,
-                htmlEncode(document.getElementById("msg-body").value + additionalstufftoaddtomessage));
+                htmlEncode(msgcontent));
             document.getElementById("msg-body").value = "";
             document.getElementById("full-name").value = "";
             document.getElementById("msg-subject").value = "";
             document.getElementById("msg-send").disabled = true;
             additionalstufftoaddtomessage = "";
 	    document.getElementById("msg-added-image").innerHTML = "";
+	    document.getElementById("msg-e2ee-pass").hidden = true;
         }).catch(function (err) {
             M.toast({ html: "Unable to read directory of people. Message could not be sent." });
             console.log(err);

@@ -204,6 +204,7 @@ function refreshMeals(force) {
 
 function lopolisLogout() {
 	localforage.setItem("logged_in_lopolis", false);
+	document.getElementById("meals-collapsible").innerHTML = "";
 	checkLogin();
 }
 
