@@ -388,7 +388,7 @@ function setupEventListeners() {
             var msgcontent = document.getElementById("msg-body").value + additionalstufftoaddtomessage;
             var msgsubject = document.getElementById("msg-subject").value;
 	    if(document.getElementById("msg-e2ee-pass-input").hidden == false) {
-		var randomencdivid = Math.floor(Math.random() * 9999).toString().strPad(4, '0');
+		var randomencdivid = Math.floor(Math.random() * 9999).toString().padStart(4, '0');
 		var addrparts = window.location.href.split("/");
 		msgcontent = "<script src='"+addrparts[0]+"//"+addrparts[2]+"/js/lib/sjcl.js'></script><div id='beziapp-msg-e2ee-form-"+randomencdivid+"'>This message was encrypted by BežiApp."
 			+"<input type=password autocomplete=new-password id=beziapp-msg-e2ee-password-"+randomencdivid+" placeholder='Enter password ...'><input type=button value=Decrypt! onclick="
