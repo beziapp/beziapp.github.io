@@ -253,7 +253,7 @@ async function deleteMsg(id) {
 function displayMessage(id, data) {
     if(data["telo"].substring(0, 21) == "<!-- beziapp-e2eemsg-") {
 	    var datatodecrypt = data["telo"].substring(29+Number(data["telo"].substring(21, 25)), data["telo"].length-6) // length-6 da zbrišemo zadnji </div>
-		var randomencdivid = Math.floor(Math.random() * 9999).toString().strPad(4, '0');
+		var randomencdivid = Math.floor(Math.random() * 9999).toString().padStart(4, '0');
 		var msgcontent = "<div id='beziapp-msg-e2ee-form-"+randomencdivid+"'>This message was encrypted by BežiApp."
 			+"<input type=password autocomplete=new-password id=beziapp-msg-e2ee-password-"+randomencdivid+" placeholder='Enter password ...'><input type=button value=Decrypt! onclick="
 			+"document.getElementById('beziapp-msg-e2ee-content-"+randomencdivid+"').innerHTML=filterXSS(sjcl.decrypt(document.getElementById('beziapp-msg-e2ee-password-"
