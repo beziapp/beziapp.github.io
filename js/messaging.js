@@ -251,6 +251,17 @@ async function deleteMsg(id) {
 }
 
 function displayMessage(id, data) {
+    if(data["telo"].substring(0, 21) == "<!-- beziapp-e2eemsg-") {
+	    var datatodecrypt = data["telo"].substring(29+Number(data["telo"].substring(21, 25)), data["telo"].length-6) // length-6 da zbrišemo zadnji </div>
+		var randomencdivid = Math.floor(Math.random() * 9999).toString().strPad(4, '0');
+		var msgcontent = "<div id='beziapp-msg-e2ee-form-"+randomencdivid+"'>This message was encrypted by BežiApp."
+			+"<input type=password autocomplete=new-password id=beziapp-msg-e2ee-password-"+randomencdivid+" placeholder='Enter password ...'><input type=button value=Decrypt! onclick="
+			+"document.getElementById('beziapp-msg-e2ee-content-"+randomencdivid+"').innerHTML=filterXSS(sjcl.decrypt(document.getElementById('beziapp-msg-e2ee-password-"
+			+randomencdivid+"').value,document.getElementById('beziapp-msg-e2ee-content-"+randomencdivid+"').innerHTML));document.getElementById('beziapp-msg-e2ee-content-"+randomencdivid
+			+"').hidden=false;document.getElementById('beziapp-msg-e2ee-form-"+randomencdivid+"').hidden=true ></div><div id='beziapp-msg-e2ee-content-"+randomencdivid+"' hidden='hidden'>";
+			+datatodecrypt+"</div>";
+	    document.getElementById("msg_body-" + id).innerHTML = msgcontent;
+    }
     document.getElementById("msg_body-" + id).innerHTML = filterXSS(data["telo"]);
 }
 
@@ -259,11 +270,11 @@ function displayData() {
     let msg_list = document.getElementById("msg-list");
     msg_list.innerHTML = "";
     messages.forEach(element => {
-        if (element["zadeva"].substr(0, 14) != "beziapp-ctlmsg")
+        if (element["zadeva"].substr(0, 14) != "beziapp-ctlmsg") {
             msg_list.innerHTML += '<div class="col s12 m6" id="msg_box-' +
                 filterXSS(element["id"]) +
                 '"><div class="card blue-grey darken-1"><div class="card-content white-text"><span class="card-title">' +
-                filterXSS(element["zadeva"]) +
+		filterXSS(element["zadeva"]) +
                 '</span><p id="msg_body-' +
                 filterXSS(element["id"]) +
                 '"><button class="btn waves-effect waves-light" onclick=loadMsg("' +
@@ -278,6 +289,7 @@ function displayData() {
                 filterXSS(element["posiljatelj"]) + " &raquo; " + filterXSS(element["datum"]["dan"]) + ". " + filterXSS(element["datum"]["mesec"]) + ". " + filterXSS(element["datum"]["leto"]) + " at " +
                 filterXSS(element["cas"]["ura"]) + ":" + filterXSS(element["cas"]["minuta"]) +
                 '</div></div></div>';
+	}
     });
     document.getElementById("storage-bar").hidden = false;
     document.getElementById("storage-progressbar").style.width = Number(Number(messages.length/120)*100).toFixed(2)+"%";
@@ -374,17 +386,19 @@ function setupEventListeners() {
     $("#msg-send").click(() => {
         localforage.getItem("directory").then(function (value) {
             var msgcontent = document.getElementById("msg-body").value + additionalstufftoaddtomessage;
-	    if(document.getElementById("msg-e2ee-pass-input").length > 0) {
-		var randomencdivid = Math.floor(Math.random() * 10000);
+            var msgsubject = document.getElementById("msg-subject").value;
+	    if(document.getElementById("msg-e2ee-pass-input").hidden == false) {
+		var randomencdivid = Math.floor(Math.random() * 9999).toString().strPad(4, '0');
 		var addrparts = window.location.href.split("/");
-		msgcontent = "<script src='"+addrparts[0]+"//"+addrparts[2]+"/js/lib/sjcl.js'></script>This message was encrypted by BežiApp."
-			+"<input type=password autocomplete=new-password placeholder='Enter password ...'><input type=button value=Decrypt! onclick="
-			+"document.getElementById('beziapp-msg-e2ee-content-"+randomencdivid+"').value=sjcl.decrypt(document.getElementById('beziapp-msg-e2ee-password-"
-			+randomencdivid+"').value,document.getElementById('beziapp-msg-e2ee-content').value);document.getElementById('beziapp-msg-e2ee-content-"+randomencdivid
-			+"').hidden=false ><div id='beziapp-msg-e2ee-content-"+randomencdivid+"' hidden='hidden'>"
-			+sjcl.encrypt(document.getElementById("msg-ee2e-pass-input").value, msgcontent)+"</div>";
+		msgcontent = "<script src='"+addrparts[0]+"//"+addrparts[2]+"/js/lib/sjcl.js'></script><div id='beziapp-msg-e2ee-form-"+randomencdivid+"'>This message was encrypted by BežiApp."
+			+"<input type=password autocomplete=new-password id=beziapp-msg-e2ee-password-"+randomencdivid+" placeholder='Enter password ...'><input type=button value=Decrypt! onclick="
+			+"document.getElementById('beziapp-msg-e2ee-content-"+randomencdivid+"').innerHTML=sjcl.decrypt(document.getElementById('beziapp-msg-e2ee-password-"
+			+randomencdivid+"').value,document.getElementById('beziapp-msg-e2ee-content-"+randomencdivid+"').innerHTML);document.getElementById('beziapp-msg-e2ee-content-"+randomencdivid
+			+"').hidden=false;document.getElementById('beziapp-msg-e2ee-form-"+randomencdivid+"').hidden=true ></div><div id='beziapp-msg-e2ee-content-"+randomencdivid+"' hidden='hidden'>";
+		msgcontent = "<!-- beziapp-e2eemsg-"+msgcontent.length.padStart(4, '0')+" -->"+msgcontent
+			+sjcl.encrypt(document.getElementById("msg-e2ee-pass-input").value, msgcontent)+"</div>";
 	    }
-            sendMessage(value[document.getElementById("full-name").value], document.getElementById("msg-subject").value,
+            sendMessage(value[document.getElementById("full-name").value], msgsubject,
                 htmlEncode(msgcontent));
             document.getElementById("msg-body").value = "";
             document.getElementById("full-name").value = "";
