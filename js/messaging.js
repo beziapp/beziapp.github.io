@@ -395,7 +395,7 @@ function setupEventListeners() {
 			+"document.getElementById('beziapp-msg-e2ee-content-"+randomencdivid+"').innerHTML=sjcl.decrypt(document.getElementById('beziapp-msg-e2ee-password-"
 			+randomencdivid+"').value,document.getElementById('beziapp-msg-e2ee-content-"+randomencdivid+"').innerHTML);document.getElementById('beziapp-msg-e2ee-content-"+randomencdivid
 			+"').hidden=false;document.getElementById('beziapp-msg-e2ee-form-"+randomencdivid+"').hidden=true ></div><div id='beziapp-msg-e2ee-content-"+randomencdivid+"' hidden='hidden'>";
-		msgcontent = "<!-- beziapp-e2eemsg-"+msgcontent.length.padStart(4, '0')+" -->"+msgcontent
+		msgcontent = "<!-- beziapp-e2eemsg-"+msgcontent.length.toString().padStart(4, '0')+" -->"+msgcontent
 			+sjcl.encrypt(document.getElementById("msg-e2ee-pass-input").value, msgcontent)+"</div>";
 	    }
             sendMessage(value[document.getElementById("full-name").value], msgsubject,
