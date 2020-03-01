@@ -150,7 +150,7 @@ function displayMeals() {
             let meal_lefttext = document.createElement("span");
             // Node for the right text
             let meal_righttext = document.createElement("div");
-            meal_lefttext.className = "secondary-content";
+            meal_righttext.className = "secondary-content";
 
             // Apply different style, if the grade is temporary
             if (dmil.selected) {
