@@ -1,5 +1,5 @@
 // Change version to cause cache refresh
-const static_cache_name = "site-static-v1.0.11";
+const static_cache_name = "site-static-v1.0.11.1";
 
 // Tukej ne met notr directory namov, samo imena fajlov,
 // ker v primeru index.html to prpele do double-cachinga, oz. do velik 404

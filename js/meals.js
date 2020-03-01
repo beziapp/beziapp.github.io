@@ -278,41 +278,85 @@ async function setMenu(date, menu) {
 				setLoading(false);
 			        localforage.settItem("logged_in_lopolis", false).then(()=>{checkLogin();})
 			} else {
-				$.ajax({
-					url: API_ENDPOINT+"setmenus",
-					crossDomain: true,
-					contentType: "application/json",
-					headers: {
-						"Authorization": "Bearer "+dataauth.data
-					},
-					data: JSON.stringify({"choices": {[date]: menu}}),
-					dataType: "json",
-					cache: false,
-					type: "POST",
-					success: (data) => {
-						if(data == null) {
-			                		M.toast({ html: "Request for Setting the menu failed!" });
-					        	setLoading(false);
-						} else if(data.error == true) {
-							M.toast({html:"Setting the menu errored out"});
-							setLoading(false);
-						} else {
-							M.toast({html:"Success? It looks like one. Refresh the menus to be sure."});
-							setLoading(false);
+			    d = new Date();
+			    $.ajax({
+				url: API_ENDPOINT+"getmenus",
+				crossDomain: true,
+				contentType: "application/json",
+				data: JSON.stringify({"month": d.getMonth()+1, "year": d.getFullYear()}),
+				headers: {
+					"Authorization": "Bearer "+dataauth.data
+				},
+				dataType: "json",
+				cache: false,
+				type: "POST",
+				success: (data) => {
+					if(data == null) {
+	                		    M.toast({ html: "Request to get menus failed!" });
+			                    setLoading(false);
+					} else if(data.error == true) {
+					    M.toast({html:"Lopolis refused to serve menus"});
+					    setLoading(false);
+					} else {
+       		        		    localforage.setItem("meals", data).then((value) => {
+       	 	                	        othermeals = value;
+						var choices = new Object();
+						// tale for loop je zelo C-jevski approach ...
+						for(const [mealzzdate, mealzz] of Object.entries(othermeals.data)) {
+							if (mealzzdate == date) {
+								choices[mealzzdate] = menu;
+							} else {
+								for (const [mealid, mealdata] of Object.entries(mealzz.menu_options)) {
+									if(mealdata.selected == true) {
+										choices[mealzzdate] = mealdata.value;
+										break;
+									}
+								}
+							}
 						}
-					},
-					error: () => {
-						M.toast({html:"No internet connection! Are you fucking kidding me??!?!?!"});
-						setLoading(false);
+						// console.log(choices); // debug
+						$.ajax({
+							url: API_ENDPOINT+"setmenus",
+							crossDomain: true,
+							contentType: "application/json",
+							headers: {
+								"Authorization": "Bearer "+dataauth.data
+							},
+							data: JSON.stringify({"choices": choices}),
+							dataType: "json",
+							cache: false,
+							type: "POST",
+							success: (data) => {
+								if(data == null) {
+					                		M.toast({ html: "Request for Setting the menu failed!" });
+							        	setLoading(false);
+								} else if(data.error == true) {
+									M.toast({html:"Setting the menu errored out"});
+									setLoading(false);
+								} else {
+									M.toast({html:"Success? It looks like one. Refresh the menus to be sure."});
+									setLoading(false);
+								}
+							},
+							error: () => {
+								M.toast({html:"No internet connection! Are you fucking kidding me??!?!?!"});
+								setLoading(false);
+							}
+						});
+					    });
 					}
-				});
-
-			}
-		},
-		error: () => {
+				},
+				error: () => {
+					M.toast({html:"No internet connection! (-:"});
+					setLoading(false);
+				}
+			    });
+		        }
+		    },
+		    error: () => {
 			M.toast({html:"No internet connection!"});
 			setLoading(false);
-		}
+		    }
 	});
 }
 
