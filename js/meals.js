@@ -323,4 +323,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 	// Setup side modal
 	const modals = document.querySelectorAll('.side-modal');
 	M.Sidenav.init(modals, { edge: 'left', draggable: false });
+	var elemsx = document.querySelectorAll('select');
+	var instancesx = M.FormSelect.init(elemsx);
+	var datepickerelems = document.querySelectorAll('.datepicker');
+	var today = new Date();
+	var datepickerinstances = M.Datepicker.init(datepickerelems, {
+		firstDay: 1,
+		minDate: today,
+		showDaysInNextAndPreviousMonths: true,
+		showClearBtn: true,
+		format: "dddd, dd. mmmm yyyy"
+	});
 });
