@@ -1,5 +1,5 @@
 // Change version to cause cache refresh
-const static_cache_name = "site-static-v1.0.11.1";
+const static_cache_name = "site-static-v1.0.11.2";
 
 // Tukej ne met notr directory namov, samo imena fajlov,
 // ker v primeru index.html to prpele do double-cachinga, oz. do velik 404
@@ -51,6 +51,7 @@ const assets = [
     "/js/lib/jquery.min.js",
     "/js/lib/localforage.min.js",
     "/js/lib/xss.js",
+    "/js/lib/mergedeep.js",
 
     "/js/lib/fullcalendar/daygrid/main.min.js",
     "/js/lib/fullcalendar/core/main.min.js",

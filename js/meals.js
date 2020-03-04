@@ -1,205 +1,214 @@
 const API_ENDPOINT = "https://lopolis-api.gimb.tk/";
-var token, meals;
-const jsDateDayString = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Freeday", "Day when you can finnaly rest", "Day when you get a girlfriend"];
-const jsDateMonthString = ["January", "February", "March", "April", "May", "June", "July", "August", "October", "November", "December", "Elevener", "Zwölfer", "Teener", "14er"];
+const jsDateDayString = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const jsDateMonthString = ["January", "February", "March", "April", "May", "June", "July", "August", "October", "November", "December"];
 async function checkLogin() {
-    localforage.getItem("logged_in_lopolis").then((value) => {
-        if (value !== true) {
-		document.getElementById("meals-container").hidden = true;
-		document.getElementById("meals-login").hidden = false;
-        } else {
-		document.getElementById("meals-container").hidden = false;
-		document.getElementById("meals-login").hidden = true;
-		loadMeals();
-	}
-    }).catch((err) => {
-        console.log(err);
-    });
+	localforage.getItem("logged_in_lopolis").then((value) => {
+		if (value !== true) {
+			document.getElementById("meals-container").hidden = true;
+			document.getElementById("meals-login").hidden = false;
+		} else {
+			document.getElementById("meals-container").hidden = false;
+			document.getElementById("meals-login").hidden = true;
+			loadMeals();
+		}
+	}).catch((err) => {
+		console.log(err);
+	});
 }
 function setLoading(state) {
-    if (state) {
-        $("#loading-bar").removeClass("hidden");
-    } else {
-        $("#loading-bar").addClass("hidden");
-    }
+	if (state) {
+		$("#loading-bar").removeClass("hidden");
+	} else {
+		$("#loading-bar").addClass("hidden");
+	}
 }
-async function loadMeals(force_refresh = false) {
-    setLoading(true);
-    let promises_to_run = [
-        localforage.getItem("lopolis_username").then((value) => {
-            username = value;
-        }),
-        localforage.getItem("lopolis_password").then((value) => {
-            password = value;
-        }),
-        localforage.getItem("meals").then((value) => {
-            meals = value;
-        })
-    ];
-    await Promise.all(promises_to_run);
-    if (meals === null || meals === [] || force_refresh) {
+function UIAlert(usermsg, devmsg) {
+	if(true) { // če bo kakšen dev switch?
+		M.toast( { html: usermsg } );
+		console.log("[BežiApp UIAlert] "+usermsg+" "+devmsg);
+	} else {
+		M.toast( { html: usermsg+" "+devmsg } );
+	}
+}
+async function getToken(callback, callbackparams = []) {
+	setLoading(true);
+	let promises_to_run = [
+		localforage.getItem("lopolis_username").then((value) => {
+			username = value;
+		}),
+		localforage.getItem("lopolis_password").then((value) => {
+			password = value;
+		})
+	];
+	await Promise.all(promises_to_run);
+	$.ajax({
+		url: API_ENDPOINT+"gettoken",
+		crossDomain: true,
+		contentType: "application/json",
+		data: JSON.stringify( { "username": username, "password": password } ),
+		dataType: "json",
+		cache: false,
+		type: "POST",
+		success: (dataauth) => {
+			if(dataauth === null || dataauth.error == true) {
+				UIAlert("Authentication error. ", "getToken(): response error or null");
+				setLoading(false);
+				localforage.setItem("logged_in_lopolis", false).then( function(){
+					checkLogin();
+				});
+			} else if (dataauth.error == false) {
+				let empty = {};
+				empty.token = dataauth.data;
+				let argumentsToCallback = [empty].concat(callbackparams);
+				callback(...argumentsToCallback); // poslje token v {token: xxx}
+				setLoading(false);
+			} else {
+				UIAlert("Authentication error. ", "getToken(): invalid response, no condition met");
+				setLoading(false);
+			}
+		},
+		error: () => {
+			UIAlert("LopolisAPI connection error. ", "getToken(): AJAX error");
+			setLoading(false);
+		}
+	});
+}
 
-        $.ajax({
-            url: API_ENDPOINT+"gettoken",
-            crossDomain: true,
-	    contentType: "application/json",
-	    data: JSON.stringify({ "username": username, "password": password         }),
-            dataType: "json",
-            cache: false,
-            type: "POST",
-            success: (dataauth) => {
-                // If data is null, the request failed
-                if (dataauth === null) {
-                    M.toast({ html: "Authentication request failed!" });
-                    setLoading(false);
-                } else if(dataauth.error == true) {
-                    M.toast({ html: "Authentication error!" });
-                    setLoading(false);
-		    localforage.setItem("logged_in_lopolis", false).then(()=>{checkLogin();});
-		} else {
-		    d = new Date();
-		    $.ajax({
+async function getMenus(dataauth, callback, callbackparams = []) {
+	setLoading(true);
+	let d = new Date();
+	// naloži za dva meseca vnaprej (če so zadnji dnevi v mesecu)
+	let mealsgathered = {};
+	let promises_to_wait_for = [];
+	for (let iteration = 1; iteration <= 2; iteration++) {
+		promises_to_wait_for[iteration] = $.ajax({
 			url: API_ENDPOINT+"getmenus",
 			crossDomain: true,
 			contentType: "application/json",
-			data: JSON.stringify({"month": d.getMonth()+1, "year": d.getFullYear()}),
+			data: JSON.stringify({"month": d.getMonth()+iteration, "year": d.getFullYear()}),
 			headers: {
-				"Authorization": "Bearer "+dataauth.data
+				"Authorization": "Bearer "+dataauth.token
 			},
 			dataType: "json",
 			cache: false,
 			type: "POST",
-			success: (data) => {
-				if(data == null) {
-                		    M.toast({ html: "Request to get menus failed!" });
-		                    setLoading(false);
-				} else if(data.error == true) {
-				    M.toast({html:"Lopolis refused to serve menus"});
-				    setLoading(false);
-				} else {
-       	        		    localforage.setItem("meals", data).then((value) => {
-        	                	meals = value;
-		                        displayMeals();
-                		        setLoading(false);
-		                    });
+			success: (meals) => {
+				if(meals === null || meals.error == true) {
+					UIAlert("Error getting menus. ", "getMenus(): response error or null");
+					setLoading(false);
+					localforage.setItem("logged_in_lopolis", false).then( () => {
+						checkLogin();
+					});
+				} else if (meals.error == false) {
+					setLoading(false);
+					mealsgathered[iteration] = meals;
+					} else {
+					setLoading(false);
+					UIAlert("Error: unexpected response. ", "getMenus(): invalid response, no condition met");
 				}
 			},
 			error: () => {
-				M.toast({html:"No internet connection! (-:"});
 				setLoading(false);
+				UIAlert("LopolisAPI server connection error. ", "getMenus(): AJAX error");
 			}
-		    });
-                }
-            },
-
-            error: () => {
-                M.toast({ html: "Authentication failed (not logged in) or connection problem." });
-                setLoading(false);
-            }
-
-        });
-
-    } else {
-        displayMeals();
-        setLoading(false);
-    }
+		});
+	}
+	await Promise.all(promises_to_wait_for); // javascript is ducking amazing
+	let allmeals = {};
+	let passtocallback = {};
+	for(const [index, monthmeals] of Object.entries(mealsgathered)) { // although this is not very javascripty
+		allmeals = mergeDeep(allmeals, monthmeals.data);
+	}
+	passtocallback.data = allmeals;
+	passtocallback.token = dataauth.token;
+	let toBePassed = [passtocallback].concat(callbackparams);
+	callback(...toBePassed);
 }
 
-function displayMeals() {
-    let root_element = document.getElementById("meals-collapsible");
+async function loadMeals() {
+	getToken(getMenus, [displayMeals, []]);
+}
 
-    for(const [date, mealzz] of Object.entries(meals.data)) {
-	let unabletochoosequestionmark = "";
-	let readonly = mealzz.readonly;
-	var datum = new Date(date);
-        // Create root element for a date entry
-        let subject_entry = document.createElement("li");
-        // Create subject collapsible header
-        let subject_header = document.createElement("div");
-        subject_header.classList.add("collapsible-header");
-        subject_header.classList.add("collapsible-header-root");
-        // Create header text element
-        let subject_header_text = document.createElement("span");
-	if(mealzz.readonly) {
-		unabletochoosequestionmark = "*Read only*";
+function displayMeals(meals) {
+	// console.log(JSON.stringify(meals)); // debug // dela!
+	let root_element = document.getElementById("meals-collapsible");
+	for(const [date, mealzz] of Object.entries(meals.data)) {
+		let unabletochoosequestionmark = "";
+		let readonly = mealzz.readonly;
+		var datum = new Date(date);
+		// Create root element for a date entry
+		let subject_entry = document.createElement("li");
+		// Create subject collapsible header
+		let subject_header = document.createElement("div");
+		subject_header.classList.add("collapsible-header");
+		subject_header.classList.add("collapsible-header-root");
+		// Create header text element
+		let subject_header_text = document.createElement("span");
+		if(mealzz.readonly) {
+			unabletochoosequestionmark = "*Read only*";
+		}
+		subject_header_text.innerText = jsDateDayString[datum.getDay()]+", "+datum.getDate()+". "+jsDateMonthString[datum.getMonth()]+" "+datum.getFullYear()+" ("+mealzz.meal+"@"
+			+mealzz.location+") "+unabletochoosequestionmark;
+		// Create collection for displaying individuals meals
+		let subject_body = document.createElement("div");
+		subject_body.className = "collapsible-body";
+		let subject_body_root = document.createElement("ul");
+		subject_body_root.className = "collection";
+		for(const [dindex, dmil] of Object.entries(mealzz.menu_options)) {
+			// Create element for individual meal
+			let meal_node = document.createElement("li");
+			meal_node.className = "collection-item";
+			meal_node.classList.add("collection-item")
+			meal_node.classList.add("meal-node");
+			meal_node.dataset["index"] = dindex;
+			if(!readonly) {
+				meal_node.onclick = function () {
+					setMenu(date, dmil.value);
+				}
+			}
+			let meal_node_div = document.createElement("div");
+			// Node for left text
+			let meal_lefttext = document.createElement("span");
+			// Node for the right text
+			let meal_righttext = document.createElement("div");
+			meal_righttext.className = "secondary-content";
+			// Apply different style, if the meal is selected
+			if (dmil.selected) {
+				// Text
+				meal_lefttext.innerHTML = "<i>"+dmil.text+"</i>";
+				// Number
+				meal_righttext.innerText = "selected";
+			} else {
+				// Text
+				meal_lefttext.innerText = dmil.text;
+				// Number
+				meal_righttext.innerText = "";
+			}
+			meal_node_div.appendChild(meal_lefttext);
+			meal_node_div.appendChild(meal_righttext);
+			meal_node.appendChild(meal_node_div);
+			subject_body_root.appendChild(meal_node);
+		}
+		subject_header.appendChild(subject_header_text);
+		subject_body.append(subject_body_root);
+		subject_entry.append(subject_header);
+		subject_entry.append(subject_body);
+		root_element.append(subject_entry);
 	}
-        subject_header_text.innerText = jsDateDayString[datum.getDay()]+", "+datum.getDate()+". "+jsDateMonthString[datum.getMonth()]+" "+datum.getFullYear()+" ("+mealzz.meal+"@"
-		+mealzz.location+") "+unabletochoosequestionmark;
-
-        // Create collection for displaying individuals meals
-        let subject_body = document.createElement("div");
-        subject_body.className = "collapsible-body";
-        let subject_body_root = document.createElement("ul");
-        subject_body_root.className = "collection";
-
-        for(const [dindex, dmil] of Object.entries(mealzz.menu_options)) {
-            // Create element for individual meal
-            let meal_node = document.createElement("li");
-            meal_node.className = "collection-item";
-            meal_node.classList.add("collection-item")
-            meal_node.classList.add("meal-node");
-            meal_node.dataset["index"] = dindex;
-	    if(!readonly) {
-		    meal_node.onclick = function () {
-			setMenu(date, dmil.value);
-		    }
-	    }
-            let meal_node_div = document.createElement("div");
-
-            // Node for left text
-            let meal_lefttext = document.createElement("span");
-            // Node for the right text
-            let meal_righttext = document.createElement("div");
-            meal_righttext.className = "secondary-content";
-
-            // Apply different style, if the grade is temporary
-            if (dmil.selected) {
-                // Text
-                meal_lefttext.innerHTML = "<i>"+dmil.text+"</i>";
-                // Number
-                meal_righttext.innerText = "selected";
-            } else {
-                // Text
-                meal_lefttext.innerText = dmil.text;
-                // Number
-                meal_righttext.innerText = "";
-            }
-
-            meal_node_div.appendChild(meal_lefttext);
-            meal_node_div.appendChild(meal_righttext);
-
-            meal_node.appendChild(meal_node_div);
-
-
-            subject_body_root.appendChild(meal_node);
-
-        }
-
-        subject_header.appendChild(subject_header_text);
-
-        subject_body.append(subject_body_root);
-
-        subject_entry.append(subject_header);
-        subject_entry.append(subject_body);
-
-        root_element.append(subject_entry);
-    }
-
-    $("#grades-collapsible").append(root_element);
-
-    // refreshClickHandlers();
+	$("#grades-collapsible").append(root_element);
+	// refreshClickHandlers();
 }
 
 function clearMeals() {
-    const table = document.getElementById("meals-collapsible");
-    while (table.firstChild) {
-        table.removeChild(table.firstChild);
-    }
+	const table = document.getElementById("meals-collapsible");
+	while (table.firstChild) {
+		table.removeChild(table.firstChild);
+	}
 }
 
 function refreshMeals(force) {
-    clearMeals();
-    loadMeals(force);
+	clearMeals();
+	loadMeals();
 }
 
 function lopolisLogout() {
@@ -208,7 +217,7 @@ function lopolisLogout() {
 	checkLogin();
 }
 
-function lopolisLogin() {
+async function lopolisLogin() {
 	setLoading(true);
 	var usernameEl = document.getElementById("meals_username");
 	var passwordEl = document.getElementById("meals_password");
@@ -220,10 +229,10 @@ function lopolisLogin() {
 		dataType: "json",
 		cache: false,
 		type: "POST",
-		success: (data) => {
+		success: async function(data) {
 			if(data == null) {
-                		M.toast({ html: "Request for Authentication failed!" });
-		        	setLoading(false);
+				M.toast({ html: "Request for Authentication failed!" });
+				setLoading(false);
 				usernameEl.value = "";
 				passwordEl.value = "";
 			} else if(data.error == true) {
@@ -232,15 +241,14 @@ function lopolisLogin() {
 				passwordEl.value = "";
 				setLoading(false);
 			} else {
-         			localforage.setItem("logged_in_lopolis", true).then((value) => {
-         			localforage.setItem("lopolis_username", usernameEl.value).then((value) => {
-         			localforage.setItem("lopolis_password", passwordEl.value).then((value) => {
-					setLoading(false);
-					M.toast({html:"Credentials match!"});
-					checkLogin();
-                    		});
-                    		});
-                    		});
+				let promises_to_run = [
+					localforage.setItem("logged_in_lopolis", true),
+					localforage.setItem("lopolis_username", usernameEl.value),
+					localforage.setItem("lopolis_password", passwordEl.value)
+				];
+				await Promise.all(promises_to_run);
+				checkLogin();
+				UIAlert("Credential match!");
 			}
 		},
 		error: () => {
@@ -249,137 +257,70 @@ function lopolisLogin() {
 		}
 	});
 }
-async function setMenu(date, menu) {
-    setLoading(true);
-    let promises_to_run = [
-        localforage.getItem("lopolis_username").then((value) => {
-            username = value;
-        }),
-        localforage.getItem("lopolis_password").then((value) => {
-            password = value;
-        })
-    ];
-    await Promise.all(promises_to_run);
+async function setMenus(currentmeals = 69, toBeSentChoices) { // currentmeals je getMenus response in vsebuje tudi token.
+	if(currentmeals === 69) {
+		getToken(getMenus, [setMenus, toBeSentChoices]);
+		return;
+	}
+	for(const [mealzzdate, mealzz] of Object.entries(currentmeals.data)) {
+		for (const [mealid, mealdata] of Object.entries(mealzz.menu_options)) {
+			console.log(mealdata);
+			if(mealdata.selected == true || mealzz.readonly == true) {
+				toBeSentChoices[mealzzdate] = mealdata.value;
+				break;
+			}
+		}
+	}
+	setLoading(true);
 	$.ajax({
-		url: API_ENDPOINT+"gettoken",
+		url: API_ENDPOINT+"setmenus",
 		crossDomain: true,
 		contentType: "application/json",
-		data: JSON.stringify({"username": username, "password": password}),
+		data: JSON.stringify( { "choices": toBeSentChoices } ),
+		headers: {
+			"Authorization": "Bearer "+currentmeals.token
+		},
 		dataType: "json",
 		cache: false,
 		type: "POST",
-		success: (dataauth) => {
-			if(dataauth == null) {
-                		M.toast({ html: "Request for Authentication failed!" });
-		        	setLoading(false);
-			        localforage.settItem("logged_in_lopolis", false).then(()=>{checkLogin();})
-			} else if(dataauth.error == true) {
-				M.toast({html:"Authentication failed"});
+		success: (response) => {
+			if(response === null || response.error == true) {
+				UIAlert("Error setting meals. ", "setMenus(): response error or null");
 				setLoading(false);
-			        localforage.settItem("logged_in_lopolis", false).then(()=>{checkLogin();})
+			} else if (response.error == false) {
+				setLoading(false);
+				UIAlert("Meal set! Reload meals to be sure.");
 			} else {
-			    d = new Date();
-			    $.ajax({
-				url: API_ENDPOINT+"getmenus",
-				crossDomain: true,
-				contentType: "application/json",
-				data: JSON.stringify({"month": d.getMonth()+1, "year": d.getFullYear()}),
-				headers: {
-					"Authorization": "Bearer "+dataauth.data
-				},
-				dataType: "json",
-				cache: false,
-				type: "POST",
-				success: (data) => {
-					if(data == null) {
-	                		    M.toast({ html: "Request to get menus failed!" });
-			                    setLoading(false);
-					} else if(data.error == true) {
-					    M.toast({html:"Lopolis refused to serve menus"});
-					    setLoading(false);
-					} else {
-       		        		    localforage.setItem("meals", data).then((value) => {
-       	 	                	        othermeals = value;
-						var choices = new Object();
-						// tale for loop je zelo C-jevski approach ...
-						for(const [mealzzdate, mealzz] of Object.entries(othermeals.data)) {
-							if (mealzzdate == date) {
-								choices[mealzzdate] = menu;
-							} else {
-								for (const [mealid, mealdata] of Object.entries(mealzz.menu_options)) {
-									if(mealdata.selected == true) {
-										choices[mealzzdate] = mealdata.value;
-										break;
-									}
-								}
-							}
-						}
-						// console.log(choices); // debug
-						$.ajax({
-							url: API_ENDPOINT+"setmenus",
-							crossDomain: true,
-							contentType: "application/json",
-							headers: {
-								"Authorization": "Bearer "+dataauth.data
-							},
-							data: JSON.stringify({"choices": choices}),
-							dataType: "json",
-							cache: false,
-							type: "POST",
-							success: (data) => {
-								if(data == null) {
-					                		M.toast({ html: "Request for Setting the menu failed!" });
-							        	setLoading(false);
-								} else if(data.error == true) {
-									M.toast({html:"Setting the menu errored out"});
-									setLoading(false);
-								} else {
-									M.toast({html:"Success? It looks like one. Refresh the menus to be sure."});
-									setLoading(false);
-								}
-							},
-							error: () => {
-								M.toast({html:"No internet connection! Are you fucking kidding me??!?!?!"});
-								setLoading(false);
-							}
-						});
-					    });
-					}
-				},
-				error: () => {
-					M.toast({html:"No internet connection! (-:"});
-					setLoading(false);
-				}
-			    });
-		        }
-		    },
-		    error: () => {
-			M.toast({html:"No internet connection!"});
+				setLoading(false);
+				UIAlert("Error: unexpected reponse. ", "setMenus(): invalid response, no condition met");
+			}
+		},
+		error: () => {
 			setLoading(false);
-		    }
+			UIAlert("LopolisAPI connection error. ", "setMenus(): AJAX error");
+		}
 	});
 }
-
+async function setMenu(date, menu) {
+	let choice = {};
+	choice[date] = menu;
+	getToken(getMenus, [setMenus, choice]);
+}
 // Initialization code
 document.addEventListener("DOMContentLoaded", async () => {
-    checkLogin();
-
-    let coll_elem = document.querySelectorAll('.collapsible');
-    let coll_instance = M.Collapsible.init(coll_elem, {});
-
-    // Setup refresh handler
-    $("#refresh-icon").click(function () {
-        refreshMeals(true);
-    });
-
-    let elems = document.querySelectorAll('.modal');
-    let instances = M.Modal.init(elems, {});
-
-    // Setup side menu
-    const menus = document.querySelectorAll('.side-menu');
-    M.Sidenav.init(menus, { edge: 'right', draggable: true });
-
-    // Setup side modal
-    const modals = document.querySelectorAll('.side-modal');
-    M.Sidenav.init(modals, { edge: 'left', draggable: false });
+	checkLogin();
+	let coll_elem = document.querySelectorAll('.collapsible');
+	let coll_instance = M.Collapsible.init(coll_elem, {});
+	// Setup refresh handler
+	$("#refresh-icon").click(function () {
+		refreshMeals(true);
+	});
+	let elems = document.querySelectorAll('.modal');
+	let instances = M.Modal.init(elems, {});
+	// Setup side menu
+	const menus = document.querySelectorAll('.side-menu');
+	M.Sidenav.init(menus, { edge: 'right', draggable: true });
+	// Setup side modal
+	const modals = document.querySelectorAll('.side-modal');
+	M.Sidenav.init(modals, { edge: 'left', draggable: false });
 });
