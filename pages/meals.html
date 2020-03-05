@@ -1,5 +1,4 @@
-<html lang="en">
-
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -21,6 +20,7 @@
 
     <link rel="manifest" href="/manifest.json">
     <script src="/js/app.js"></script>
+    <script src="/js/lang/bundle.js"></script>
     <link rel="shortcut icon" type="image/png" href="/favicon.png" />
 
     <!-- iOS support -->
@@ -32,7 +32,7 @@
 <body>
     <nav class="z-depth-0" id="navigation-main">
         <div class="nav-wrapper container">
-            <b>Beži</b><span>App</span> &raquo; Meals
+            <b>Beži</b><span>App</span> &raquo; <x-su>meals</x-su>
             <span class="right white-text">
                 <i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
             </span>
@@ -51,77 +51,53 @@
                 <h4><b>Beži</b>App</h4>
             </a>
         </li>
-        <li><a href="/pages/timetable.html" class="waves-effect"><i class="material-icons">view_module</i>Timetable</a></li>
-        <li><a href="/pages/gradings.html" class="waves-effect"><i class="material-icons">event</i>Gradings</a></li>
-        <li><a href="/pages/grades.html" class="waves-effect"><i class="material-icons">receipt</i>Grades</a></li>
-        <li><a href="/pages/teachers.html" class="waves-effect"><i class="material-icons">supervisor_account</i>Teachers</a></li>
-        <li><a href="/pages/absences.html" class="waves-effect"><i class="material-icons">query_builder</i>Absences</a></li>
-        <li><a href="/pages/messaging.html" class="waves-effect"><i class="material-icons">message</i>Messaging</a></li>
-        <li><a href="/pages/meals.html" class="waves-effect"><i class="material-icons">fastfood</i>Meals</a></li>
+        <li><a href="/pages/timetable.html" class="waves-effect"><i class="material-icons">view_module</i><x-su>timetable</x-su></a></li>
+        <li><a href="/pages/gradings.html" class="waves-effect"><i class="material-icons">event</i><x-su>gradings</x-su></a></li>
+        <li><a href="/pages/grades.html" class="waves-effect"><i class="material-icons">receipt</i><x-su>grades</x-su></a></li>
+        <li><a href="/pages/teachers.html" class="waves-effect"><i class="material-icons">supervisor_account</i><x-su>teachers</x-su></a></li>
+        <li><a href="/pages/absences.html" class="waves-effect"><i class="material-icons">query_builder</i><x-su>absences</x-su></a></li>
+        <li><a href="/pages/messaging.html" class="waves-effect"><i class="material-icons">message</i><x-su>messaging</x-su></a></li>
+        <li><a href="/pages/meals.html" class="waves-effect"><i class="material-icons">fastfood</i><x-su>meals</x-su></a></li>
         <li>
             <div class="divider"></div>
         </li>
         <li><a href="/pages/about.html" class="waves-effect">
-                <i class="material-icons">info</i>About</a>
+                <i class="material-icons">info</i><x-su>about</x-su></a>
         </li>
         <li>
             <div class="divider"></div>
         </li>
         <li><a href="/logout.html" class="waves-effect">
-                <i class="material-icons">exit_to_app</i>Log out</a>
+                <i class="material-icons">exit_to_app</i><x-su>logout</x-su></a>
         </li>
-    </ul>
-
-    <ul id="grade-info" class="sidenav side-modal">
-        <br>
-        <li><a class="header">
-                <h5 id="meal-header"></h5>
-            </a></li>
-        <br>
-        <li id="meal-subheader-root"><a class="subheader">
-                <h6 id="meal-subheader"></h6>
-            </a></li>
-        <li><a class="subheader" id="meal-date">
-            </a></li>
-        <li>
-            <div class="divider"></div>
-        </li>
-        <li><a class="waves-effect" id="meal-option1"></a></li>
-        <li><a class="waves-effect" id="meal-option2"></a></li>
-        <li><a class="waves-effect" id="meal-option3"></a></li>
-        <li><a class="waves-effect" id="meal-option4"></a></li>
-        <li><a class="waves-effect" id="meal-option5"></a></li>
-        <li><a class="waves-effect" id="meal-option6"></a></li>
-        <li><a class="waves-effect" id="meal-option7"></a></li>
     </ul>
 
     <br>
     <div class="container login" hidden="hidden" id="meals-login">
-	<h4>Login to Lopolis</h4>
+	<h4><x-su>loginToLopolis</x-su></h4>
 	<p>
-		It seems like you're not currently logged in to eRestavracija, so this form has been presented to you. You have a different username and password combination used
-		for applying and opting out from menus. In order to use this feature, you have to log in with your Lopolis account.
+		<x-du>loginToLopolisNote</x-du>
 	</p>
 	  <div class="row">
 	    <div class="col s12">
 	      <div class="row">
 	        <div class="input-field col s12">
 	          <input id="meals_username" type="text" value="" required="required" name="meals_password" class="validate">
-	          <label for="meals_username">Lopolis username</label>
+	          <label for="meals_username">Lopolis <x-su>username</x-su></label>
 	        </div>
 	      </div>
 	      <div class="row">
 	        <div class="input-field col s12">
 	          <input autocomplete="new-password" id="meals_password" type="password" value="" required="required" name="meals_password" class="validate">
-	          <label for="meals_password">Lopolis password</label>
+	          <label for="meals_password">Lopolis <x-su>password</x-su></label>
 	        </div>
 	      </div>
 	      <div class="row">
 	        <div class="input-field col s12">
 	          <button id="meals_login" type="button" class="waves-effect waves-light btn" onclick="lopolisLogin();">
-			Log in to Lopolis
-			<i class="material-icons right">arrow_right_alt</i>
-		  </button>
+							<x-su>loginToLopolis</x-su>
+							<i class="material-icons right">arrow_right_alt</i>
+		  			</button>
 	        </div>
 	      </div>
 	    </div>
@@ -130,58 +106,32 @@
     <div class="meals-container container" hidden="hidden" id="meals-container">
 	<h4>Meals
 		<button id="meals_logout" onclick="lopolisLogout();" type="button" class="waves-effect waves-light btn" style="float: right">
-	           Log out from Lopolis
-        	   <i class="material-icons right">exit_to_app</i>
-	        </button>
+			<x-su>logOutFromLopolis</x-su>
+			<i class="material-icons right">exit_to_app</i>
+		</button>
 	</h4>
 	<ul id="meals-collapsible" class="collapsible"></ul>
-	<!--
-		<div class="row">
-			<div class="input-field col s4">
-				<input type="text" class="datepicker" id="datepicker-from">
-				<label for="datepicker-from" class="active">Date</label>
-			</div>
-			<div class="input-field col s4">
-				<select>
-					<option value="" disabled selected>Meal type</option>
-					<option value="Malica">Malica</option>
-					<option value="Kosilo">Kosilo</option>
-				</select>
-				<label>Meal type</label>
-			</div>
-			<div class="input-field col s4">
-				<button id="meals_checkout" href="#meals_checkout-warning-modal" type="button" class="modal-trigger waves-effect waves-light btn" style="float: right">
-					Checkout from a meal
-					<i class="material-icons right">trending_up</i>
-				</button>	
-			</div>
-		</div>
-	<h4>Checkouts</h4>
-	
-	<hr>
-	-->
 	<p>
 		<small>
 			<b>
-				Usage:
+				<x-su>usage</x-su>:
 			</b>
-			Click on a date to open the collapsible menu with choices and click on a specific meal to select it. Reload the meals when you're done and check the entries.
+			<x-du>mealsUsageNote</x-du>
+			<br>
+			<b>
+				<x-su>note</x-su>:
+			</b>
+			<x-du>lunchesNote</x-du>
+			<br>
+			<b>
+				<x-su>note</x-su>:
+			</b>
+			<x-du>mealNotShownNote</x-du>
 			<br>
 			<b>
 				Note:
 			</b>
-			App was not tested with lunches in mind. Meals probably won't work with lunches and having a lunch subscription may even break its functionality.
-			<br>
-			<b>
-				Note:
-			</b>
-			If a meal is not present in the Meals collapsible field, this does not necessarily mean it does not exist. Meals that haven't been altered by you or are unchangable
-			(read-only) are not shown for clarity.
-			<br>
-			<b>
-				Note:
-			</b>
-			You are welcome to contribute to the <a href="https://github.com/rstular/lopolis-api/" target="_blank">LopolisAPI project source (py)</a> and add features, such as checkouts.
+				<x-du>mealsContributeNote</x-du>
 		</small>
 	</p>
 	</div>

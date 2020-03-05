@@ -20,6 +20,7 @@
 
     <link rel="manifest" href="/manifest.json">
     <script src="/js/app.js"></script>
+    <script src="/js/lang/bundle.js"></script>
     <link rel="shortcut icon" type="image/png" href="/favicon.png" />
 
     <!-- iOS support -->
@@ -31,7 +32,7 @@
 <body>
     <nav class="z-depth-0" id="navigation-main">
         <div class="nav-wrapper container">
-            <b>Beži</b><span>App</span> &raquo; Grades
+            <b>Beži</b><span>App</span> &raquo; <x-su>grades</x-su>
             <span class="right white-text">
                 <i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
             </span>
@@ -50,27 +51,24 @@
                 <h4><b>Beži</b>App</h4>
             </a>
         </li>
-        <li><a href="/pages/timetable.html" class="waves-effect"><i class="material-icons">view_module</i>Timetable</a>
-        </li>
-        <li><a href="/pages/gradings.html" class="waves-effect"><i class="material-icons">event</i>Gradings</a></li>
-        <li><a href="/pages/grades.html" class="waves-effect"><i class="material-icons">receipt</i>Grades</a></li>
-        <li><a href="/pages/teachers.html" class="waves-effect"><i
-                    class="material-icons">supervisor_account</i>Teachers</a></li>
-        <li><a href="/pages/absences.html" class="waves-effect"><i class="material-icons">query_builder</i>Absences</a>
-        </li>
-        <li><a href="/pages/messaging.html" class="waves-effect"><i class="material-icons">message</i>Messaging</a></li>
-        <li><a href="/pages/meals.html" class="waves-effect"><i class="material-icons">fastfood</i>Meals</a></li>
+        <li><a href="/pages/timetable.html" class="waves-effect"><i class="material-icons">view_module</i><x-su>timetable</x-su></a></li>
+        <li><a href="/pages/gradings.html" class="waves-effect"><i class="material-icons">event</i><x-su>gradings</x-su></a></li>
+        <li><a href="/pages/grades.html" class="waves-effect"><i class="material-icons">receipt</i><x-su>grades</x-su></a></li>
+        <li><a href="/pages/teachers.html" class="waves-effect"><i class="material-icons">supervisor_account</i><x-su>teachers</x-su></a></li>
+        <li><a href="/pages/absences.html" class="waves-effect"><i class="material-icons">query_builder</i><x-su>absences</x-su></a></li>
+        <li><a href="/pages/messaging.html" class="waves-effect"><i class="material-icons">message</i><x-su>messaging</x-su></a></li>
+        <li><a href="/pages/meals.html" class="waves-effect"><i class="material-icons">fastfood</i><x-su>meals</x-su></a></li>
         <li>
             <div class="divider"></div>
         </li>
         <li><a href="/pages/about.html" class="waves-effect">
-                <i class="material-icons">info</i>About</a>
+                <i class="material-icons">info</i><x-su>about</x-su></a>
         </li>
         <li>
             <div class="divider"></div>
         </li>
         <li><a href="/logout.html" class="waves-effect">
-                <i class="material-icons">exit_to_app</i>Log out</a>
+                <i class="material-icons">exit_to_app</i><x-su>logout</x-su></a>
         </li>
     </ul>
 
@@ -96,9 +94,9 @@
 
     <div id="help-modal" class="modal bottom-sheet">
         <div class="modal-content">
-            <h4>Use only permanent grades</h4>
-            <p>If checked, only permanent grades will be used in the average grade calculation.</p>
-            <p>If left unchecked, the calculation will include every available grade.</p>
+            <h4><x-su>useOnlyPermanentGrades</x-su></h4>
+            <p><x-du>useOnlyPermanentGradesNote1</x-du></p>
+            <p><x-du>useOnlyPermanentGradesNote2</x-du></p>
         </div>
         <!-- <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
@@ -107,14 +105,16 @@
 
     <br>
     <div class="container">
-        <p>
-            <label>
-                <input id="permanent-grades-checkbox" class="no-select" type="checkbox" />
-                <span style="vertical-align: sub;">Use only permanent grades <a id="help-icon" class="modal-trigger"
-                        href="#help-modal"><i class="material-icons"
-                            style="vertical-align: sub;">help_outline</i></a></span>
-
-            </label></p>
+ 				<p>
+					<label>
+						<input id="permanent-grades-checkbox" class="no-select" type="checkbox" />
+						<span style="vertical-align: sub;"><x-su>useOnlyPermanentGrades</x-su>
+							<a id="help-icon" class="modal-trigger" href="#help-modal">
+								<i class="material-icons" style="vertical-align: sub;">help_outline</i>
+							</a>
+						</span>
+					</label>
+				</p>
         <ul class="collapsible" id="grades-collapsible"></ul>
     </div>
 

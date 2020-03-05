@@ -1,5 +1,4 @@
-<html lang="en">
-
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -20,6 +19,7 @@
 
     <link rel="manifest" href="/manifest.json">
     <script src="/js/app.js"></script>
+    <script src="/js/lang/bundle.js"></script>
     <script src="/js/lib/xss.js"></script>
     <script src="/js/lib/sjcl.js"></script>
     <link rel="shortcut icon" type="image/png" href="/favicon.png" />
@@ -33,7 +33,7 @@
 <body>
     <nav class="z-depth-0" id="navigation-main">
         <div class="nav-wrapper container">
-            <b>Beži</b><span>App</span> &raquo; Messaging
+            <b>Beži</b><span>App</span> &raquo; <x-su>messaging</x-su>
             <span class="right white-text">
                 <i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
             </span>
@@ -49,28 +49,24 @@
                 <h4><b>Beži</b>App</h4>
             </a>
         </li>
-        <li><a href="/pages/timetable.html" class="waves-effect"><i class="material-icons">view_module</i>Timetable</a>
-        </li>
-        <li><a href="/pages/gradings.html" class="waves-effect"><i class="material-icons">event</i>Gradings</a></li>
-        <li><a href="/pages/grades.html" class="waves-effect"><i class="material-icons">receipt</i>Grades</a></li>
-        <li><a href="/pages/teachers.html" class="waves-effect"><i
-                    class="material-icons">supervisor_account</i>Teachers</a>
-        </li>
-        <li><a href="/pages/absences.html" class="waves-effect"><i class="material-icons">query_builder</i>Absences</a>
-        </li>
-        <li><a href="/pages/messaging.html" class="waves-effect"><i class="material-icons">message</i>Messaging</a></li>
-        <li><a href="/pages/meals.html" class="waves-effect"><i class="material-icons">fastfood</i>Meals</a></li>
+        <li><a href="/pages/timetable.html" class="waves-effect"><i class="material-icons">view_module</i><x-su>timetable</x-su></a></li>
+        <li><a href="/pages/gradings.html" class="waves-effect"><i class="material-icons">event</i><x-su>gradings</x-su></a></li>
+        <li><a href="/pages/grades.html" class="waves-effect"><i class="material-icons">receipt</i><x-su>grades</x-su></a></li>
+        <li><a href="/pages/teachers.html" class="waves-effect"><i class="material-icons">supervisor_account</i><x-su>teachers</x-su></a></li>
+        <li><a href="/pages/absences.html" class="waves-effect"><i class="material-icons">query_builder</i><x-su>absences</x-su></a></li>
+        <li><a href="/pages/messaging.html" class="waves-effect"><i class="material-icons">message</i><x-su>messaging</x-su></a></li>
+        <li><a href="/pages/meals.html" class="waves-effect"><i class="material-icons">fastfood</i><x-su>meals</x-su></a></li>
         <li>
             <div class="divider"></div>
         </li>
         <li><a href="/pages/about.html" class="waves-effect">
-                <i class="material-icons">info</i>About</a>
+                <i class="material-icons">info</i><x-su>about</x-su></a>
         </li>
         <li>
             <div class="divider"></div>
         </li>
         <li><a href="/logout.html" class="waves-effect">
-                <i class="material-icons">exit_to_app</i>Log out</a>
+                <i class="material-icons">exit_to_app</i><x-su>logout</x-su></a>
         </li>
     </ul>
 
@@ -82,16 +78,15 @@
                     <div class="input-field col s5">
                         <i class="material-icons prefix">account_circle</i>
                         <input id="full-name" type="text" class="autocomplete-fullname validate">
-                        <label for="full-name">Recipient</label>
+                        <label for="full-name"><x-su>recipient</x-su></label>
                     </div>
                     <div class="input-field col s5">
                         <i class="material-icons prefix">subject</i>
                         <input id="msg-subject" type="text" class="">
-                        <label for="msg-subject">Subject</label>
+                        <label for="msg-subject"><x-su>messageSubject</x-su></label>
                     </div>
                     <div class="input-field col s2">
-                        <button class="btn waves-effect waves-light" id="msg-send" type="button" disabled="disabled"
-                            name="action">
+                        <button class="btn waves-effect waves-light" id="msg-send" type="button" disabled="disabled" name="action">
                             <i class="material-icons">send</i>
                         </button>
                     </div>
@@ -100,7 +95,7 @@
                     <div class="input-field col s8">
                         <i class="material-icons prefix">mode_edit</i>
                         <textarea id="msg-body" class="materialize-textarea"></textarea>
-                        <label for="msg-body">Message body</label>
+                        <label for="msg-body"><x-su>messageBody</x-su></label>
                     </div>
                     <div class="input-field col s2">
                         <button class="btn waves-effect waves-light" id="msg-add-photo" type="button">
@@ -117,33 +112,33 @@
                     <div class="input-field col s12">
                         <i class="material-icons prefix">lock</i>
                         <input id="msg-e2ee-pass-input" type="password" autocomplete="new-password" class="">
-                        <label for="msg-e2ee-pass-input">Password for encrypting the message</label>
+                        <label for="msg-e2ee-pass-input"><x-su>passwordForE2EE</x-su></label>
                     </div>
 		</div>
             </div>
             <div id="msg-added-image"></div>
         </div>
         <h4>Messages</h4>
-        <button class="btn waves-effect waves-light" id="msg-load-btn" onclick="loadMessages(true, 0);"
-            type="button">Received
-            <i class="material-icons right">system_update</i>
+        <button class="btn waves-effect waves-light" id="msg-load-btn" onclick="loadMessages(true, 0);" type="button">
+					<x-su>received</x-su>
+					<i class="material-icons right">system_update</i>
         </button>
-        <button class="btn waves-effect waves-light" id="msg-load-btn" onclick="loadMessages(true, 1);"
-            type="button">Sent
-            <i class="material-icons right">system_update</i>
+        <button class="btn waves-effect waves-light" id="msg-load-btn" onclick="loadMessages(true, 1);" type="button">
+					<x-su>sent</x-su>
+					<i class="material-icons right">system_update</i>
         </button>
-        <button class="btn waves-effect waves-light" id="msg-load-btn" onclick="loadMessages(true, 2);"
-            type="button">Deleted
-            <i class="material-icons right">system_update</i>
+        <button class="btn waves-effect waves-light" id="msg-load-btn" onclick="loadMessages(true, 2);" type="button">
+					<x-su>deleted</x-su>
+					<i class="material-icons right">system_update</i>
         </button>
         <div id="msg-list"></div>
 	<p>
 		<div class="row" id="storage-bar">
 			<div class="col s4">
-				Message storage used in this folder: 
+				<x-su>messageStorageUsed</x-su>: 
 			</div>
 			<div class="col s3" id="storage-desc">
-				0/120 messages 10%
+				0/120 <x-sl>messages</x-sl> 10%
 			</div>
 			<div class="progress col s5">
 				<div class="determinate" id="storage-progressbar" style="width: 0%"></div>
@@ -151,8 +146,7 @@
 		</div>
 		<div class="row">
 			<p>
-				You can only have 120 messages per message folder, older messages will not be shown. Remember to delete read and sent
-				messages regulary to avoid any issues.
+				<x-du>maxMessagesNote</x-du>
 			</p>
 		</div>
 	</p>

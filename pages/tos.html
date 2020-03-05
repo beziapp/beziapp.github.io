@@ -1,5 +1,4 @@
-<html lang="en">
-
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -21,6 +20,7 @@
 
     <link rel="manifest" href="/manifest.json">
     <script src="/js/app.js"></script>
+    <script src="/js/lang/bundle.js"></script>
     <link rel="shortcut icon" type="image/png" href="/favicon.png" />
 
     <!-- iOS support -->
@@ -32,7 +32,7 @@
 <body>
     <nav class="z-depth-0" id="navigation-main">
         <div class="nav-wrapper container">
-            <b>Beži</b><span>App</span> &raquo; Terms and Conditions
+            <b>Beži</b><span>App</span> &raquo; <x-su>theTos</x-su>
             <span class="right white-text">
                 <i class="material-icons" id="nav-home-button">home</i>
             </span>
@@ -40,83 +40,28 @@
     </nav>
 
     <div class="container">
-        <h2 class="code-line" data-line-start=0 data-line-end=1><a id="Terms_and_conditions_0"></a>Terms and conditions
-        </h2>
-        <h3 class="code-line" data-line-start=2 data-line-end=3><a id="Terms_of_use_2"></a>Terms of use</h3>
-        <p class="has-line-data flow-text" data-line-start="3" data-line-end="4">As a condition of use, you promise not
-            to use the BežiApp
-            (App or application) and its related infrastructure (API, hosting service) for any purpose that is unlawful
-            or
-            prohibited by these Terms, or any other purpose not reasonably intended by the authors of the App. By way of
-            example, and not as a limitation, you agree not to use the App:</p>
+        <h2 class="code-line" data-line-start=0 data-line-end=1><a id="Terms_and_conditions_0"></a><x-su>theToS</x-su></h2>
+        <h3 class="code-line" data-line-start=2 data-line-end=3><a id="Terms_of_use_2"></a><x-su>termsOfUse</x-su></h3>
+        <p class="has-line-data flow-text" data-line-start="3" data-line-end="4"><x-su>termsOfUseDescription</x-su>:</p>
         <ol>
-            <li class="flow-text has-line-data" data-line-start="4" data-line-end="5">To abuse, harass, threaten,
-                impersonate or
-                intimidate any person;</li>
-            <li class="flow-text has-line-data" data-line-start="5" data-line-end="6">To post or transmit, or cause to
-                be posted or
-                transmitted, any Content that is libelous, defamatory, obscene, pornographic, abusive, offensive,
-                profane or
-                that infringes any copyright or other right of any person;</li>
-            <li class="flow-text has-line-data" data-line-start="6" data-line-end="7">To communicate with the App
-                developers or other
-                users in abusive or offensive manner;</li>
-            <li class="flow-text has-line-data" data-line-start="7" data-line-end="8">For any purpose that is not
-                permitted under the laws
-                of the jurisdiction where you use the App.</li>
-            <li class="flow-text has-line-data" data-line-start="8" data-line-end="9">To post or transmit, or cause to
-                be posted or
-                transmitted, any Communication designed or intended to obtain password, account or private information
-                of any
-                App user;</li>
-            <li class="flow-text has-line-data" data-line-start="9" data-line-end="11">To create or transmit unwanted
-                “spam” to any person
-                or any URL;</li>
+            <li class="flow-text has-line-data" data-line-start="4" data-line-end="5"><x-su>termsOfUseHarass</x-su>;</li>
+            <li class="flow-text has-line-data" data-line-start="5" data-line-end="6"><x-su>termsOfUsePost</x-su>;</li>
+            <li class="flow-text has-line-data" data-line-start="6" data-line-end="7"><x-su>termsOfUseCommunicate</x-su>;</li>
+            <li class="flow-text has-line-data" data-line-start="7" data-line-end="8"><x-su>termsOfUsePurpose</x-su>;</li>
+            <li class="flow-text has-line-data" data-line-start="8" data-line-end="9"><x-su>termsOfUseExploit</x-su>;</li>
+            <li class="flow-text has-line-data" data-line-start="9" data-line-end="11"><x-du>termsOfUseSpam</x-du></li>
         </ol>
-        <p class="flow-text">You may also not reverse engineer, modify or redistribute the app without written consent
-            from the developers.</p>
-
-        <h3 class="code-line" data-line-start=11 data-line-end=12><a id="Termination_of_services_11"></a>Termination of
-            services
-        </h3>
-        <p class="flow-text has-line-data" data-line-start="12" data-line-end="13">The developers of the App may
-            terminate your access to
-            the App without any prior warning or notice for any of the following reasons:</p>
+        <p class="flow-text"><x-du>termsOfUseModify<x-du></p>
+        <h3 class="code-line" data-line-start=11 data-line-end=12><a id="Termination_of_services_11"></a><x-su>terminationOfServices</x-su></h3>
+        <p class="flow-text has-line-data" data-line-start="12" data-line-end="13"><x-su>terminationOfServicesDescriptions</x-su>:</p>
         <ul>
-            <li class="flow-text has-line-data" data-line-start="13" data-line-end="14">Breaching the Terms of Service
-            </li>
-            <li class="flow-text has-line-data" data-line-start="14" data-line-end="16">Receiving a formal request from
-                authorities of
-                Gimnazija Bežigrad administration requesting termination of your access to the App.</li>
+            <li class="flow-text has-line-data" data-line-start="13" data-line-end="14"><x-su>terminationOfServicesBreaching</x-su>;</li>
+            <li class="flow-text has-line-data" data-line-start="14" data-line-end="16"><x-du>terminationOfServicesRequest</x-du></li>
         </ul>
-        <h3 class="code-line" data-line-start=16 data-line-end=17><a id="Limitation_of_Liability_16"></a>Limitation of
-            Liability
-        </h3>
-        <p class="flow-text has-line-data" data-line-start="17" data-line-end="18">The developers of the App provide no
-            warranty; You
-            expressly acknowledge and agree that the use of the licensed application is at your sole risk. To the
-            maximum extent
-            permited by applicable law, the licensed application and any services performed of provided by the licensed
-            application are provided “as is” and “as available”, with all faults and without warranty of any kind, and
-            licensor
-            hereby disclaims all warranties and conditions with respect to the licensed application and any services,
-            either
-            express, implied or statutory, including, but not limited to, the implied warranties and/or conditions of
-            merchantability, of satisfactory quality, of fitness for a particular purpose, of accuracy, of quiet
-            enjoyment, and
-            of noninfringement of third-party rights. No oral or written information or advice given by licensor or its
-            authorized representative shall create a warranty. Should the licensed application or services prove
-            defective, you
-            assume the entire cost of all necessary servicing, repair or correction. Some jurisdictions do not allow the
-            exclusion of the implied warranties or limitations on applicable statutory rights of a customer, so the
-            above
-            exclusion may not apply to you.</p>
-
+        <h3 class="code-line" data-line-start=16 data-line-end=17><a id="Limitation_of_Liability_16"></a><x-su>limitationOfLiability</x-su></h3>
+        <p class="flow-text has-line-data" data-line-start="17" data-line-end="18"><x-du>limitationOfLiabilityContent</x-du></p>
         <hr>
-        <p class="flow-text">The Terms of Service are effective as of 29 January, 2020.</p>
-
+        <p class="flow-text"><x-su>tosAreEffectiveAsOf</x-su> 29 January, 2020.</p>
     </div>
-
 </body>
-
 </html>

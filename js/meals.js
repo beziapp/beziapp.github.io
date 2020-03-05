@@ -3,7 +3,7 @@ const jsDateDayString = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
 const jsDateMonthString = ["January", "February", "March", "April", "May", "June", "July", "August", "October", "November", "December"];
 async function checkLogin() {
 	localforage.getItem("logged_in_lopolis").then((value) => {
-		if (value !== true) {
+		if (value != true) {
 			document.getElementById("meals-container").hidden = true;
 			document.getElementById("meals-login").hidden = false;
 		} else {

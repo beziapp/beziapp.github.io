@@ -21,7 +21,9 @@ function setupStorage() {
         localforage.setItem("absences", {}),
         localforage.setItem("messages", {}),
         localforage.setItem("directory", {}),
-        localforage.setItem("meals", {})
+        localforage.setItem("meals", {}),
+        // localforage.setItem("chosenCapitalize", true), // poor unused feature
+        localforage.setItem("chosenLang", "en")
     ];
 
     Promise.all(promises_to_run)

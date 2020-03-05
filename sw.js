@@ -46,6 +46,7 @@ const assets = [
     "/js/login.js",
     "/js/app.js",
     "/js/meals.js",
+		"/js/lang/bundle.js",
 
     "/js/lib/materialize.min.js",
     "/js/lib/jquery.min.js",

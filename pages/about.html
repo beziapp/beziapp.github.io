@@ -1,5 +1,4 @@
-<html lang="en">
-
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -21,6 +20,7 @@
 
     <link rel="manifest" href="/manifest.json">
     <script src="/js/app.js"></script>
+    <script src="/js/lang/bundle.js"></script>
     <link rel="shortcut icon" type="image/png" href="/favicon.png" />
 
     <!-- iOS support -->
@@ -32,7 +32,7 @@
 <body>
     <nav class="z-depth-0" id="navigation-main">
         <div class="nav-wrapper container">
-            <b>Beži</b><span>App</span> &raquo; About
+            <b>Beži</b><span>App</span> &raquo; <x-su>about</x-su>
             <span class="right white-text">
                 <i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
             </span>
@@ -48,24 +48,24 @@
                 <h4><b>Beži</b>App</h4>
             </a>
         </li>
-        <li><a href="/pages/timetable.html" class="waves-effect"><i class="material-icons">view_module</i>Timetable</a></li>
-        <li><a href="/pages/gradings.html" class="waves-effect"><i class="material-icons">event</i>Gradings</a></li>
-        <li><a href="/pages/grades.html" class="waves-effect"><i class="material-icons">receipt</i>Grades</a></li>
-        <li><a href="/pages/teachers.html" class="waves-effect"><i class="material-icons">supervisor_account</i>Teachers</a></li>
-        <li><a href="/pages/absences.html" class="waves-effect"><i class="material-icons">query_builder</i>Absences</a></li>
-        <li><a href="/pages/messaging.html" class="waves-effect"><i class="material-icons">message</i>Messaging</a></li>
-        <li><a href="/pages/meals.html" class="waves-effect"><i class="material-icons">fastfood</i>Meals</a></li>
+				<li><a href="/pages/timetable.html" class="waves-effect"><i class="material-icons">view_module</i><x-su>timetable</x-su></a></li>
+        <li><a href="/pages/gradings.html" class="waves-effect"><i class="material-icons">event</i><x-su>gradings</x-su></a></li>
+        <li><a href="/pages/grades.html" class="waves-effect"><i class="material-icons">receipt</i><x-su>grades</x-su></a></li>
+        <li><a href="/pages/teachers.html" class="waves-effect"><i class="material-icons">supervisor_account</i><x-su>teachers</x-su></a></li>
+        <li><a href="/pages/absences.html" class="waves-effect"><i class="material-icons">query_builder</i><x-su>absences</x-su></a></li>
+        <li><a href="/pages/messaging.html" class="waves-effect"><i class="material-icons">message</i><x-su>messaging</x-su></a></li>
+        <li><a href="/pages/meals.html" class="waves-effect"><i class="material-icons">fastfood</i><x-su>meals</x-su></a></li>
         <li>
             <div class="divider"></div>
         </li>
         <li><a href="/pages/about.html" class="waves-effect">
-                <i class="material-icons">info</i>About</a>
+                <i class="material-icons">info</i><x-su>about</x-su></a>
         </li>
         <li>
             <div class="divider"></div>
         </li>
         <li><a href="/logout.html" class="waves-effect">
-                <i class="material-icons">exit_to_app</i>Log out</a>
+                <i class="material-icons">exit_to_app</i><x-su>logout</x-su></a>
         </li>
     </ul>
 
@@ -81,7 +81,7 @@
             <div class="col s12">
                 <ul class="collection with-header">
                     <li class="collection-header">
-                        <h5>Authors</h5>
+                        <h5><x-su>authors</x-su></h5>
                     </li>
                     <li class="collection-item avatar">
                         <img src="/img/avatars/rstular.png" class="circle">
@@ -112,12 +112,25 @@
         </div>
         <div class="row">
             <div class="col s12">
+                <ul class="collection with-header">
+                    <li class="collection-header">
+                        <h5><x-su>translatorsForThisLanguage</x-su> - <x-su>miscTranslationLanguage</x-su></h5>
+                    </li>
+                    <li class="collection-item avatar">
+                        <span class="title about-text"><x-su>miscTranslationAuthors</x-su></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
                 <div class="collection">
-                    <a href="/pages/changelog.html" class="collection-item">What's new</a>
-                    <a href="/pages/tos.html" class="collection-item">Terms of Service</a>
-                    <a href="/pages/privacypolicy.html" class="collection-item">Privacy policy</a>
-                    <a href="https://instagram.com/beziapp/" target="_blank" class="collection-item">Report a bug / Send
-                        a suggestion (instagram: @beziapp)</a>
+                    <a href="/pages/changelog.html" class="collection-item"><x-su>whatIsNew</x-su></a>
+                    <a href="/pages/tos.html" class="collection-item"><x-su>theToS</x-su></a>
+                    <a href="/pages/privacypolicy.html" class="collection-item"><x-su>thePrivacyPolicy</x-su></a>
+                    <a href="https://instagram.com/beziapp/" target="_blank" class="collection-item">
+											<x-su>reportABug</x-su> / <x-su>sendASuggestion</x-su> (<x-su>instagram></x-su>: @beziapp)
+										</a>
                 </div>
             </div>
         </div>
