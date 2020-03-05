@@ -263,11 +263,11 @@ async function setMenus(currentmeals = 69, toBeSentChoices) { // currentmeals je
 		return;
 	}
 	for(const [mealzzdate, mealzz] of Object.entries(currentmeals.data)) {
-		if(mealzzdate in toBeSentChoices) {} else {
-			for (const [mealid, mealdata] of Object.entries(mealzz.menu_options)) {
-				console.log(mealdata);
-				if(mealdata.selected == true || mealzz.readonly == true) {
-					toBeSentChoices[mealzzdate] = mealdata.value;
+		if(mealzzdate in toBeSentChoices) {}{
+		for (const [mealid, mealdata] of Object.entries(mealzz.menu_options)) {
+			console.log(mealdata);
+			if(mealdata.selected == true || mealzz.readonly == true) {
+				toBeSentChoices[mealzzdate] = mealdata.value;
 					break;
 				}
 			}
