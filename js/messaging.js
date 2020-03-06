@@ -1,7 +1,5 @@
 const API_ENDPOINT = "https://gimb.tk/test.php";
 const DIRECTORY_URL = "/directory.json";
-// const API_ENDPOINT = "http://localhost:5000/test.php";
-
 // "Global" object for name directory
 var directory = null;
 
@@ -53,7 +51,7 @@ function loadDirectory() {
             localforage.getItem("directory").then((stored_directory) => {
                 if (stored_directory === null) {
                     // If unable, set directory to null (so other functions know that we don't have it)
-                    M.toast({ html: "Name directory not set, sending unavailable" });
+										UIAlert( D("nameDirectoryNotSet"), "loadDirectory(): stored_directory === null" );
                     directory = null;
                     // Disable send button
                     document.getElementById("msg-send").disabled = true;
@@ -135,7 +133,7 @@ async function loadMessages(force_refresh = true, katera = 0) {
                 success: (data) => {
                     // If data is null, the request failed
                     if (data === null) {
-                        M.toast({ html: "Request failed!" });
+												UIAlert( D("requestFailed") );
                         setLoading(false);
                     } else {
                         // Save messages & populate view
@@ -149,7 +147,7 @@ async function loadMessages(force_refresh = true, katera = 0) {
                 },
 
                 error: () => {
-                    M.toast({ html: "Error fetching messages!" });
+										UIAlert( D("errorFetchingMessages") );
                     setLoading(false);
                 }
 
@@ -189,7 +187,7 @@ async function loadMsg(id) {
             success: (data) => {
                 // If data is null, the request failed
                 if (data === null) {
-                    M.toast({ html: "Unable to receive the message, Request failed!" });
+										UIAlert( D("unableToReceiveTheMessage") + " " + D("requestFailed") );
                     setLoading(false);
                 } else {
                     displayMessage(id, data);
@@ -198,7 +196,7 @@ async function loadMsg(id) {
             },
 
             error: () => {
-                M.toast({ html: "Error fetching message, No Internet connnection?" });
+								UIAlert( D("unableToReceiveTheMessage") + " " + D("noInternetConnection") );
                 setLoading(false);
             }
 
@@ -233,7 +231,7 @@ async function deleteMsg(id) {
             success: (data) => {
                 // If data is null, the request failed
                 if (data === null) {
-                    M.toast({ html: "Unable to delete the message, Request failed!" });
+										UIAlert( D("unableToDeleteTheMessage") + " " + D("requestFailed") );
                     setLoading(false);
                 } else {
                     document.getElementById("msg_box-" + id).remove();
@@ -242,7 +240,7 @@ async function deleteMsg(id) {
             },
 
             error: () => {
-                M.toast({ html: "Unable to delete the message, No Internet connnection?" });
+								UIAlert( D("unableToDeleteTheMessage") + " " + D("noInternetConnection") );
                 setLoading(false);
             }
 
@@ -254,12 +252,12 @@ function displayMessage(id, data) {
     if(data["telo"].substring(0, 21) == "<!-- beziapp-e2eemsg-") {
 	    	var datatodecrypt = data["telo"].substring(29+Number(data["telo"].substring(21, 25)), data["telo"].length-6) // length-6 da zbrišemo zadnji </div>
 		var randomencdivid = Math.floor(Math.random() * 9999).toString().padStart(4, '0');
-		var msgcontent = "<div id='beziapp-msg-e2ee-form-"+randomencdivid+"'>This message was encrypted by BežiApp."
-			+"<input type=password autocomplete=new-password id=beziapp-msg-e2ee-password-"+randomencdivid+" placeholder='Enter password ...'><button type=button"
+		var msgcontent = "<div id='beziapp-msg-e2ee-form-"+randomencdivid+"'>"+D("thisMessageWasEncrypted")
+			+"<input type=password autocomplete=new-password id=beziapp-msg-e2ee-password-"+randomencdivid+" placeholder='"+S("password")+" ...'><button type=button"
 			+"value=Decrypt! class='btn waves-effect waves-light' onclick=document.getElementById('beziapp-msg-e2ee-content-"+randomencdivid+"').innerHTML="
 			+"filterXSS(sjcl.decrypt(document.getElementById('beziapp-msg-e2ee-password-"+randomencdivid+"').value,document.getElementById('beziapp-msg-e2ee-content-"
 			+randomencdivid+"').innerHTML));document.getElementById('beziapp-msg-e2ee-content-"+randomencdivid+"').hidden=false;document."
-			+"getElementById('beziapp-msg-e2ee-form-"+randomencdivid+"').hidden=true >Decrypt!</button></div><div id='beziapp-msg-e2ee-content-"+randomencdivid+"' hidden='hidden'>"
+			+"getElementById('beziapp-msg-e2ee-form-"+randomencdivid+"').hidden=true >"+S("decrypt")+"!</button></div><div id='beziapp-msg-e2ee-content-"+randomencdivid+"' hidden='hidden'>"
 			+datatodecrypt+"</div>";
 	    document.getElementById("msg_body-" + id).innerHTML = msgcontent;
     } else {
@@ -295,7 +293,7 @@ function displayData() {
     });
     document.getElementById("storage-bar").hidden = false;
     document.getElementById("storage-progressbar").style.width = Number(Number(messages.length/120)*100).toFixed(2)+"%";
-    document.getElementById("storage-desc").innerHTML = messages.length+"/120 messages "+document.getElementById("storage-progressbar").style.width;
+    document.getElementById("storage-desc").innerHTML = messages.length+"/120 "+s("messages")+" "+document.getElementById("storage-progressbar").style.width;
 }
 
 async function sendMessage(recipient_number, subject, body) {
@@ -327,11 +325,11 @@ async function sendMessage(recipient_number, subject, body) {
             type: "POST",
             success: () => {
                 // we CAN'T know wether the mesgg was delievered
-                M.toast({ html: "Message was probably sent, check the Sent folder to be sure!" });
+								UIAlert(D("messageWasProbablySent"));
                 setLoading(false);
             },
             error: () => {
-                M.toast({ html: "Error sending message, no Internet connnection?" });
+								UIAlert(D("errorSendingMessage"), D("noInternetConnection"));
                 setLoading(false);
             }
         })
@@ -370,12 +368,11 @@ function setupEventListeners() {
                 if(document.getElementById("msg-added-image").innerHTML.length > 1) {
 			document.getElementById("msg-added-image").innerHTML += '<img style=width:20mm src="' + readerEvent.target.result + '" />'; // this is the content!
 		} else {
-			document.getElementById("msg-added-image").innerHTML = "<input type=button value='Remove images' class='btn waves-effect waves-light' "
-			+"onclick=additionalstufftoaddtomessage='';document.getElementById('msg-added-image').innerHTML='' /><br>Note: GimB servers don't like large messages, "
-			+"so only very small images may be attached or your message will not be delivered.<br>Attached images:<br><img style=width:20mm "
+			document.getElementById("msg-added-image").innerHTML = "<input type=button value='"+S("removeImages")+"' class='btn waves-effect waves-light' "
+			+"onclick=additionalstufftoaddtomessage='';document.getElementById('msg-added-image').innerHTML='' /><br>"+D("largeImagesNote")+"<br>"+S("attachedImages")+":<br><img style=width:20mm "
 			+"src='"+readerEvent.target.result+"' />"; // ravno obratni narekovaji
 		}
-                M.toast({ html: "Image added as an attachment." });
+		UIAlert(D("imageAddedAsAnAttachment"));
             }
         }
         input.click();
@@ -391,7 +388,7 @@ function setupEventListeners() {
             var msgsubject = document.getElementById("msg-subject").value;
 	    if(document.getElementById("msg-e2ee-pass").hidden == false) {
 		var randomencdivid = Math.floor(Math.random() * 9999).toString().padStart(4, '0');
-		var addrparts = window.location.href.split("/");
+		var addrparts = window.location.href.split("/"); // engleski
 		msgcontent = "<script src='"+addrparts[0]+"//"+addrparts[2]+"/js/lib/sjcl.js'></script><div id='beziapp-msg-e2ee-form-"+randomencdivid+"'>This message was encrypted by BežiApp."
 			+"<input type=password autocomplete=new-password id=beziapp-msg-e2ee-password-"+randomencdivid+" placeholder='Enter password ...'><input type=button value=Decrypt! onclick="
 			+"document.getElementById('beziapp-msg-e2ee-content-"+randomencdivid+"').innerHTML=sjcl.decrypt(document.getElementById('beziapp-msg-e2ee-password-"
@@ -410,7 +407,7 @@ function setupEventListeners() {
 	    document.getElementById("msg-added-image").innerHTML = "";
 	    document.getElementById("msg-e2ee-pass").hidden = true;
         }).catch(function (err) {
-            M.toast({ html: "Unable to read directory of people. Message could not be sent." });
+						UIAlert( D("unableToReadDirectory") + " " + D("messageCouldNotBeSend"), "45245" );
             console.log(err);
         });
     });

@@ -1,6 +1,4 @@
 const API_ENDPOINT = "https://gimb.tk/test.php";
-// const API_ENDPOINT = "http://localhost:5000/test.php";
-
 var calendar_obj = null;
 
 async function checkLogin() {
@@ -112,7 +110,7 @@ async function loadGradings(force_refresh = false) {
 
                     // If data is null, the credentials were incorrect
                     if (data === null) {
-                        M.toast({ html: "Request failed!" });
+												UIAlert( S("requestFailed"), "loadGradings(): data === null; request failed");
                         setLoading(false);
                     } else {
                         // Save gradings & populate calendar
@@ -126,7 +124,7 @@ async function loadGradings(force_refresh = false) {
                 },
 
                 error: () => {
-                    M.toast({ html: "No internet connection!" });
+										UIAlert( S("noInternetConnection"), "loadGradings(): $.ajax:error" );
                     setLoading(false);
                 }
 

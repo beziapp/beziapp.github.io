@@ -62,7 +62,7 @@ async function loadAbsences(force_refresh = false) {
             success: function (data) {
                 // If data is null, the credentials were incorrect
                 if (data === null) {
-                    M.toast({ html: "No absences in the chosen time period." });
+										UIAlert(D("noAbsences"), "loadAbsences(): $.ajax data === null");
                     setLoading(false);
                 } else {
                     // Save absences & populate UI
@@ -75,7 +75,7 @@ async function loadAbsences(force_refresh = false) {
             },
 
             error: function () {
-                M.toast({ html: "No internet connection!" });
+								UIAlert(D("noInternetConnection"), "loadAbsences(): $.ajax.error");
                 setLoading(false);
             }
 
@@ -110,7 +110,7 @@ function displayData() {
             let subject_lesson_icon = document.createElement("td");
 
             let subject_lesson_text = document.createElement("td");
-            subject_lesson_text.innerText = "Lesson " + lesson["ura"];
+            subject_lesson_text.innerText = S("lesson") + " " + lesson["ura"];
 
             let subject_lesson_icon_i = document.createElement("i");
             subject_lesson_icon_i.className = "material-icons";

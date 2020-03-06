@@ -1,6 +1,6 @@
 const API_ENDPOINT = "https://lopolis-api.gimb.tk/";
-const jsDateDayString = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const jsDateMonthString = ["January", "February", "March", "April", "May", "June", "July", "August", "October", "November", "December"];
+const jsDateDayString = [S("sunday"), S("monday"), S("tuesday"), S("wednesday"), S("thursday"), S("friday"), S("saturday")];
+const jsDateMonthString = [S("january"), S("february"), S("march"), S("april"), S("may"), S("june"), S("july"), S("august"), S("october"), S("november"), S("december")];
 async function checkLogin() {
 	localforage.getItem("logged_in_lopolis").then((value) => {
 		if (value != true) {
@@ -51,7 +51,7 @@ async function getToken(callback, callbackparams = []) {
 		type: "POST",
 		success: (dataauth) => {
 			if(dataauth === null || dataauth.error == true) {
-				UIAlert("Authentication error. ", "getToken(): response error or null");
+				UIAlert(D("authenticationError"), "getToken(): response error or null");
 				setLoading(false);
 				localforage.setItem("logged_in_lopolis", false).then( function(){
 					checkLogin();
@@ -63,12 +63,12 @@ async function getToken(callback, callbackparams = []) {
 				callback(...argumentsToCallback); // poslje token v {token: xxx}
 				setLoading(false);
 			} else {
-				UIAlert("Authentication error. ", "getToken(): invalid response, no condition met");
+				UIAlert( D("authenticationError"), "getToken(): invalid response, no condition met");
 				setLoading(false);
 			}
 		},
 		error: () => {
-			UIAlert("LopolisAPI connection error. ", "getToken(): AJAX error");
+			UIAlert( D("lopolisAPIConnectionError"), "getToken(): AJAX error");
 			setLoading(false);
 		}
 	});
@@ -76,7 +76,7 @@ async function getToken(callback, callbackparams = []) {
 
 async function getMenus(dataauth, callback, callbackparams = []) {
 	setLoading(true);
-	let d = new Date();
+	let datee = new Date();
 	// naloži za dva meseca vnaprej (če so zadnji dnevi v mesecu)
 	let mealsgathered = {};
 	let promises_to_wait_for = [];
@@ -85,7 +85,7 @@ async function getMenus(dataauth, callback, callbackparams = []) {
 			url: API_ENDPOINT+"getmenus",
 			crossDomain: true,
 			contentType: "application/json",
-			data: JSON.stringify({"month": d.getMonth()+iteration, "year": d.getFullYear()}),
+			data: JSON.stringify({"month": datee.getMonth()+iteration, "year": datee.getFullYear()}),
 			headers: {
 				"Authorization": "Bearer "+dataauth.token
 			},
@@ -94,7 +94,7 @@ async function getMenus(dataauth, callback, callbackparams = []) {
 			type: "POST",
 			success: (meals) => {
 				if(meals === null || meals.error == true) {
-					UIAlert("Error getting menus. ", "getMenus(): response error or null");
+					UIAlert( D("errorGettingMenus"), "getMenus(): response error or null");
 					setLoading(false);
 					localforage.setItem("logged_in_lopolis", false).then( () => {
 						checkLogin();
@@ -104,12 +104,12 @@ async function getMenus(dataauth, callback, callbackparams = []) {
 					mealsgathered[iteration] = meals;
 					} else {
 					setLoading(false);
-					UIAlert("Error: unexpected response. ", "getMenus(): invalid response, no condition met");
+					UIAlert( D("errorUnexpectedResponse") , "getMenus(): invalid response, no condition met");
 				}
 			},
 			error: () => {
 				setLoading(false);
-				UIAlert("LopolisAPI server connection error. ", "getMenus(): AJAX error");
+				UIAlert( D("lopolisAPIConnectionError"), "getMenus(): AJAX error");
 			}
 		});
 	}
@@ -145,7 +145,7 @@ function displayMeals(meals) {
 		// Create header text element
 		let subject_header_text = document.createElement("span");
 		if(mealzz.readonly) {
-			unabletochoosequestionmark = "*Read only*";
+			unabletochoosequestionmark = "*" + S("readOnly") + "*";
 		}
 		subject_header_text.innerText = jsDateDayString[datum.getDay()]+", "+datum.getDate()+". "+jsDateMonthString[datum.getMonth()]+" "+datum.getFullYear()+" ("+mealzz.meal+"@"
 			+mealzz.location+") "+unabletochoosequestionmark;
@@ -177,7 +177,7 @@ function displayMeals(meals) {
 				// Text
 				meal_lefttext.innerHTML = "<i>"+dmil.text+"</i>";
 				// Number
-				meal_righttext.innerText = "selected";
+				meal_righttext.innerText = S("selected");
 			} else {
 				// Text
 				meal_lefttext.innerText = dmil.text;
@@ -231,12 +231,12 @@ async function lopolisLogin() {
 		type: "POST",
 		success: async function(data) {
 			if(data == null) {
-				M.toast({ html: "Request for Authentication failed!" });
+				UIAlert( S("requestForAuthenticationFailed"), "lopolisLogin(): date is is null");
 				setLoading(false);
 				usernameEl.value = "";
 				passwordEl.value = "";
 			} else if(data.error == true) {
-				M.toast({html:"Authentication failed"});
+				UIAlert( S("loginFailed"), "lopolisLogin(): login failed. data.error is true");
 				usernameEl.value = "";
 				passwordEl.value = "";
 				setLoading(false);
@@ -252,7 +252,7 @@ async function lopolisLogin() {
 			}
 		},
 		error: () => {
-			M.toast({html:"Authentication failed!"});
+			UIAlert( D("loginError"), "lopolisLogin(): ajax.error");
 			setLoading(false);
 		}
 	});
@@ -287,19 +287,19 @@ async function setMenus(currentmeals = 69, toBeSentChoices) { // currentmeals je
 		type: "POST",
 		success: (response) => {
 			if(response === null || response.error == true) {
-				UIAlert("Error setting meals. ", "setMenus(): response error or null");
+				UIAlert( D("errorSettingMeals"), "setMenus(): response error or null");
 				setLoading(false);
 			} else if (response.error == false) {
 				setLoading(false);
-				UIAlert("Meal set! Reload meals to be sure.");
+				UIAlert( D("mealSet"), "setMenus(): meni nastavljen");
 			} else {
 				setLoading(false);
-				UIAlert("Error: unexpected reponse. ", "setMenus(): invalid response, no condition met");
+				UIAlert( D("errorUnexpectedResponse"), "setMenus(): invalid response, no condition met");
 			}
 		},
 		error: () => {
 			setLoading(false);
-			UIAlert("LopolisAPI connection error. ", "setMenus(): AJAX error");
+			UIAlert( D("lopolisAPIConnectionError"), "setMenus(): AJAX error");
 		}
 	});
 }

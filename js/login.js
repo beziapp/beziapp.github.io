@@ -1,6 +1,4 @@
 const API_ENDPOINT = "https://gimb.tk/test.php";
-// const API_ENDPOINT = "http://localhost:5000/test.php";
-
 document.addEventListener("DOMContentLoaded", () => {
     setupEventListeners();
 })
@@ -46,7 +44,7 @@ function login() {
 
             // If ime is null, the password was incorrect
             if (data["ime"] === null) {
-                M.toast({ html: "Login failed!" });
+								UIAlert( S("loginFailed"), "login(): fetchprofil null name; bad login info." );
                 $("#password").val("");
             } else {
 
@@ -63,7 +61,7 @@ function login() {
         },
 
         error: function () {
-            M.toast({ html: "No internet connection!" });
+					UIAlert( S("noInternetConnection"), "login(): $.ajax error" );
         }
 
     })

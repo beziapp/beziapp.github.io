@@ -1,6 +1,4 @@
 const API_ENDPOINT = "https://gimb.tk/test.php";
-// const API_ENDPOINT = "http://localhost:5000/test.php";
-
 let checkbox_state = false;
 
 async function checkLogin() {
@@ -62,7 +60,7 @@ async function loadGrades(force_refresh = false) {
             success: (data) => {
                 // If data is null, the request failed
                 if (data === null) {
-                    M.toast({ html: "Request failed!" });
+										UIAlert(S("requestFailed"), "loadGrades(): data === null; request failed");
                     setLoading(false);
                 } else {
                     // Save grades & populate view
@@ -75,7 +73,7 @@ async function loadGrades(force_refresh = false) {
             },
 
             error: () => {
-                M.toast({ html: "No internet connection!" });
+								UIAlert(S("noInternetConnection"), "loadGrades(): $ajax-error");
                 setLoading(false);
             }
 
@@ -222,18 +220,18 @@ function refreshClickHandlers() {
 
         let term_element = document.getElementById("grade-term");
         if (grade_obj["rok"] !== "") {
-            term_element.innerText = "Term: " + grade_obj["rok"];
+            term_element.innerText = S("term") + ": " + grade_obj["rok"];
             term_element.style["display"] = "";
         } else {
             term_element.style["display"] = "none";
         }
 
-        document.getElementById("grade-teacher").innerText = "Teacher: " + grade_obj["profesor"];
+        document.getElementById("grade-teacher").innerText = S("teacher") + ": " + grade_obj["profesor"];
 
         let temporary_object = document.getElementById("grade-temporary");
         let temporary_object_root = document.getElementById("grade-temporary-root");
         if (grade_obj["zacasna"]) {
-            temporary_object.innerText = "(zacasna)";
+            temporary_object.innerText = "(" + S("temporary") + ")";
             temporary_object_root.style["display"] = "";
         } else {
             temporary_object_root.style["display"] = "none";
