@@ -1,6 +1,4 @@
 const API_ENDPOINT = "https://lopolis-api.gimb.tk/";
-const jsDateDayString = [S("sunday"), S("monday"), S("tuesday"), S("wednesday"), S("thursday"), S("friday"), S("saturday")];
-const jsDateMonthString = [S("january"), S("february"), S("march"), S("april"), S("may"), S("june"), S("july"), S("august"), S("october"), S("november"), S("december")];
 async function checkLogin() {
 	localforage.getItem("logged_in_lopolis").then((value) => {
 		if (value != true) {
@@ -139,7 +137,7 @@ function displayMeals(meals) {
 		if(mealzz.readonly) {
 			unabletochoosequestionmark = "*" + S("readOnly") + "*";
 		}
-		subject_header_text.innerText = jsDateDayString[datum.getDay()]+", "+datum.getDate()+". "+jsDateMonthString[datum.getMonth()]+" "+datum.getFullYear()+" ("+mealzz.meal+"@"
+		subject_header_text.innerText = dateString.day(datum.getDay())+", "+datum.getDate()+". "+dateString.month(datum.getMonth())+" "+datum.getFullYear()+" ("+mealzz.meal+"@"
 			+mealzz.location+") "+unabletochoosequestionmark;
 		// Create collection for displaying individuals meals
 		let subject_body = document.createElement("div");
@@ -328,4 +326,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 		showClearBtn: true,
 		format: "dddd, dd. mmmm yyyy"
 	});
+	refreshMeals();
 });

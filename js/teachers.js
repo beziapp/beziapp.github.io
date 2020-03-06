@@ -3,18 +3,6 @@ const API_ENDPOINT = "https://gimb.tk/test.php";
 
 var teachers = null;
 
-
-/**
-* Converts a day number to a string.
-*
-* @param {Number} dayIndex
-* @return {String} Returns day as string
-*/
-function dayOfWeekAsString(dayIndex) {
-    var daysToReturn = [S("monday"), S("tuesday"), S("wednesday"), S("thursday"), S("friday"), S("saturday"), S("sunday")];
-		return daysToReturn[dayIndex];
-}
-
 // Set loading bar visibility
 function setLoading(state) {
     if (state) {
@@ -145,7 +133,7 @@ function teacherInfo(teacher_id) {
 
     let name = teacher_object["ime"];
     let subject = teacher_object["predmeti"][0]["ime"];
-    let office_day = dayOfWeekAsString(teacher_object["govorilneure"]["dan"]);
+    let office_day = dateString.day(teacher_object["govorilneure"]["dan"]);
     let office_lesson = teacher_object["govorilneure"]["solskaura"];
 
     document.getElementById("teacher-name").innerText = name;

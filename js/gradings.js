@@ -200,6 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Calendar setup
     var calendarEl = document.getElementById("calendar");
     calendar_obj = new FullCalendar.Calendar(calendarEl, {
+				firstDay: 1,
         plugins: ["dayGrid"],
         defaultDate: getDateString(),
         navLinks: false,

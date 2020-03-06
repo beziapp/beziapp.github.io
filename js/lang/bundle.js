@@ -1,5 +1,15 @@
 // there's an DoS backdoor in BežiApp because of this (-:<
 var chosenLang;
+var dateString = {
+	day: (danv) => {
+		let dnevitedna = [S("sunday"), S("monday"), S("tuesday"), S("wednesday"), S("thursday"), S("friday"), S("saturday")];
+		return dnevitedna[danv];
+	},
+	month: (mesl) => {
+		let mesecileta = [S("january"), S("february"), S("march"), S("april"), S("may"), S("june"), S("july"), S("august"), S("september"), S("october"), S("november"), S("december")];
+		return mesecileta[mesl];
+	}
+};
 async function refreshLangDOM() {
 	let promises_to_runn = [
 		localforage.getItem("chosenLang").then( (value) => {
@@ -45,13 +55,14 @@ async function setLangConfigAndReload() {
 	window.location.reload();
 }
 window.addEventListener('DOMContentLoaded', (event) => {
-	refreshLangDOM();
 	localforage.getItem("chosenLang").then( (value) => {
 			if(value == null) {
 				setLangConfigAndReload();
+			} else {
+				chosenLang = value;
 			}
-		}
-	);
+	});
+	refreshLangDOM();
 });
 const capitalize = (s) => {
   if (typeof s !== 'string') return ''
