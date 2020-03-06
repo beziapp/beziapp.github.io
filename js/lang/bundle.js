@@ -147,6 +147,7 @@ var langstrings = {
 		meals: "meals",
 		about: "about",
 		logout: "logout",
+		settings: "settings",
 		// timetable
 		noPeriods: "no periods in selected week",
 		// gradings
@@ -257,7 +258,9 @@ var langstrings = {
 		privacyExternalSites: "our app may link to external sites that are not operated by us. Please be aware that we have no control over the content and practices of these sites, and cannot accept responsibility or liability for their respective privacy policies.",
 		privacyRefuse: "you are free to refuse our request for your personal information, with the understanding that we may be unable to provide you with some of your desired services.",
 		privacyAcceptWithUse: "your continued use of our website will be regarded as acceptance of our practices around privacy and personal information. If you have any questions about how we handle user data and personal information, feel free to contact us.",
-		privacyEffectiveAsOf: "this policy is effective as of"
+		privacyEffectiveAsOf: "this policy is effective as of",
+		// settings
+		language: "language"
 	},
 	sl: {
 		miscTranslationLanguage: "slovenščina",
@@ -305,6 +308,7 @@ var langstrings = {
 		meals: "obroki",
 		about: "o",
 		logout: "odjava",
+		settings: "nastavitve",
 		// gradings
 		requestFailed: "zahteva spodletela",
 		noInternetConnection: "ni povezave s spletom",
@@ -413,6 +417,7 @@ var langstrings = {
 		privacyExternalSites: "our app may link to external sites that are not operated by us. Please be aware that we have no control over the content and practices of these sites, and cannot accept responsibility or liability for their respective privacy policies.",
 		privacyRefuse: "you are free to refuse our request for your personal information, with the understanding that we may be unable to provide you with some of your desired services.",
 		privacyAcceptWithUse: "your continued use of our website will be regarded as acceptance of our practices around privacy and personal information. If you have any questions about how we handle user data and personal information, feel free to contact us.",
-		privacyEffectiveAsOf: "this policy is effective as of"
+		privacyEffectiveAsOf: "this policy is effective as of",
+		language: "jezik"
 	},
 }
