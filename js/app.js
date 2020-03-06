@@ -15,7 +15,7 @@ if (navigator.serviceWorker) {
 if (location.protocol != 'https:') {
  location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
 }
-function UIAlert(usermsg, devmsg) {
+async function UIAlert(usermsg, devmsg) {
   if(true) { // če bo kakšen dev switch?
     M.toast( { html: usermsg } );
     console.log("[BežiApp UIAlert] "+usermsg+" "+devmsg);

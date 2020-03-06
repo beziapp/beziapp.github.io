@@ -136,6 +136,8 @@ var langstrings = {
 		meals: "meals",
 		about: "about",
 		logout: "logout",
+		// timetable
+		noPeriods: "no periods in selected week",
 		// gradings
 		requestFailed: "request failed",
 		noInternetConnection: "no internet connection",
@@ -280,6 +282,8 @@ var langstrings = {
 		and: "in",
 		thePrivacyPolicy: "politika zasebnosti (v angleščini)",
 		loginFailed: "prijava je spodletela",
+		// timetable
+		noPeriods: "ni ur v izbranem tednu",
 		// index
 		timetable: "urnik",
 		gradings: "ocenjevanja",

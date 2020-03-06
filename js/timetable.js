@@ -128,7 +128,7 @@ async function loadTimetable(date_object, force_refresh = false) {
             success: (data) => {
                 // Check if operation was successful
                 if (data === null) {
-                    M.toast({ html: "No periods in selected week." });
+										UIAlert( D("noPeriods") );
                     setLoading(false);
                 } else {
 
@@ -142,13 +142,11 @@ async function loadTimetable(date_object, force_refresh = false) {
                         displayTimetable(data, date_monday);
                         setLoading(false);
                     });
-
-                    
                 }
             },
 
             error: () => {
-                M.toast({ html: "No internet connection!" });
+								UIAlert( D( "noInternetConnection" ) );
                 setLoading(false);
             }
 

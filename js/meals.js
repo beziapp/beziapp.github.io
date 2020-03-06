@@ -22,14 +22,6 @@ function setLoading(state) {
 		$("#loading-bar").addClass("hidden");
 	}
 }
-function UIAlert(usermsg, devmsg) {
-	if(true) { // če bo kakšen dev switch?
-		M.toast( { html: usermsg } );
-		console.log("[BežiApp UIAlert] "+usermsg+" "+devmsg);
-	} else {
-		M.toast( { html: usermsg+" "+devmsg } );
-	}
-}
 async function getToken(callback, callbackparams = []) {
 	setLoading(true);
 	let promises_to_run = [

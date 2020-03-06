@@ -11,7 +11,8 @@ var teachers = null;
 * @return {String} Returns day as string
 */
 function dayOfWeekAsString(dayIndex) {
-    return ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][dayIndex];
+    var daysToReturn = [S("monday"), S("tuesday"), S("wednesday"), S("thursday"), S("friday"), S("saturday"), S("sunday")];
+		return daysToReturn[dayIndex];
 }
 
 // Set loading bar visibility
@@ -61,7 +62,7 @@ async function loadTeachers(force_refresh = false) {
                 success: (data) => {
                     // If data is null, the request failed
                     if (data === null) {
-                        M.toast({ html: "Request failed!" });
+												UIAlert(D("requestFailed"));
                         setLoading(false);
                     } else {
                         // Save teachers & populate table
@@ -74,7 +75,7 @@ async function loadTeachers(force_refresh = false) {
                 },
 
                 error: () => {
-                    M.toast({ html: "No internet connection!" });
+										UIAlert(D("noInternetConnection"));
                     setLoading(false);
                 }
 
@@ -148,9 +149,9 @@ function teacherInfo(teacher_id) {
     let office_lesson = teacher_object["govorilneure"]["solskaura"];
 
     document.getElementById("teacher-name").innerText = name;
-    document.getElementById("teacher-subject").innerText = "Subject: " + subject;
+    document.getElementById("teacher-subject").innerText = S("schoolSubject") + ": " + subject;
 
-    document.getElementById("teacher-office").innerText = office_day + ", lesson " + office_lesson;
+    document.getElementById("teacher-office").innerText = office_day + ", " + S("lesson") + " " + office_lesson;
 
     const modal = document.querySelectorAll('.side-modal')[0];
     M.Sidenav.getInstance(modal).open();
