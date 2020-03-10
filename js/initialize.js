@@ -8,38 +8,16 @@ function getUrlParameter(sParam) {
     }
 }
 
-function setupStorage() {
-    promises_to_run = [
-        localforage.setItem("logged_in", false),
-        localforage.setItem("username", ""),
-        localforage.setItem("password", ""),
-        localforage.setItem("profile", {}),
-        localforage.setItem("timetable", []),
-        localforage.setItem("teachers", []),
-        localforage.setItem("gradings", []),
-        localforage.setItem("grades", []),
-        localforage.setItem("absences", {}),
-        localforage.setItem("messages", {}),
-        localforage.setItem("directory", {}),
-        localforage.setItem("meals", {}),
-        // localforage.setItem("chosenCapitalize", true), // poor unused feature
-        localforage.setItem("chosenLang", "en")
-    ];
-
-    Promise.all(promises_to_run)
-        .then(
-            window.location.replace("/login.html")
-        );
-}
 
 localforage.getItem("logged_in")
     .then(
         function (value) {
             // This code runs once the value has been loaded
             // from the offline store.
-            if (value === null) {
+            if (value == null) {
                 // Setup the storage if it doesn't exist
-                setupStorage();
+                setupStorage(true);
+                window.location.replace("/login.html");
             } else if (value === false) {
                 // If storage exists, but user isn't logged in, redirect to login
                 window.location.replace("/login.html");

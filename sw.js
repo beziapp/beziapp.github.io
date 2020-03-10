@@ -1,15 +1,8 @@
 // Change version to cause cache refresh
-const static_cache_name = "site-static-v1.0.12";
-
-// Tukej ne met notr directory namov, samo imena fajlov,
-// ker v primeru index.html to prpele do double-cachinga, oz. do velik 404
-
+const static_cache_name = "site-static-v1.0.12.28";
 // Got them with find . -not -path '*/\.*' | sed "s/.*/\"&\",/" | grep -v sw.js
 // sw.js NE SME BITI CACHAN, ker vsebuje verzijo!
 const assets = [
-
-
-
     "/css/materialize.min.css",
     "/css/fontawesome.min.css",
     "/css/materialicons.css",
@@ -48,6 +41,7 @@ const assets = [
     "/js/meals.js",
     "/js/settings.js",
 		"/js/lang/bundle.js",
+		"/js/setup-storage.js",
 
     "/js/lib/materialize.min.js",
     "/js/lib/jquery.min.js",
@@ -86,11 +80,12 @@ const assets = [
 ];
 
 importScripts("/js/lib/localforage.min.js");
-
+importScripts("/js/setup-storage.js");
 self.addEventListener("install", (evt) => {
     // Add localforage.clear() if storage purge is required
     evt.waitUntil(
-        localforage.clear()
+        // localforage.clear()
+				setupStorage()
     );
 
     evt.waitUntil(

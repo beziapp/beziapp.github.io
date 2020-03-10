@@ -8,7 +8,7 @@ function checkLogin() {
     localforage.getItem("logged_in").then((value) => {
         // This code runs once the value has been loaded
         // from the offline store.
-        if (value !== true) {
+        if (value != true) {
             window.location.replace("/index.html");
         }
     }).catch((err) => {
