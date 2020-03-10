@@ -1,5 +1,5 @@
 // Change version to cause cache refresh
-const static_cache_name = "site-static-v1.0.11.7";
+const static_cache_name = "site-static-v1.0.12";
 
 // Tukej ne met notr directory namov, samo imena fajlov,
 // ker v primeru index.html to prpele do double-cachinga, oz. do velik 404
@@ -46,6 +46,7 @@ const assets = [
     "/js/login.js",
     "/js/app.js",
     "/js/meals.js",
+    "/js/settings.js",
 		"/js/lang/bundle.js",
 
     "/js/lib/materialize.min.js",
@@ -75,6 +76,7 @@ const assets = [
     "/pages/privacypolicy.html",
     "/pages/tos.html",
     "/pages/meals.html",
+    "/pages/settings.html",
 
     "/manifest.json",
     "/index.html",

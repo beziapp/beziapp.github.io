@@ -260,7 +260,8 @@ var langstrings = {
 		privacyAcceptWithUse: "your continued use of our website will be regarded as acceptance of our practices around privacy and personal information. If you have any questions about how we handle user data and personal information, feel free to contact us.",
 		privacyEffectiveAsOf: "this policy is effective as of",
 		// settings
-		language: "language"
+		language: "language",
+		languageSet: "language set, open another page for the changes to take effect"
 	},
 	sl: {
 		miscTranslationLanguage: "slovenščina",
@@ -418,6 +419,7 @@ var langstrings = {
 		privacyRefuse: "you are free to refuse our request for your personal information, with the understanding that we may be unable to provide you with some of your desired services.",
 		privacyAcceptWithUse: "your continued use of our website will be regarded as acceptance of our practices around privacy and personal information. If you have any questions about how we handle user data and personal information, feel free to contact us.",
 		privacyEffectiveAsOf: "this policy is effective as of",
-		language: "jezik"
-	},
+		language: "jezik",
+		languageSet: "jezik nastavljen, odprite neko drugo stran da se pokažejo spremembe"
+	}
 }
