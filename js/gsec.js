@@ -1,5 +1,10 @@
 // tab = 2 || any spaces; use tabs
 // not tested yet
+function stripHtml(html) { // xss! itaK zaupamo zgimsisext responsem
+   var tmp = document.createElement("DIV");
+   tmp.innerHTML = html;
+   return tmp.textContent || tmp.innerText || "";
+}
 const GSE_URL = "https://zgimsis.gimb.tk/gse/";
 class gsec {
 	constructor() {
@@ -119,7 +124,7 @@ class gsec {
 			this.postback(GSE_URL+"Page_Gim/Ucenec/DnevnikUcenec.aspx", dataToSend).then( (response) => {
 				var parsed = document.createElement("html");
 				parsed.innerHTML = response.data;
-				for(urnikElement of $('[id^="ctl00_ContentPlaceHolder1_wkgDnevnik_btnCell_"]')) {
+				for(const urnikElement of $('[id^="ctl00_ContentPlaceHolder1_wkgDnevnik_btnCell_"]')) {
 					var subFields = urnikElement.id.split("_");
 					var period = subFields[4];
 					var day = subFields[5];
@@ -142,7 +147,7 @@ class gsec {
 				var parsed = document.createElement("html");
 				parsed.innerHTML = response.data;
 				var rowElements = parsed.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-				for (row of rowElements) {
+				for (const row of rowElements) {
 					var subFields = row.getElementsByTagName("td");
 					var date = subFields[0].innerHTML.trim().split(".");
 					var dateObj = new Date(date[2]+"-"+date[1]+"-"+date[0]);
@@ -160,5 +165,23 @@ class gsec {
 			});
 		});
 	}
-	// todo: https://github.com/sijanec/gimsisextclient/blob/master/main.php
+	fetchTeachers() {
+		return new Promise((resolve, reject) => {
+			var Teachers = {};
+			this.postback(GSE_URL+"Page_Gim/Ucenec/UciteljskiZbor.aspx").then((response)=>{
+				var parsed = document.createElement("html");
+				parsed.innerHTML = response.data;
+				var rowElements = parsed.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+				for(const row of rowElements) {
+					var subFields = row.getElementsByTagName("td");
+					var name = stripHtml(subFields[0].innerHTML); // razrednik je namreč bold tekst!
+					var subjectStrings = subFields[2].innerHTML.split("<br />");
+					for(const subjectString of subjectStrings) {
+						// todo: https://github.com/sijanec/gimsisextclient/blob/master/main.php#L270
+						var subjectName = 
+					}
+				}
+			})
+		});
+	}
 }
