@@ -73,7 +73,7 @@ class gsec {
 						if( simpleResponse = "Napaka pri prijavi.") {
 							reject(new Error(false));
 						} else {
-							resolve(true);
+							resolve(new Error(false)); // tudi false, ker da pokaže form in ne redirecta je slabo
 						}
 					} catch (e) {
 							resolve(null);
@@ -127,7 +127,13 @@ class gsec {
 					// note about the nulls, "null"s and ""s: this is actually how zgimsisext2016 javascripts sends it.
 				processData: false,
 				success: (data, textStatus, xhr) => {
-					resolve({"data": data.d, "textStatus": textStatus, "code": xhr.status});
+					var teachersDirectory = data.d.split(";"); // data.d je "12434=Ime Primek (učitelj);75353=Ime Drugega Priimek (učitelj)";
+					teachersDirectory.pop(); // pop, ker se string konča z ;
+					var formatted = {};
+					teachersDirectory.forEach((v) => {
+							formatted[v.split("=")[1].split(" (")[0]] = v.split("=")[0];
+					});
+					resolve(formatted);
 				},
 				error: () => {
 					reject(new Error(false));
@@ -139,18 +145,18 @@ class gsec {
 		if(datum == null) {
 			var dataToSend = {};
 		} else {
-			var dataToSend = {"ctl00$ContentPlaceHolder1$wkgDnevnik_edtGridSelectDate": inputDate.getDate()+"."+Number(inputDate.getMonth()+1)+"."+inputDate.getFullYear()};
+			var dataToSend = {"ctl00$ContentPlaceHolder1$wkgDnevnik_edtGridSelectDate": datum.getDate()+"."+Number(datum.getMonth()+1)+"."+datum.getFullYear()};
 		}
 		return new Promise((resolve, reject) => {
-			var urnik = {};
-			this.postback(GSE_URL+"Page_Gim/Ucenec/DnevnikUcenec.aspx", dataToSend).then( (response) => {
+			var urnik = { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6:{} } ;
+			this.postback(GSE_URL+"Page_Gim/Ucenec/DnevnikUcenec.aspx", dataToSend, null, true).then( (response) => {
 				var parsed = document.createElement("html");
 				parsed.innerHTML = response.data;
-				for(const urnikElement of $('[id^="ctl00_ContentPlaceHolder1_wkgDnevnik_btnCell_"]')) {
+				for(const urnikElement of parsed.querySelectorAll('*[id^="ctl00_ContentPlaceHolder1_wkgDnevnik_btnCell_"]')) {
 					var subFields = urnikElement.id.split("_");
 					var period = subFields[4];
 					var day = subFields[5];
-					var desc = $(urnikElement).attr("title").split("/\r?\n/");
+					var desc = $(urnikElement).attr("title").split("\n");
 					var subject = desc[1].split('(').pop().split(')')[0]; // https://stackoverflow.com/a/27522597/11293716
 					var abkurzung = desc[0].split(" (")[0];
 					var razred = desc[2];
@@ -165,7 +171,7 @@ class gsec {
 	fetchGradings() {
 		return new Promise((resolve, reject) => {
 			var gradings = [];
-			this.postback(GSE_URL+"Page_Gim/Ucenec/IzpitiUcenec.aspx").then( (response) => {
+			this.postback(GSE_URL+"Page_Gim/Ucenec/IzpitiUcenec.aspx", {}, null, true).then( (response) => {
 				var parsed = document.createElement("html");
 				parsed.innerHTML = response.data;
 				var rowElements = parsed.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
@@ -173,7 +179,7 @@ class gsec {
 					var subFields = row.getElementsByTagName("td");
 					var date = subFields[0].innerHTML.trim().split(".");
 					var dateObj = new Date(date[2]+"-"+date[1]+"-"+date[0]);
-					var rowSpan = subFields[1].getElementsByTagName("span");
+					var rowSpan = subFields[1].getElementsByTagName("span")[0];
 					var abkurzung = "";
 					if(rowSpan) {
 						abkurzung = rowSpan.innerHTML.trim();
@@ -190,7 +196,7 @@ class gsec {
 	fetchTeachers() {
 		return new Promise((resolve, reject) => {
 			var Teachers = {};
-			this.postback(GSE_URL+"Page_Gim/Ucenec/UciteljskiZbor.aspx").then((response)=>{
+			this.postback(GSE_URL+"Page_Gim/Ucenec/UciteljskiZbor.aspx", {}, null, true).then((response)=>{
 				var parsed = document.createElement("html");
 				parsed.innerHTML = response.data;
 				var rowElements = parsed.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
