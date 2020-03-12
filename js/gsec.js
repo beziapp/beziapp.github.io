@@ -9,9 +9,12 @@ const GSE_URL = "https://zgimsis.gimb.tk/gse/";
 class gsec {
 	constructor() {
 	}
-	postback(getUrl, params = {}, formId = null) {
+	postback(getUrl, params = {}, formId = null, useDiffAction = null) {
 		return new Promise( (resolve, reject) => {
 			$.ajax({
+				xhrFields: {
+					withCredentials: true
+				},
 				crossDomain: true,
 				url: getUrl,
 				cache: false,
@@ -31,8 +34,17 @@ class gsec {
 							params[input.name] = input.value; // so we don't overwrite existing values
 						}
 					}
-					var action = new URL($(form).attr("action"), GSE_URL); // absolute == relative + base
+					if(useDiffAction == null || useDiffAction == false) {
+						var action = new URL($(form).attr("action"), GSE_URL); // absolute == relative + base
+					} else if(useDiffAction == true || useDiffAction == 1) {
+						var action = getUrl;
+					} else {
+						var action = useDiffAction;
+					}
 					$.ajax({
+						xhrFields: {
+							withCredentials: true
+						},
 						crossDomain: true,
 						url: action,
 						cache: false,
@@ -56,11 +68,15 @@ class gsec {
 				if(response.code == 302) {
 					resolve(true);
 				} else {
-					var simpleResponse = parsed.getElementById("lblMsg");
-					if( simpleResponse = "Napaka pri prijavi.") {
-						reject(new Error(false));
-					} else {
-						resolve(true);
+					try {
+						var simpleResponse = parsed.getElementById("lblMsg");
+						if( simpleResponse = "Napaka pri prijavi.") {
+							reject(new Error(false));
+						} else {
+							resolve(true);
+						}
+					} catch (e) {
+							resolve(null);
 					}
 				}
 			});
@@ -69,8 +85,11 @@ class gsec {
 	fetchSessionData() {
 		return new Promise((resolve, reject) => {
 			$.ajax({
+				xhrFields: {
+					withCredentials: true
+				},
 				crossDomain: true,
-				url: GSE_URL+"WS_Gim/wsGimSisUtils.asmx",
+				url: GSE_URL+"WS_Gim/wsGimSisUtils.asmx/GetSessionData",
 				cache: false,
 				type: "POST",
 				dataType: "json",
@@ -84,7 +103,7 @@ class gsec {
 					reject(new Error(false));
 				}
 			});
-		}
+		});
 	}
 	fetchTeachersDirectory() {
 		return new Promise((resolve, reject) => {
@@ -95,6 +114,9 @@ class gsec {
 				var letnica = dejt.getFullYear();
 			} // skratka uporabi se prvi sklop številk v šolskem letu TOLE(/xxxx)
 			$.ajax({
+				xhrFields: {
+					withCredentials: true
+				},
 				crossDomain: true,
 				url: GSE_URL+"Page_Gim/Uporabnik/modSporociloPrejemniki.aspx/NajdiOsebePrejemniki",
 				cache: false,
