@@ -178,7 +178,6 @@ class gsec {
 					var subjectStrings = subFields[2].innerHTML.split("<br />");
 					for(const subjectString of subjectStrings) {
 						// todo: https://github.com/sijanec/gimsisextclient/blob/master/main.php#L270
-						var subjectName = 
 					}
 				}
 			})

@@ -29,7 +29,7 @@ async function setupStorage(force = false) {
   	  localforage.setItem("chosenLang", "en")
 	  ];
 		await localforage.clear();
-		await Promises.all(promises_first_install);
+		await Promise.all(promises_first_install);
 		console.log("[setupStorage] user not logged in: set up whole database");
 	}
 }
