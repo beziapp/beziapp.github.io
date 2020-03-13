@@ -1,5 +1,5 @@
 // tab = 2 || any spaces; use tabs
-// not tested yet -- NOTE: any javascript in GSE_URL that will get parsed will be executed!
+// not tested yet -- NOTE: document.createElement is xssy, use DOMParser!
 function stripHtml(html) {
    var tmp = document.createElement("DIV");
    tmp.innerHTML = html;
@@ -64,7 +64,7 @@ class gsec {
 		var dataToSend = {"edtGSEUserId": usernameToLogin, "edtGSEUserPassword": passwordToLogin, "btnLogin": "Prijava"};
 			this.postback(GSE_URL+"Logon.aspx", dataToSend, null, true).then( (response) => {
 				let parser = new DOMParser();
-				let parsed = parser.parseFromString(getData, "text/html");
+				let parsed = parser.parseFromString(response.data, "text/html");
 				if(response.code == 302) {
 					resolve(true);
 				} else {
@@ -151,7 +151,7 @@ class gsec {
 			var urnik = { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6:{} } ;
 			this.postback(GSE_URL+"Page_Gim/Ucenec/DnevnikUcenec.aspx", dataToSend, null, true).then( (response) => {
 				let parser = new DOMParser();
-				let parsed = parser.parseFromString(getData, "text/html");
+				let parsed = parser.parseFromString(response.data, "text/html");
 				for(const urnikElement of parsed.querySelectorAll('*[id^="ctl00_ContentPlaceHolder1_wkgDnevnik_btnCell_"]')) {
 					var subFields = urnikElement.id.split("_");
 					var period = subFields[4];
@@ -173,7 +173,7 @@ class gsec {
 			var gradings = [];
 			this.postback(GSE_URL+"Page_Gim/Ucenec/IzpitiUcenec.aspx", {}, null, true).then( (response) => {
 				let parser = new DOMParser();
-				let parsed = parser.parseFromString(getData, "text/html");
+				let parsed = parser.parseFromString(response.data, "text/html");
 				var rowElements = parsed.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 				for (const row of rowElements) {
 					var subFields = row.getElementsByTagName("td");
@@ -198,7 +198,7 @@ class gsec {
 			var Teachers = {};
 			this.postback(GSE_URL+"Page_Gim/Ucenec/UciteljskiZbor.aspx", {}, null, true).then((response)=>{
 				let parser = new DOMParser();
-				let parsed = parser.parseFromString(getData, "text/html");
+				let parsed = parser.parseFromString(response.data, "text/html");
 				var rowElements = parsed.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 				for(const row of rowElements) {
 					var subFields = row.getElementsByTagName("td");
