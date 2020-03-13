@@ -1,11 +1,23 @@
 // tab = 2 || any spaces; use tabs
 // not tested yet -- NOTE: document.createElement is xssy, use DOMParser!
+var gseAbsenceTypes = ["notProcessed", "authorizedAbsence", "unauthorizedAbsence", "doesNotCount"];
+function get_string_between(string, start, end) {
+	return string.split(start).pop().split(end)[0];
+}
 function stripHtml(html) {
    var tmp = document.createElement("DIV");
    tmp.innerHTML = html;
    return tmp.textContent || tmp.innerText || "";
 }
+function slDayToInt(inputString) { // wtf
+	let fourChars = inputString.substring(1, 5);
+	let fourCharDays = ["oned", "orek", "reda", "etrt", "etek", "obot", "edel"];
+	return fourCharDays.indexOf(fourChars);
+}
 const GSE_URL = "https://zgimsis.gimb.tk/gse/";
+const GSEC_ERR_NET = "GSEC NETWORK ERROR (ajax error)";
+const GSEC_ERR_NET_POSTBACK_GET = "GSEC NETWORK ERROR (ajax error) in postback GET"
+const GSEC_ERR_NET_POSTBACK_POST = "GSEC NETWORK ERROR (ajax error) in postback POST"
 class gsec {
 	constructor() {
 	}
@@ -53,8 +65,14 @@ class gsec {
 						dataType: "text",
 						success: (postData, textStatus, xhr) => {
 							resolve({data: postData, textStatus: textStatus, code: xhr.status});
+						},
+						error: () => {
+							reject(new Error(GSEC_ERR_NET_POSTBACK_POST));
 						}
 					});
+				},
+				error: () => {
+					reject(new Error(GSEC_ERR_NET_POSTBACK_GET));
 				}
 			});
 		});
@@ -68,15 +86,13 @@ class gsec {
 				if(response.code == 302) {
 					resolve(true);
 				} else {
-					try {
-						var simpleResponse = parsed.getElementById("lblMsg");
-						if( simpleResponse = "Napaka pri prijavi.") {
-							reject(new Error(false));
-						} else {
-							resolve(new Error(false)); // tudi false, ker da pokaže form in ne redirecta je slabo
-						}
-					} catch (e) {
-							resolve(null);
+					if(!!(parsed.getElementById("lblMsg"))) { // če obstaja lblMsg (napaka pri prijavi)
+						reject(new Error(false));
+					}
+					if(!(parsed.getElementById("ctl00_lblLoginName"))) { // če ni ctl00_lblLoginName nismo na Default.aspx
+						reject(new Error(false));
+					} else {
+						resolve(parsed.getElementById("ctl00_lblLoginName").innerHTML); // vrne ime dijaka, to je lahko uporabno
 					}
 				}
 			});
@@ -97,7 +113,15 @@ class gsec {
 				data: "{}",
 				processData: false,
 				success: (data, textStatus, xhr) => {
-					resolve({"data": data.d, "textStatus": textStatus, "code": xhr.status});
+					var podatki = {};
+					podatki[0] = data.d.split(", ")[0];
+					podatki[1] = data.d.split(", ")[1];
+					podatki["username"] = data.d.split(", ")[1];
+					podatki[2] = data.d.split(", ")[2];
+					podatki[3] = data.d.split(", ")[3];
+					podatki["sessionCookie"] = data.d.split(", ")[3];
+					podatki[4] = data.d.split(", ")[4];
+					resolve({"data": podatki, "textStatus": textStatus, "code": xhr.status});
 				},
 				error: () => {
 					reject(new Error(false));
@@ -203,12 +227,100 @@ class gsec {
 				for(const row of rowElements) {
 					var subFields = row.getElementsByTagName("td");
 					var name = stripHtml(subFields[0].innerHTML); // razrednik je namreč bold tekst!
-					var subjectStrings = subFields[2].innerHTML.split("<br />");
+					var subjectStrings = subFields[2].innerHTML.split("<br>");
+					var subjects = {};
 					for(const subjectString of subjectStrings) {
-						// todo: https://github.com/sijanec/gimsisextclient/blob/master/main.php#L270
+						var abkurzung = "";
+						try {
+							abkurzung = stripHtml(subjectString).split('(').pop().split(')')[0];
+						} catch (err) {}
+						var subjectName = stripHtml(subjectString).split(" (")[0];
+						subjects[abkurzung] = subjectName;
 					}
+					var TP = {};
+					TP.day = slDayToInt(subFields[3].innerHTML.split(", ")[0]);
+					TP.period = Number( subFields[3].innerHTML.split(", ").pop().split(". ura")[0] );
+					TP.from = subFields[3].innerHTML.split("(").pop().split(")")[0].split(" - ")[0];
+					TP.till = subFields[3].innerHTML.split("(").pop().split(")")[0].split(" - ")[1];
+					if(TP.day < 0) { // indexOf vrne -1, če v arrayu ne najde dneva (&nbsp;)
+						TP = false;
+					}
+					Teachers[name] = { "subjects" : subjects , "tpMeetings" : TP };
 				}
-			})
+				resolve(Teachers);
+			});
+		});
+	}
+	sendMessage(recipient, subject = " ", body = " ") {
+		return new Promise((resolve, reject) => {
+			var dataToSend = {
+				"ctl00$ModalMasterBody$edtPrejemniki": ""			,		"ctl00$ModalMasterBody$edtZadeva": subject									,
+				"ctl00$ModalMasterBody$edtBesediloExt": body	,		"__EVENTTARGET": "ctl00$ModalMasterBody$btnDogodekShrani"		,
+				"__EVENTARGUMENT": ""													,		"ctl00$ModalMasterBody$hfPrejemniki": recipient
+			};
+			this.postback(GSE_URL+"Page_Gim/Uporabnik/modSporocilo.aspx?params=", dataToSend, null, true).then((response)=>{
+				resolve(null);
+			});
+		});
+	}
+	deleteMessage(id) {
+		return new Promise((resolve, reject) => {
+      $.ajax({
+        xhrFields: {
+          withCredentials: true
+        },
+        crossDomain: true,
+        url: GSE_URL+"Page_Gim/Uporabnik/Sporocila.aspx/DeleteMessage",
+        cache: false,
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify( { "aIdSporocilo": id.split("|")[0], "aIdZapis": id.split("|")[1] } ),
+        processData: false,
+        success: (data, textStatus, xhr) => {
+					if(data.d == true) {
+						resolve(true);
+					} else {
+						reject(new Error(false));
+					}
+        },
+        error: () => {
+          reject(new Error(GSEC_ERR_NET));
+        }
+      });
+		});
+	}
+	fetchAbsences(fromDate = null, tillDate = null) {
+		return new Promise((resolve, reject)=>{
+			if(!(fromDate instanceof Date) || !(tillDate instanceof Date)) {
+				tillDate = new Date(Date.UTC(9999, 11, 30)); // overkill?
+				fromDate = new Date(Date.UTC(1, 1, 1)); // i don't thunk so
+			}
+			var dataToBeSent = {
+				"ctl00$ContentPlaceHolder1$edtDatZacetka": fromDate.getDay()+"."+fromDate.getMonth()+"."+fromDate.getFullYear(),
+				"ctl00$ContentPlaceHolder1$edtDatKonca": tillDate.getDay()+"."+tillDate.getMonth()+"."+tillDate.getFullYear(),
+			};
+			this.postback(GSE_URL+"Page_Gim/Ucenec/IzostankiUcenec.aspx", dataToBeSent, null, true).then((response)=>{
+				let parser = new DOMParser();
+				let parsed = parser.parseFromString(response.data, "text/html");
+				var rowElements = parsed.getElementByIdName("ctl00_ContentPlaceHolder1_gvwIzostankiGroup").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+				var absences = {};
+			 	for(const izostanek of rowElements) {
+					var subFields = izostanek.getElementsByTagName("td");
+					var date = subFields[0].innerHTML.trim().split(".");
+					var dateObj = new Date(date[2]+"-"+date[1]+"-"+date[0]);
+					var subjects = {};
+					for(const subject of subFields[2].innerHTML.split(", ")) {
+						var subjectName = subject.split(" (")[0];
+						var status = Number(subject.split('(<span class="opr').pop().split('">')[0]);
+						// statusi so: 0: ni obdelano, 1: opravičeno, 2: neopravičeno, 3: ne šteje, uporabi S(gseAbsenceTypes[num]) za i18n pre3vod
+						var period = Number(subject.split('">').pop().split('</span>')[0]);
+						subjects[period] = {status: status, subject: subject};
+					}
+					absences[date] = subjects;
+				}
+				resolve(absences);
+			});
 		});
 	}
 }
