@@ -1,6 +1,6 @@
 // tab = 2 || any spaces; use tabs
-// not tested yet
-function stripHtml(html) { // xss! itaK zaupamo zgimsisext responsem
+// not tested yet -- NOTE: any javascript in GSE_URL that will get parsed will be executed!
+function stripHtml(html) {
    var tmp = document.createElement("DIV");
    tmp.innerHTML = html;
    return tmp.textContent || tmp.innerText || "";
@@ -21,8 +21,8 @@ class gsec {
 				type: "GET",
 				dataType: "html",
 				success: (getData) => {
-					var parsed = document.createElement("template");
-					parsed.innerHTML = getData;
+					let parser = new DOMParser();
+					let parsed = parser.parseFromString(getData, "text/html");
 					if(formId == null) {
 						var form = parsed.getElementsByTagName("form")[0];
 					} else {
@@ -62,9 +62,9 @@ class gsec {
 	login(usernameToLogin, passwordToLogin) {
 		return new Promise((resolve, reject) => {
 		var dataToSend = {"edtGSEUserId": usernameToLogin, "edtGSEUserPassword": passwordToLogin, "btnLogin": "Prijava"};
-			this.postback(GSE_URL+"Logon.aspx", dataToSend).then( (response) => {
-				var parsed = document.createElement("template");
-				parsed.innerHTML = response.data;
+			this.postback(GSE_URL+"Logon.aspx", dataToSend, null, true).then( (response) => {
+				let parser = new DOMParser();
+				let parsed = parser.parseFromString(getData, "text/html");
 				if(response.code == 302) {
 					resolve(true);
 				} else {
@@ -150,8 +150,8 @@ class gsec {
 		return new Promise((resolve, reject) => {
 			var urnik = { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6:{} } ;
 			this.postback(GSE_URL+"Page_Gim/Ucenec/DnevnikUcenec.aspx", dataToSend, null, true).then( (response) => {
-				var parsed = document.createElement("template");
-				parsed.innerHTML = response.data;
+				let parser = new DOMParser();
+				let parsed = parser.parseFromString(getData, "text/html");
 				for(const urnikElement of parsed.querySelectorAll('*[id^="ctl00_ContentPlaceHolder1_wkgDnevnik_btnCell_"]')) {
 					var subFields = urnikElement.id.split("_");
 					var period = subFields[4];
@@ -172,8 +172,8 @@ class gsec {
 		return new Promise((resolve, reject) => {
 			var gradings = [];
 			this.postback(GSE_URL+"Page_Gim/Ucenec/IzpitiUcenec.aspx", {}, null, true).then( (response) => {
-				var parsed = document.createElement("template");
-				parsed.innerHTML = response.data;
+				let parser = new DOMParser();
+				let parsed = parser.parseFromString(getData, "text/html");
 				var rowElements = parsed.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 				for (const row of rowElements) {
 					var subFields = row.getElementsByTagName("td");
@@ -197,8 +197,8 @@ class gsec {
 		return new Promise((resolve, reject) => {
 			var Teachers = {};
 			this.postback(GSE_URL+"Page_Gim/Ucenec/UciteljskiZbor.aspx", {}, null, true).then((response)=>{
-				var parsed = document.createElement("template");
-				parsed.innerHTML = response.data;
+				let parser = new DOMParser();
+				let parsed = parser.parseFromString(getData, "text/html");
 				var rowElements = parsed.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 				for(const row of rowElements) {
 					var subFields = row.getElementsByTagName("td");
