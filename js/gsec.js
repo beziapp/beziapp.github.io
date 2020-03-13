@@ -21,7 +21,7 @@ class gsec {
 				type: "GET",
 				dataType: "html",
 				success: (getData) => {
-					var parsed = document.createElement("html");
+					var parsed = document.createElement("template");
 					parsed.innerHTML = getData;
 					if(formId == null) {
 						var form = parsed.getElementsByTagName("form")[0];
@@ -63,7 +63,7 @@ class gsec {
 		return new Promise((resolve, reject) => {
 		var dataToSend = {"edtGSEUserId": usernameToLogin, "edtGSEUserPassword": passwordToLogin, "btnLogin": "Prijava"};
 			this.postback(GSE_URL+"Logon.aspx", dataToSend).then( (response) => {
-				var parsed = document.createElement("html");
+				var parsed = document.createElement("template");
 				parsed.innerHTML = response.data;
 				if(response.code == 302) {
 					resolve(true);
@@ -150,7 +150,7 @@ class gsec {
 		return new Promise((resolve, reject) => {
 			var urnik = { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6:{} } ;
 			this.postback(GSE_URL+"Page_Gim/Ucenec/DnevnikUcenec.aspx", dataToSend, null, true).then( (response) => {
-				var parsed = document.createElement("html");
+				var parsed = document.createElement("template");
 				parsed.innerHTML = response.data;
 				for(const urnikElement of parsed.querySelectorAll('*[id^="ctl00_ContentPlaceHolder1_wkgDnevnik_btnCell_"]')) {
 					var subFields = urnikElement.id.split("_");
@@ -172,7 +172,7 @@ class gsec {
 		return new Promise((resolve, reject) => {
 			var gradings = [];
 			this.postback(GSE_URL+"Page_Gim/Ucenec/IzpitiUcenec.aspx", {}, null, true).then( (response) => {
-				var parsed = document.createElement("html");
+				var parsed = document.createElement("template");
 				parsed.innerHTML = response.data;
 				var rowElements = parsed.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 				for (const row of rowElements) {
@@ -197,7 +197,7 @@ class gsec {
 		return new Promise((resolve, reject) => {
 			var Teachers = {};
 			this.postback(GSE_URL+"Page_Gim/Ucenec/UciteljskiZbor.aspx", {}, null, true).then((response)=>{
-				var parsed = document.createElement("html");
+				var parsed = document.createElement("template");
 				parsed.innerHTML = response.data;
 				var rowElements = parsed.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 				for(const row of rowElements) {
