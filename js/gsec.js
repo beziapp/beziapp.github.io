@@ -18,6 +18,12 @@ const GSE_URL = "https://zgimsis.gimb.tk/gse/";
 const GSEC_ERR_NET = "GSEC NETWORK ERROR (ajax error)";
 const GSEC_ERR_NET_POSTBACK_GET = "GSEC NETWORK ERROR (ajax error) in postback GET"
 const GSEC_ERR_NET_POSTBACK_POST = "GSEC NETWORK ERROR (ajax error) in postback POST"
+const GSEC_MSGTYPE_RECEIVED = 0;
+const GSEC_MSGTYPE_SENT = 1;
+const GSEC_MSGTYPE_DELETED = 2;
+
+const GSEC_MSGTYPES = ["msgReceived", "msgSent", "msgDeleted"];
+
 class gsec {
 	constructor() {
 	}
@@ -303,23 +309,139 @@ class gsec {
 			this.postback(GSE_URL+"Page_Gim/Ucenec/IzostankiUcenec.aspx", dataToBeSent, null, true).then((response)=>{
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
-				var rowElements = parsed.getElementByIdName("ctl00_ContentPlaceHolder1_gvwIzostankiGroup").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+				var rowElements = parsed.getElementById("ctl00_ContentPlaceHolder1_gvwIzostankiGroup").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 				var absences = {};
 			 	for(const izostanek of rowElements) {
 					var subFields = izostanek.getElementsByTagName("td");
 					var date = subFields[0].innerHTML.trim().split(".");
-					var dateObj = new Date(date[2]+"-"+date[1]+"-"+date[0]);
+					var dateObj = new Date(Date.parse(date[2]+"-"+date[1]+"-"+date[0]));
 					var subjects = {};
 					for(const subject of subFields[2].innerHTML.split(", ")) {
 						var subjectName = subject.split(" (")[0];
 						var status = Number(subject.split('(<span class="opr').pop().split('">')[0]);
 						// statusi so: 0: ni obdelano, 1: opravičeno, 2: neopravičeno, 3: ne šteje, uporabi S(gseAbsenceTypes[num]) za i18n pre3vod
 						var period = Number(subject.split('">').pop().split('</span>')[0]);
-						subjects[period] = {status: status, subject: subject};
+						subjects[period] = {status: status, subject: subjectName};
 					}
-					absences[date] = subjects;
+					absences[dateObj] = subjects;
 				}
 				resolve(absences);
+			});
+		});
+	}
+	fetchGrades() {
+		var grades = [];
+		return new Promise((resolve, reject) => {
+      $.ajax({
+        xhrFields: {
+          withCredentials: true
+        },
+        crossDomain: true,
+        url: GSE_URL+"Page_Gim/Ucenec/OceneUcenec.aspx",
+        cache: false,
+        type: "GET",
+        dataType: "html",
+        processData: false,
+        success: (data, textStatus, xhr) => {
+					let parser = new DOMParser();
+					let parsed = parser.parseFromString(data, "text/html");
+					let gradeSpans = parsed.getElementsByClassName("txtVOcObd");
+					for(const grade of gradeSpans) {
+						var ist = grade.getElementsByTagName("span")[0].getAttribute("title").split("\n");
+						var date = ist[0].split(": ")[1].trim().split(".");
+						var dateObj = new Date(Date.parse(date[2]+"-"+date[1]+"-"+date[0]));
+						var teacher = ist[1].split(": ")[1].trim();
+						var subject = ist[2].split(": ")[1].trim();
+						var name = [];
+						name.push(ist[3].split(": ")[1].trim())
+						name.push(ist[4].split(": ")[1].trim())
+						name.push(ist[5].split(": ")[1].trim())
+						var gradeNumber = Number(grade.getElementsByTagName("span")[0].innerHTML);
+						if(grade.getElementsByTagName("span")[0].classList.contains("ocVmesna")) {
+							var temporary = true;
+						} else {
+							var temporary = false;
+						}
+						var gradeToAdd = {"date": dateObj, "teacher": teacher, "subject": subject, "name": name, "temporary": temporary, "grade": gradeNumber};
+						if(grade.getElementsByTagName("span").length > 1) {
+							if(grade.getElementsByTagName("span")[1].classList.contains("ocVmesna")) {
+								gradeToAdd["temporary"] = true;
+							} else {
+								gradeToAdd["temporary"] = false;
+							}
+							gradeToAdd["grade"] = Number(grade.getElementsByTagName("span")[1].innerHTML);
+							gradeToAdd["oldgrade"] = Number(grade.getElementsByTagName("span")[0].innerHTML);
+						}
+						grades.push(gradeToAdd);
+					}
+					resolve(grades);
+        },
+        error: () => {
+          reject(new Error(GSEC_ERR_NET));
+        }
+      });
+		});
+	}
+	fetchMessage(selectId) { // ne dela
+		var message;
+		return new Promise((resolve, reject) => {
+			var dataToBeSent = {"__EVENTTARGET": "ctl00$ContentPlaceHolder1$gvwSporocila", "__EVENTARGUMENT": "Select$"+selectId};
+			this.postback(GSE_URL+"Page_Gim/Uporabnik/Sporocila.aspx", dataToBeSent, null, true).then((response) => {
+				let parser = new DOMParser();
+				let parsed = parser.parseFromString(response.data, "text/html");
+				let subject = parsed.getElementsByClassName("msgSubjectS")[0].innerHTML.trim();
+				let body = parsed.getElementsByClassName("gCursorAuto")[0].innerHTML.trim();
+				let sender = parsed.querySelectorAll("[id$=Label7]")[0].innerHTML.split(" (")[0];
+				let recipient = parsed.querySelectorAll("[id$=Label8]")[0].innerHTML;
+				var date = parsed.querySelectorAll("[id$=Label7]")[0].innerHTML.split(" (").pop().split(" ")[0];
+				var tume = parsed.querySelectorAll("[id$=Label7]")[0].innerHTML.split(" (").pop().split(")")[0].split(" ").pop(); // "tume"!
+				var dateObj = new Date(Date.parse(date[2]+"-"+date[1]+"-"+date[0]+" "+tume)); // "tume"!
+				var msgId = parsed.getElementById("ctl00_ContentPlaceHolder1_hfIdSporocilo").getAttribute("value");
+				message = {"subject": subject, "body": body, "sender": sender, "recipient": recipient, "date": dateObj};
+				resolve(message);
+			});
+		});
+	}
+	fetchMessagesLastPageNumber(category = GSEC_MSGTYPE_RECEIVED) {
+		var msgCategory = GSEC_MSGTYPES[category];
+		return new Promise((resolve, reject) => {
+			var dataToBeSent = {"ctl00$ContentPlaceHolder1$ddlPrikaz": msgCategory, "__EVENTARGUMENT": "Page$Last", "__EVENTTARGET": "ctl00$ContentPlaceHolder1$gvwSporocila"};
+			this.postback(GSE_URL+"Page_Gim/Uporabnik/Sporocila.aspx", dataToBeSent, null, true).then((response) => {
+				let parser = new DOMParser();
+				let parsed = parser.parseFromString(response.data, "text/html");
+				let currentPage;
+				if(parsed.getElementsByClassName("pager").length == 0) { // pager is not shown, there is only page one.
+					currentPage = 1;
+				} else {
+					currentPage = Number(parsed.getElementsByClassName("pager")[0].getElementsByTagName("span")[0].innerHTML);
+				}
+				resolve(currentPage);
+			});
+		});
+	}
+	fetchMessagesList(category = GSEC_MSGTYPE_RECEIVED, pageNumber = 1) {
+		var msgCategory = GSEC_MSGTYPES[category];
+		var messages = {};
+		return new Promise((resolve, reject) => {
+			var dataToBeSent = {"ctl00$ContentPlaceHolder1$ddlPrikaz": msgCategory, "__EVENTARGUMENT": "Page$"+pageNumber, "__EVENTTARGET": "ctl00$ContentPlaceHolder1$gvwSporocila"};
+			this.postback(GSE_URL+"Page_Gim/Uporabnik/Sporocila.aspx", dataToBeSent, null, true).then((response) => {
+				let parser = new DOMParser();
+				let parsed = parser.parseFromString(response.data, "text/html");
+				let messageElements = parsed.getElementById("ctl00_ContentPlaceHolder1_gvwSporocila").getElementsByTagName("tbody")[0].getElementsByTagName("td");
+				for(const messageElement of messageElements) {
+					let msgId = messageElement.getElementsByTagName("input")[0].value;
+					var date = messageElement.getElementsByClassName("msgSubDate")[0].innerHTML.split(" ")[0].split(".");
+					if(date[2].length < 1) {
+						let today = new Date();
+						date[2] = today.getFullYear();
+					}
+					var tume = messageElement.getElementsByClassName("msgSubDate")[0].innerHTML.split(" ")[1];
+					var dateObj = new Date(Date.parse(date[2]+"-"+date[1]+"-"+date[0]+" "+tume)); // "tume"!
+					var person = messageElement.getElementsByClassName("msgDir")[0].innerHTML;
+					var subject = messageElement.getElementsByClassName("msgSubject")[0].innerHTML;
+					messages[msgId] = {"date": dateObj, "sender": person, "subject": subject};
+				}
+				resolve(messages);
 			});
 		});
 	}
