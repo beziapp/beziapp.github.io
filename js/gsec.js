@@ -1,3 +1,4 @@
+
 // tab = 2 || any spaces; use tabs
 // not tested yet -- NOTE: document.createElement is xssy, use DOMParser!
 var gseAbsenceTypes = ["notProcessed", "authorizedAbsence", "unauthorizedAbsence", "doesNotCount"];
@@ -27,6 +28,45 @@ const GSEC_MSGTYPES = ["msgReceived", "msgSent", "msgDeleted"];
 class gsec {
 	constructor() {
 	}
+	parseAndPost(inputHTML, params, formId = null, useDiffAction = null) {
+		return new Promise((resolve, reject) => {
+			let parser = new DOMParser();
+			let parsed = parser.parseFromString(inputHTML, "text/html");
+			if(formId == null) {
+				var form = parsed.getElementsByTagName("form")[0];
+			} else {
+				var form = parsed.getElementById(formId);
+			}
+			var otherParams = $(form).serializeArray();
+			for(const input of otherParams) {
+				if(!(input.name in params)) {
+					params[input.name] = input.value; // so we don't overwrite existing values
+				}
+			}
+			if(useDiffAction == null || useDiffAction == false) {
+				var action = new URL($(form).attr("action"), GSE_URL); // absolute == relative + base
+			} else {
+				var action = useDiffAction;
+			}
+			$.ajax({
+				xhrFields: {
+					withCredentials: true
+				},
+				crossDomain: true,
+				url: action,
+				cache: false,
+				type: "POST",
+				data: params,
+				dataType: "text",
+				success: (postData, textStatus, xhr) => {
+					resolve({data: postData, textStatus: textStatus, code: xhr.status});
+				},
+				error: () => {
+					reject(new Error(GSEC_ERR_NET_POSTBACK_POST));
+				}
+			});
+		});
+	}
 	postback(getUrl, params = {}, formId = null, useDiffAction = null) {
 		return new Promise( (resolve, reject) => {
 			$.ajax({
@@ -39,42 +79,11 @@ class gsec {
 				type: "GET",
 				dataType: "html",
 				success: (getData) => {
-					let parser = new DOMParser();
-					let parsed = parser.parseFromString(getData, "text/html");
-					if(formId == null) {
-						var form = parsed.getElementsByTagName("form")[0];
-					} else {
-						var form = parsed.getElementById(formId);
+					if(useDiffAction == true) {
+						useDiffAction = getUrl;
 					}
-					var otherParams = $(form).serializeArray();
-					for(const input of otherParams) {
-						if(!(input.name in params)) {
-							params[input.name] = input.value; // so we don't overwrite existing values
-						}
-					}
-					if(useDiffAction == null || useDiffAction == false) {
-						var action = new URL($(form).attr("action"), GSE_URL); // absolute == relative + base
-					} else if(useDiffAction == true || useDiffAction == 1) {
-						var action = getUrl;
-					} else {
-						var action = useDiffAction;
-					}
-					$.ajax({
-						xhrFields: {
-							withCredentials: true
-						},
-						crossDomain: true,
-						url: action,
-						cache: false,
-						type: "POST",
-						data: params,
-						dataType: "text",
-						success: (postData, textStatus, xhr) => {
-							resolve({data: postData, textStatus: textStatus, code: xhr.status});
-						},
-						error: () => {
-							reject(new Error(GSEC_ERR_NET_POSTBACK_POST));
-						}
+					this.parseAndPost(getData, params, formId, useDiffAction).then((value) => {
+						resolve(value);
 					});
 				},
 				error: () => {
@@ -382,7 +391,7 @@ class gsec {
       });
 		});
 	}
-	fetchMessage(selectId) { // ne dela
+	fetchMessageOld(selectId) { // ne dela, glej fix spodaj (fetchMessage)
 		var message;
 		return new Promise((resolve, reject) => {
 			var dataToBeSent = {"__EVENTTARGET": "ctl00$ContentPlaceHolder1$gvwSporocila", "__EVENTARGUMENT": "Select$"+selectId};
@@ -419,12 +428,17 @@ class gsec {
 			});
 		});
 	}
-	fetchMessagesList(category = GSEC_MSGTYPE_RECEIVED, pageNumber = 1) {
+	fetchMessagesList(category = GSEC_MSGTYPE_RECEIVED, pageNumber = 1, outputResponse = false) {
 		var msgCategory = GSEC_MSGTYPES[category];
-		var messages = {};
+		var messages = [];
+		var requestURi = GSE_URL+"Page_Gim/Uporabnik/Sporocila.aspx";
 		return new Promise((resolve, reject) => {
 			var dataToBeSent = {"ctl00$ContentPlaceHolder1$ddlPrikaz": msgCategory, "__EVENTARGUMENT": "Page$"+pageNumber, "__EVENTTARGET": "ctl00$ContentPlaceHolder1$gvwSporocila"};
-			this.postback(GSE_URL+"Page_Gim/Uporabnik/Sporocila.aspx", dataToBeSent, null, true).then((response) => {
+			this.postback(requestURi, dataToBeSent, null, true).then((response) => {
+				if(outputResponse == true) {
+					response.url = requestURi;
+					resolve(response);
+				}
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
 				let messageElements = parsed.getElementById("ctl00_ContentPlaceHolder1_gvwSporocila").getElementsByTagName("tbody")[0].getElementsByTagName("td");
@@ -439,9 +453,30 @@ class gsec {
 					var dateObj = new Date(Date.parse(date[2]+"-"+date[1]+"-"+date[0]+" "+tume)); // "tume"!
 					var person = messageElement.getElementsByClassName("msgDir")[0].innerHTML;
 					var subject = messageElement.getElementsByClassName("msgSubject")[0].innerHTML;
-					messages[msgId] = {"date": dateObj, "sender": person, "subject": subject};
+					messages.push({"date": dateObj, "sender": person, "subject": subject, "msgId": msgId});
 				}
 				resolve(messages);
+			});
+		});
+	}
+	fetchMessage(category = GSEC_MSGTYPE_RECEIVED, pageNumber = 1, messageNumberOnPage = 0) {
+		var message;
+		return new Promise((resolve, reject) => {
+			this.fetchMessagesList(category, pageNumber, true).then( (value) => {
+				this.parseAndPost(value.data, {"__EVENTTARGET": "ctl00$ContentPlaceHolder1$gvwSporocila", "__EVENTARGUMENT": "Select$"+messageNumberOnPage}, null, value.url).then((response) => {
+					let parser = new DOMParser();
+					let parsed = parser.parseFromString(response.data, "text/html");
+					let subject = parsed.getElementsByClassName("msgSubjectS")[0].innerHTML.trim();
+					let body = parsed.getElementsByClassName("gCursorAuto")[0].innerHTML.trim();
+					let sender = parsed.querySelectorAll("[id$=Label7]")[0].innerHTML.split(" (")[0];
+					let recipient = parsed.querySelectorAll("[id$=Label8]")[0].innerHTML;
+					var date = parsed.querySelectorAll("[id$=Label7]")[0].innerHTML.split(" (").pop().split(" ")[0].split(".");
+					var tume = parsed.querySelectorAll("[id$=Label7]")[0].innerHTML.split(" (").pop().split(")")[0].split(" ").pop(); // "tume"!
+					var dateObj = new Date(Date.parse(date[2]+"-"+date[1]+"-"+date[0]+" "+tume)); // "tume"!
+					var msgId = parsed.getElementById("ctl00_ContentPlaceHolder1_hfIdSporocilo").getAttribute("value");
+					message = {"subject": subject, "body": body, "sender": sender, "recipient": recipient, "date": dateObj, "msgId": msgId};
+					resolve(message);
+				});
 			});
 		});
 	}
