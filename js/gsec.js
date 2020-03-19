@@ -197,7 +197,7 @@ class gsec {
 					var day = subFields[5];
 					var desc = $(urnikElement).attr("title").split("\n");
 					var subject = desc[1].split('(').pop().split(')')[0]; // https://stackoverflow.com/a/27522597/11293716
-					var abkurzung = desc[0].split(" (")[0];
+					var abkurzung = desc[1].split(" (")[0];
 					var razred = desc[2];
 					var teacher = desc[3];
 					var place = desc[4];
