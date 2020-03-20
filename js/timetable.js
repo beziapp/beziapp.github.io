@@ -1,9 +1,8 @@
-const API_ENDPOINT = "https://gimb.tk/test.php";
+// const API_ENDPOINT = "https://gimb.tk/test.php"; // deprecated
 // const API_ENDPOINT = "http://localhost:5000/test.php";
 
 var calendar_obj = null;
 var transformed_storage = [];
-
 function checkLogin() {
     localforage.getItem("logged_in").then((value) => {
         // This code runs once the value has been loaded
@@ -89,73 +88,59 @@ function getLastMonday(date_object) {
 // ----------------------------------
 
 async function loadTimetable(date_object, force_refresh = false) {
-    setLoading(true);
-
-    let date_monday = getLastMonday(date_object);
-    let date_string = getDateString(date_monday);
-
-    // Load required data
-    let promises_to_run = [
-        localforage.getItem("username").then(function (value) {
-            username = value;
-        }),
-        localforage.getItem("password").then(function (value) {
-            password = value;
-        }),
-        localforage.getItem("timetable").then(function (value) {
-            timetable = value;
-        })
-    ];
-
-    await Promise.all(promises_to_run);
-
-    if (force_refresh || timetable == null || !(date_string in timetable)) {
-        $.ajax({
-            url: API_ENDPOINT,
-            crossDomain: true,
-
-            data: {
-                "u": username,
-                "p": password,
-                "m": "fetchurnik",
-                "a": date_string
-            },
-            dataType: "json",
-
-            cache: false,
-            type: "GET",
-
-            success: (data) => {
-                // Check if operation was successful
-                if (data === null) {
-										UIAlert( D("noPeriods") );
-                    setLoading(false);
-                } else {
-
-                    // Populate the calendar & save data
-                    if (timetable === null) {
-                        timetable = {};
-                    }
-
-                    timetable[date_string] = data;
-                    localforage.setItem("timetable", timetable).then(() => {
-                        displayTimetable(data, date_monday);
-                        setLoading(false);
-                    });
-                }
-            },
-
-            error: () => {
-								UIAlert( D( "noInternetConnection" ) );
-                setLoading(false);
-            }
-
-        });
-
-    } else {
-        displayTimetable(timetable[date_string], date_monday);
-        setLoading(false);
-    }
+	setLoading(true);
+	var timetable, username, password;
+	let date_monday = getLastMonday(date_object);
+	let date_string = getDateString(date_monday);
+	let promises_to_run = [
+		localforage.getItem("username").then(function (value) {
+			username = value;
+		}),
+		localforage.getItem("password").then(function (value) {
+			password = value;
+		}),
+		localforage.getItem("timetable").then(function (value) {
+			timetable = value;
+		})
+	];
+	await Promise.all(promises_to_run);
+	if (force_refresh || timetable == null || !(date_string in timetable)) {
+		try {
+			let gsecInstance = new gsec();
+			await	gsecInstance.login(username, password);
+			gsecInstance.fetchTimetable(date_object).then( (value) => {
+				containsPeriods = false;
+				for(var iteration = 0; iteration <= 6; iteration++) {
+					if(Object.keys(value[iteration]).length > 0) {
+						containsPeriods = true;
+						// break;
+					}
+				}
+				if(!containsPeriods) {
+					UIAlert( D("noPeriods") );
+					setLoading(false);
+				} else {
+					if (timetable === null) {
+						timetable = {};
+					}
+					timetable[date_string] = value;
+					localforage.setItem("timetable", timetable).then(() => {
+						displayTimetable(value, date_monday);
+						setLoading(false);
+					});
+				}
+			}).catch( (err) => {
+				gsecErrorHandlerUI(err);
+				setLoading(false);
+			});
+		} catch (err) {
+			gsecErrorHandlerUI(err);
+			setLoading(false);
+		}
+	} else {
+		displayTimetable(timetable[date_string], date_monday);
+		setLoading(false);
+	}
 }
 
 function getLessonTimes(lesson_number) {
@@ -196,21 +181,21 @@ function displayTimetable(weekly_timetable, date_object) {
             let lesson = daily_timetable[lesson_number];
 
             let lesson_times = getLessonTimes(parseInt(lesson_number));
-            let bg_color = getHexColorFromString(lesson["kratica"]);
+            let bg_color = getHexColorFromString(lesson["acronym"]);
             let fg_color = getForegroundFromBackground(bg_color);
 
             let lesson_metadata = {
-                subject: lesson["predmet"],
-                class: lesson["razred"],
-                teacher: lesson["profesor"],
-                classroom: lesson["prostor"],
+                subject: lesson["subject"],
+                class: lesson["class"],
+                teacher: lesson["teacher"],
+                classroom: lesson["place"],
                 start: lesson_times[0].substring(0, 5),
                 end: lesson_times[1].substring(0, 5)
             }
 
             let lesson_object = {
                 id: JSON.stringify(lesson_metadata),
-                title: lesson["kratica"],
+                title: lesson["acronym"],
                 start: date_string + " " + lesson_times[0],
                 end: date_string + " " + lesson_times[1],
                 backgroundColor: bg_color,

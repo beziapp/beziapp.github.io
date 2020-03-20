@@ -1,4 +1,3 @@
-
 // tab = 2 || any spaces; use tabs
 // not tested yet -- NOTE: document.createElement is xssy, use DOMParser!
 var gseAbsenceTypes = ["notProcessed", "authorizedAbsence", "unauthorizedAbsence", "doesNotCount"];
@@ -22,7 +21,8 @@ const GSEC_ERR_NET_POSTBACK_POST = "GSEC NETWORK ERROR (ajax error) in postback 
 const GSEC_MSGTYPE_RECEIVED = 0;
 const GSEC_MSGTYPE_SENT = 1;
 const GSEC_MSGTYPE_DELETED = 2;
-
+const GSEC_ERR_LOGIN = "GSEC LOGIN ERROR";
+const GSEC_NO_ABSENCES = "noAbsences";
 const GSEC_MSGTYPES = ["msgReceived", "msgSent", "msgDeleted"];
 
 class gsec {
@@ -102,10 +102,10 @@ class gsec {
 					resolve(true);
 				} else {
 					if(!!(parsed.getElementById("lblMsg"))) { // če obstaja lblMsg (napaka pri prijavi)
-						reject(new Error(false));
+						reject(new Error(GSEC_ERR_LOGIN));
 					}
 					if(!(parsed.getElementById("ctl00_lblLoginName"))) { // če ni ctl00_lblLoginName nismo na Default.aspx
-						reject(new Error(false));
+						reject(new Error(GSEC_ERR_LOGIN));
 					} else {
 						resolve(parsed.getElementById("ctl00_lblLoginName").innerHTML); // vrne ime dijaka, to je lahko uporabno
 					}
@@ -232,7 +232,7 @@ class gsec {
 			});
 		});
 	}
-	fetchTeachers() {
+	fetchTeachers() { // razrednika ne vrne kot razrednika, če le-ta uči še en predmet. razlog: razrednik je napisan dvakrat, drugič se prepiše. Ne da se mi popravljat.
 		return new Promise((resolve, reject) => {
 			var Teachers = {};
 			this.postback(GSE_URL+"Page_Gim/Ucenec/UciteljskiZbor.aspx", {}, null, true).then((response)=>{
@@ -246,10 +246,8 @@ class gsec {
 					var subjects = {};
 					for(const subjectString of subjectStrings) {
 						var abkurzung = "";
-						try {
-							abkurzung = stripHtml(subjectString).split('(').pop().split(')')[0];
-						} catch (err) {}
 						var subjectName = stripHtml(subjectString).split(" (")[0];
+						abkurzung = stripHtml(subjectString).split('(').pop().split(')')[0];
 						subjects[abkurzung] = subjectName;
 					}
 					var TP = {};
@@ -305,7 +303,7 @@ class gsec {
       });
 		});
 	}
-	fetchAbsences(fromDate = null, tillDate = null) {
+	fetchAbsences(fromDate = null, tillDate = null) { // navedba datumov je deprecated. Internet je dovolj hiter za poslat maksimalno 4160 ur (16 ur/dan, 5 dni/ted, 52 ted/leto)
 		return new Promise((resolve, reject)=>{
 			if(!(fromDate instanceof Date) || !(tillDate instanceof Date)) {
 				tillDate = new Date(Date.UTC(9999, 11, 30)); // overkill?
@@ -318,8 +316,12 @@ class gsec {
 			this.postback(GSE_URL+"Page_Gim/Ucenec/IzostankiUcenec.aspx", dataToBeSent, null, true).then((response)=>{
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
-				var rowElements = parsed.getElementById("ctl00_ContentPlaceHolder1_gvwIzostankiGroup").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-				var absences = {};
+				try {
+					var rowElements = parsed.getElementById("ctl00_ContentPlaceHolder1_gvwIzostankiGroup").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+				} catch (err) {
+					resolve(GSEC_NO_ABSENCES);
+				}
+				var absences = [];
 			 	for(const izostanek of rowElements) {
 					var subFields = izostanek.getElementsByTagName("td");
 					var date = subFields[0].innerHTML.trim().split(".");
@@ -332,7 +334,7 @@ class gsec {
 						var period = Number(subject.split('">').pop().split('</span>')[0]);
 						subjects[period] = {status: status, subject: subjectName};
 					}
-					absences[dateObj] = subjects;
+					absences.push({subjects: subjects, date: dateObj});
 				}
 				resolve(absences);
 			});

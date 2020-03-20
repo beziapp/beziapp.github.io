@@ -8,6 +8,9 @@ var dateString = {
 	month: (mesl) => {
 		let mesecileta = [S("january"), S("february"), S("march"), S("april"), S("may"), S("june"), S("july"), S("august"), S("september"), S("october"), S("november"), S("december")];
 		return mesecileta[mesl];
+	},
+	longFormatted: (dateObject) => {
+		return dateString.day(dateObject.getDay())+", "+(dateObject.getDate())+". "+dateString.month(dateObject.getMonth())+" "+dateObject.getFullYear();
 	}
 };
 async function refreshLangDOM() {
@@ -172,6 +175,10 @@ var langstrings = {
 		ok: "ok",
 		noAbsences: "no absences in the chosen time period",
 		lesson: "lesson",
+		notProcessed: "not processed",
+		authorizedAbsence: "authorized",
+		unauthorizedAbsence: "unauthorized",
+		doesNotCount: "does not count",
 		// messaging
 		sendAMessage: "send a message",
 		recipient: "recipient",
@@ -261,7 +268,11 @@ var langstrings = {
 		privacyEffectiveAsOf: "this policy is effective as of",
 		// settings
 		language: "language",
-		languageSet: "language set, open another page for the changes to take effect"
+		languageSet: "language set, open another page for the changes to take effect",
+		// gsec
+		gsecErrNet: "GimSIS connection error",
+		gsecErrLogin: "GimSIS login error (bad password?), try logging out",
+		gsecErrOther: "GimSIS unknown error, try logging out"
 	},
 	sl: {
 		miscTranslationLanguage: "slovenščina",
@@ -332,6 +343,10 @@ var langstrings = {
 		ok: "v redu",
 		noAbsences: "ni izostankov v izbranem časovnem obdobju",
 		lesson: "ura",
+		notProcessed: "ni obdelano",
+		authorizedAbsence: "opravičeno",
+		unauthorizedAbsence: "neopravičeno",
+		doesNotCount: "ne šteje",
 		// messaging
 		sendAMessage: "pošlji sporočilo",
 		recipient: "prejemnik",
@@ -420,6 +435,10 @@ var langstrings = {
 		privacyAcceptWithUse: "your continued use of our website will be regarded as acceptance of our practices around privacy and personal information. If you have any questions about how we handle user data and personal information, feel free to contact us.",
 		privacyEffectiveAsOf: "this policy is effective as of",
 		language: "jezik",
-		languageSet: "jezik nastavljen, odprite neko drugo stran da se pokažejo spremembe"
+		languageSet: "jezik nastavljen, odprite neko drugo stran da se pokažejo spremembe",
+		// gsec
+		gsecErrNet: "napaka povezave na GimSIS",
+		gsecErrLogin: "napaka avtentikacije na GimSISu (napačno geslo?), poskusite se odjaviti",
+		gsecErrOther: "neznana napaka GimSISa, poskusite se odjaviti"
 	}
 }

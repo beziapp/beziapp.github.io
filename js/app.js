@@ -24,3 +24,16 @@ async function UIAlert(usermsg, devmsg) {
   }
 }
 
+function gsecErrorHandlerUI(err) {
+	console.log("gsecErrorHanderUI: handling "+err);
+  if(err == GSEC_ERR_NET || err == GSEC_ERR_NET_POSTBACK_GET || err == GSEC_ERR_NET_POSTBACK_POST) {
+    UIAlert( D("gsecErrNet") );
+  } else if(err == GSEC_ERR_LOGIN) {
+    UIAlert( D("gsecErrLogin") );
+    localforage.setItem("logged_in", false).then( () => {
+      window.location.replace("/index.html");
+    });
+  } else {
+    UIAlert( D("gsecErrOther") );
+  }
+}
