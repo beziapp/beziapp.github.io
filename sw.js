@@ -77,7 +77,11 @@ const assets = [
     "/index.html",
     "/login.html",
     "/logout.html",
-    "/favicon.png"
+		"/favicon.png",
+		
+		"/pages/chats.html",
+		"/js/chats.js",
+		"/css/bubbles.css"
 ];
 
 importScripts("/js/lib/localforage.min.js");

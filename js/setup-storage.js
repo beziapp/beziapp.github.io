@@ -16,7 +16,7 @@ async function setupStorage(force = false) {
     localforage.setItem("absences", {}),
     localforage.setItem("messages", {}),
     localforage.setItem("directory", {}),
-    localforage.setItem("meals", {})
+		localforage.setItem("meals", {})
   ];
 	if(logged_in && force == false) { // torej, če je že bila prijava narejena, ne posodobi backwards-compatible vrednosti (username, password,...)
 	  await Promise.all(promises_update);
@@ -33,4 +33,3 @@ async function setupStorage(force = false) {
 		console.log("[setupStorage] user not logged in: set up whole database");
 	}
 }
-

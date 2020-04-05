@@ -109,6 +109,7 @@ var langstrings = {
 	en: {
 		miscTranslationLanguage: "English",
 		miscTranslationAuthors: "Rok Štular",
+		"": "",
 		// date
 		monday: "monday",
 		tuesday: "tuesday",
@@ -199,7 +200,7 @@ var langstrings = {
 		thisMessageWasEncrypted: "this message was encrypted by BežiApp",
 		enterPassword: "enter password",
 		decrypt: "decrypt",
-		nameDirecroryNotSet: "name directory not set, sending unavailable",
+		nameDirectoryNotSet: "name directory not set, sending unavailable",
 		errorFetchingMessages: "error fetching messages",
 		unableToReceiveTheMessage: "unable to receive the message",
 		unableToDeleteTheMessage: "unable to delete the message",
@@ -208,6 +209,15 @@ var langstrings = {
 		imageAddedAsAnAttachment: "image added as an attachment",
 		unableToReadDirectory: "unable to read directory of people",
 		messageCouldNotBeSent: "message could to be sent",
+		// chats
+		chat: "chat",
+		chattingWith: "chatting with",
+		noMessages: "no messages",
+		stillLoading: "loading is still in progress",
+		directory: "directory",
+		select: "select",
+		mustSelectRecipient: "you have to select a recipient before chatting. Open directory on the left side by clicking on the top left addressbook button and select a recipient in order to start chatting with them",
+		recipientNotInDirectory: "recipient is not in directory.",
 		// meals
 		loginToLopolis: "login to Lopolis",
 		loginToLopolisNote: "it seems like you're not currently logged in to eRestavracija, so this form has been presented to you. You have a different username and password combination used for applying and opting out of of menus. In order to use this feature, you have to log in with your Lopolis account.",
@@ -277,6 +287,7 @@ var langstrings = {
 	sl: {
 		miscTranslationLanguage: "slovenščina",
 		miscTranslationAuthors: "Anton Luka Šijanec",
+		"": "",
 		// date
 		monday: "ponedeljek",
 		tuesday: "torek",
@@ -367,7 +378,7 @@ var langstrings = {
 		thisMessageWasEncrypted: "to sporočilo je šifriral BežiApp",
 		enterPassword: "vnesite geslo",
 		decrypt: "odšifriraj",
-		nameDirecroryNotSet: "imenik ni nastavljen, pošiljanje ni mogoče",
+		nameDirectoryNotSet: "imenik ni nastavljen, pošiljanje ni mogoče",
 		errorFetchingMessages: "sporočil ni bilo mogoče prenesti",
 		unableToReceiveTheMessage: "sporočila ni bilo mogoče prenesti",
 		unableToDeleteTheMessage: "sporočila ni bilo mogoče izbrisati",
@@ -376,6 +387,15 @@ var langstrings = {
 		imageAddedAsAnAttachment: "slika dodana kot priloga",
 		unableToReadDirectory: "imenika ni bilo mogoče prebrati",
 		messageCouldNotBeSent: "sporočila ni bilo mogoče poslati",
+		// chats
+		chat: "klepet",
+		chattingWith: "klepet z osebo",
+		noMessages: "ni sporočil",
+		stillLoading: "nalaganje še poteka",
+		directory: "imenik",
+		select: "izberi",
+		mustSelectRecipient: "pred klepetom morate izbrati sogovornika. Odprite imenik (meni na levi strani) s pritiskom na gumb \"imenik\" zgoraj desno in izberite sogovornika.",
+		recipientNotInDirectory: "izbrane osebe ni v imeniku",
 		// meals
 		loginToLopolis: "prijava v Lopolis",
 		loginToLopolisNote: "izgleda, da niste prijavljeni v eRestavracijo, zato se vam je prikazal prijavni obrazec. Za uporavljanje s prehrano se uporablja druga kombinacija uporabniškega imena in gesla, zato se prijavite s svojimi Lopolis prijavnimi podatki za nadaljevanje.",

@@ -430,7 +430,7 @@ class gsec {
 			});
 		});
 	}
-	fetchMessagesList(category = GSEC_MSGTYPE_RECEIVED, pageNumber = 1, outputResponse = false) {
+	fetchMessagesList(category = GSEC_MSGTYPE_RECEIVED, pageNumber = 1, outputResponse = false) { // outputResponse je probably za debug
 		var msgCategory = GSEC_MSGTYPES[category];
 		var messages = [];
 		var requestURi = GSE_URL+"Page_Gim/Uporabnik/Sporocila.aspx";
@@ -447,12 +447,20 @@ class gsec {
 				for(const messageElement of messageElements) {
 					let msgId = messageElement.getElementsByTagName("input")[0].value;
 					var date = messageElement.getElementsByClassName("msgSubDate")[0].innerHTML.split(" ")[0].split(".");
-					if(date[2].length < 1) {
-						let today = new Date();
+					var today = new Date();
+					if(date[2] == undefined || date[2].length < 1) {
 						date[2] = today.getFullYear();
 					}
+					if(date[1] == undefined || date[1].length < 1) {
+						date[1] = today.getMonth()+1;
+						date[0] = today.getDate();
+					}
 					var tume = messageElement.getElementsByClassName("msgSubDate")[0].innerHTML.split(" ")[1];
-					var dateObj = new Date(Date.parse(date[2]+"-"+date[1]+"-"+date[0]+" "+tume)); // "tume"!
+					if (tume == undefined || tume == null) { // js nism kriv za to pizdraijo; gimsis je.
+						tume = messageElement.getElementsByClassName("msgSubDate")[0].innerHTML;
+					}
+					var dateStringToParse = date[2]+"-"+date[1]+"-"+date[0]+" "+tume;
+					var dateObj = new Date(Date.parse(dateStringToParse)); // "tume"!
 					var person = messageElement.getElementsByClassName("msgDir")[0].innerHTML;
 					var subject = messageElement.getElementsByClassName("msgSubject")[0].innerHTML;
 					messages.push({"date": dateObj, "sender": person, "subject": subject, "msgId": msgId});
