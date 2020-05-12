@@ -37,8 +37,8 @@
 			</div>
 		</nav>
 		<@?i navigation@>
-		<div class="container">
-			<iframe src="https://video.gimb.tk" style="width: 100%; height: 100%">
+		<div class="container" style="height: 100%; width: 100%">
+			<iframe src="https://video.gimb.tk" frameBorder="0" style="width: 100%; height: 100%">
 				Ur browser does not support iframes, you have no Internet connection or the GimB videoconference server is down or does
 				not allow iframes. Probably we fucked something up, so drop us a message.
 				<hr>
