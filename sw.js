@@ -78,7 +78,7 @@ const assets = [
     "/login.html",
     "/logout.html",
 		"/favicon.png",
-		
+		"/pages/jitsi.html"
 		"/pages/chats.html",
 		"/js/chats.js",
 		"/css/bubbles.css"
