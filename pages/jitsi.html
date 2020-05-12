@@ -9,22 +9,18 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<meta name="google" content="notranslate">
-		<title>Chats &laquo; BežiApp</title>
+		<title>About &laquo; BežiApp</title>
 		<!-- Materialize -->
 		<link type="text/css" href="/css/materialize.min.css" rel="stylesheet">
 		<link href="/css/materialicons.css" rel="stylesheet">
+		<link href="/css/fontawesome.min.css" rel="stylesheet">
 		<script type="text/javascript" src="/js/lib/materialize.min.js"></script>
 		<script src="/js/lib/jquery.min.js"></script>
 		<script type="text/javascript" src="/js/lib/localforage.min.js"></script>
 		<link type="text/css" href="/css/styles.css" rel="stylesheet">
-		<link type="text/css" href="/css/bubbles.css" rel="stylesheet">
-		<script type="text/javascript" src="/js/gsec.js" ></script>
-		<script type="text/javascript" src="/js/chats.js"></script>
 		<link rel="manifest" href="/manifest.json">
 		<script src="/js/app.js"></script>
 		<script src="/js/lang/bundle.js"></script>
-		<script src="/js/lib/xss.js"></script>
-		<script src="/js/lib/sjcl.js"></script>
 		<link rel="shortcut icon" type="image/png" href="/favicon.png" />
 		<!-- iOS support -->
 		<link rel="apple-touch-icon" href="/img/icons/icon_96.png">
@@ -34,14 +30,10 @@
 	<body>
 		<nav class="z-depth-0" id="navigation-main">
 			<div class="nav-wrapper container">
-				<span class="left white-text directory-opener">
-					<i class="material-icons sidenav-trigger" data-target="directory-side-menu">contacts</i>
-				</span>
-				<!-- | <x-su>chattingWith</x-su> --> <!-- too much for smaller devices -->
-					<span class="msg-chattingWith"><b>Beži</b><span>App</span> &raquo; <x-su>chat</x-su></span> &nbsp;
-				<span class="right white-text">
-					<i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
-				</span>
+				<b>Beži</b><span>App</span> &raquo; <x-su>videoconferences</x-su>
+					<span class="right white-text">
+						<i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
+					</span>
 			</div>
 			<div id="loading-bar" class="progress hidden">
 				<div class="indeterminate"></div>
@@ -67,47 +59,16 @@
 </ul>
 
 
-		<ul id="directory-side-menu" class="sidenav side-modal">
-			<br>
-			<li><a class="header"><h5><x-su>directory</x-su></h5></a></li>
-			<li>
-				<div class="container">
-					<div class="row">
-						<div class="input-field">
-							<i class="material-icons prefix">account_circle</i>
-							<input oninput="validateName();" id="full-name" type="text" class="autocomplete-fullname validate">
-							<label for="full-name"><x-su>recipient</x-su></label>
-						</div>
-					</div>
-					<div class="row">
-						<button id="chat-recipient-select-btn" onclick="setRecipient()" class="btn waves-effect">
-							<x-su>select</x-su>
-						</button>
-					</div>
-				</div>
-			</li>
-		</ul>
 		<div class="container">
-			<h6 id="chat-mustSelectRecipient"><x-du>mustSelectRecipient</x-du></h6>
-			<div style="text-align:center" class="msg-messagesPlaceholder">
-				<br />
-				<x-du class="msg-messagesPlaceholderText"></x-du> <!-- stillLoading / noMessages -->
-			</div>
-			<div class="chat"></div> <!-- <div data-remark="a child, so chatarea.children does not scare of losing all of her kids"></div> -->
-			<div class="chat-sticky-input">
-				<div class="row">
-					<div class="input-field col s10">
-						<i class="material-icons prefix">mode_edit</i>
-						<textarea maxlength="180" disabled="disabled" oninput="updateSendButton();" id="msg-body" class="materialize-textarea"></textarea>
-						<label for="msg-body"><x-su>messageBody</x-su></label>
-					</div>
-					<div class="input-field col s2">
-						<button class="btn waves-effect waves-light" onclick="sendMessage();" id="msg-send" type="button" disabled="disabled" name="action">
-							<i class="material-icons">send</i>
-						</button>
-					</div>
-			</div>
-			</div>
+			<iframe src="https://video.gimb.tk" style="width: 100%; height: 100%">
+				Ur browser does not support iframes, you have no Internet connection or the GimB videoconference server is down or does
+				not allow iframes. Probably we fucked something up, so drop us a message.
+				<hr>
+				Vaš brkljalnik ne podpira iframov, nimate povezave v medmrežje ali pa so se GimB videokonferenčni strežniki odločili ne
+				dovoliti iframov ali pa so sploh nedostopni. Kakorkoli že, verjetno smo mi kaj zajebali, zato nam napiši sporočilo!
+				<hr>
+				Danke schön.
+			</iframe>
 		</div>
 	</body>
 </html>

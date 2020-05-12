@@ -282,7 +282,9 @@ var langstrings = {
 		// gsec
 		gsecErrNet: "GimSIS connection error",
 		gsecErrLogin: "GimSIS login error (bad password?), try logging out",
-		gsecErrOther: "GimSIS unknown error, try logging out"
+		gsecErrOther: "GimSIS unknown error, try logging out",
+		// videoconferences
+		videoconferences: "GimB meet"
 	},
 	sl: {
 		miscTranslationLanguage: "slovenščina",
@@ -459,6 +461,8 @@ var langstrings = {
 		// gsec
 		gsecErrNet: "napaka povezave na GimSIS",
 		gsecErrLogin: "napaka avtentikacije na GimSISu (napačno geslo?), poskusite se odjaviti",
-		gsecErrOther: "neznana napaka GimSISa, poskusite se odjaviti"
+		gsecErrOther: "neznana napaka GimSISa, poskusite se odjaviti",
+		// videoconferences
+		videoconferences: "GimB konference"
 	}
 }
