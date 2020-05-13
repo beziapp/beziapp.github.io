@@ -67,6 +67,10 @@ async function loadAbsences(force_refresh = false) {
 				});
 				value.length = tillKey+1; // tillKey in
 				value.splice(0, fromKey); // fromKey hočemo obdržati
+                if(tillKey == 0 && fromKey == -1) {
+                    // očitno je karantena in ni nobenih izostnakov
+                    value.length = 0;
+                }
 				absences = value;
 				localforage.setItem("absences", value).then((value) => {
 					displayData();
