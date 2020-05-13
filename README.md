@@ -13,6 +13,7 @@ navigation@>` in a .bvr file in [pages-src](pages-src) will include [`navigation
 So now pages are now in pages-src and before deployment, `./compose_html pages-src/ pages/` has to be run to update the pages 
 dir.
 
+
 idkr, it seemed like a good idea, but feel free not to use it (write about it here so I won't override your commits).
 
 the compiled binary works on "`Linux kondenzator 5.3.0-46-generic #38~18.04.1-Ubuntu SMP Tue Mar 31 04:17:56 UTC 2020 x86_64
