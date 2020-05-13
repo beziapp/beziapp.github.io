@@ -1,0 +1,21 @@
+{
+  "statements": [
+    {
+      "source": {
+        "web": {
+          "site": "https://app.gimb.tk."
+        }
+      },
+      "relation": "delegate_permission/common.handle_all_urls",
+      "target": {
+        "androidApp": {
+          "packageName": "app.gimb.tk",
+          "certificate": {
+            "sha256Fingerprint": "78:51:6D:C4:40:49:83:A0:AA:38:09:EF:CF:83:37:F4:5D:F0:88:18:89:DE:C2:84:DD:14:D4:8C:09:FF:46:A8"
+          }
+        }
+      }
+    }
+  ],
+  "maxAge": "599.998704399s"
+}
