@@ -39,7 +39,7 @@
 		</nav>
 		<@?i navigation@>
 		<div class="container" style="height: calc(100vh - 70px); width: 100%">
-			<iframe src="https://video.gimb.tk" frameBorder="0" style="width: 100%; height: 100%">
+			<iframe allow="geolocation; microphone; camera" src="https://video.gimb.tk" frameBorder="0" style="width: 100%; height: 100%">
 				Ur browser does not support iframes, you have no Internet connection or the GimB videoconference server is down or does
 				not allow iframes. Probably we fucked something up, so drop us a message.
 				<hr>
