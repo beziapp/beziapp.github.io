@@ -1,5 +1,5 @@
 // Change version to cause cache refresh
-const static_cache_name = "site-static-v1.0.13.0";
+const static_cache_name = "site-static-v1.0.13.1";
 // Got them with find . -not -path '*/\.*' | sed "s/.*/\"&\",/" | grep -v sw.js
 // sw.js NE SME BITI CACHAN, ker vsebuje verzijo!
 
@@ -79,6 +79,7 @@ const assets = [
     "/logout.html",
 		"/favicon.png",
 		"/pages/jitsi.html",
+		"/js/jitsi.js",
 		"/pages/chats.html",
 		"/js/chats.js",
 		"/css/bubbles.css"
