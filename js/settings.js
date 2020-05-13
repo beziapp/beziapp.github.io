@@ -8,7 +8,7 @@ async function setLanguage(langCode)  {
 
 document.addEventListener("DOMContentLoaded", async () => {
 	$(document).on("click",".settings-language-selector", function () {
-		let languageToSet = $(this).attr('data-language');
+		let languageToSet = $(this).attr("data-language");
 		setLanguage(languageToSet);
 	});
 	// Setup side menu

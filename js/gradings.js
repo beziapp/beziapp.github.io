@@ -91,7 +91,7 @@ async function loadGradings(force_refresh = false) {
 	if (gradings === null || gradings === [] || gradings === -1 || force_refresh) {
 		try {
 			let gsecInstance = new gsec();
-			await	gsecInstance.login(username, password);
+			await gsecInstance.login(username, password);
 			gsecInstance.fetchGradings().then( (value) => {
 				gradings = value;
 				localforage.setItem("gradings", value).then((value) => {

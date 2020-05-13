@@ -1,5 +1,6 @@
-const API_ENDPOINT = "https://gimb.tk/test.php";
+// const API_ENDPOINT = "https://gimb.tk/test.php";
 const DIRECTORY_URL = "/directory.json";
+
 // "Global" object for name directory
 var directory = null;
 var currentlyChattingWith = null; // msgid
@@ -18,9 +19,11 @@ async function checkLogin() {
         console.log(err);
     });
 }
+
 function getKeyByValue(object, value) {
-  return Object.keys(object).find(key => object[key] === value);
+  	return Object.keys(object).find(key => object[key] === value);
 }
+
 // -----------HTML HELPERS-----------
 function htmlEncode(value) {
     // Create a in-memory element, set its inner text (which is automatically encoded)
@@ -56,7 +59,7 @@ function loadDirectory() {
             localforage.getItem("directory").then((stored_directory) => {
                 if (stored_directory === null) {
                     // If unable, set directory to null (so other functions know that we don't have it)
-										UIAlert( D("nameDirectoryNotSet"), "loadDirectory(): stored_directory === null" );
+					UIAlert( D("nameDirectoryNotSet"), "loadDirectory(): stored_directory === null" );
                     directory = null;
                     // Disable send button
                     document.getElementById("msg-send").disabled = true;
@@ -102,6 +105,7 @@ function setLoading(state) {
         $("#loading-bar").addClass("hidden");
     }
 }
+
 async function sendMessage(recipient_number = null, body = null) {
 	if(recipient_number == null || recipient_number == undefined) {
 		recipient_number = directory[sogovornik];
@@ -139,27 +143,39 @@ async function sendMessage(recipient_number = null, body = null) {
 		}
 	});
 }
+
 function addMessage(whom, body, datePlacement = 0, messageDate = null) { // datePlacement: 0=append bubble to end, 1=append bubble to start.
 	if(whom == 0) {
 		var whos = "mine";
 	} else {
 		var whos = "yours";
 	}
+
 	var timestamp = Date.now();
-	if(messageDate instanceof Date) { timestamp = messageDate.getTime(); }
-	if(typeof messageDate == "number") { timestamp = messageDate; }
+	if(messageDate instanceof Date) {
+		timestamp = messageDate.getTime();
+	}
+
+	if(typeof messageDate == "number") {
+		timestamp = messageDate;
+	}
+
 	var chatarea = document.getElementsByClassName("chat")[0];
 	var alreadyMessages = chatarea.querySelectorAll(".message");
 	var textnode = document.createTextNode(body); 
+
 	var bubblenode = document.createElement("div");
 	bubblenode.setAttribute("data-date", timestamp);
 	bubblenode.appendChild(textnode);
+
 	if(chatarea.childElementCount == 0) {
 		bubblenode.className = "message last";
 		var messagesnest = document.createElement("div");
 		var istaoseba = false;
 	} else {
+
 		if(datePlacement == 0 || timestamp > Number(alreadyMessages[alreadyMessages.length - 1].getAttribute("data-date"))) {
+
 			datePlacement = 0;
 			console.log(alreadyMessages[0].getAttribute("data-date"));
 			bubblenode.className = "message last";
@@ -171,7 +187,9 @@ function addMessage(whom, body, datePlacement = 0, messageDate = null) { // date
 				var istaoseba = false;
 				var messagesnest = document.createElement("div");
 			}
+
 		} else if (datePlacement == 1 || timestamp < Number(alreadyMessages[0].getAttribute("data-date"))) {
+
 			datePlacement = 1;
 			console.log(alreadyMessages[0].getAttribute("data-date"));
 			if(chatarea.children.item(0).classList.contains(whos)) { // ista oseba
@@ -183,22 +201,25 @@ function addMessage(whom, body, datePlacement = 0, messageDate = null) { // date
 				var istaoseba = false;
 				var messagesnest = document.createElement("div");
 			}
+
 		} else { // auto place (slower, so 0 or 1 are options
+
 			console.log("if3");
 			for(var iter = 0; iter < alreadyMessages.length - 2; iter++) { // (-2 zato, ker potem iter+1 ne obstaja pri zadnjem elementu)
-				if (
-					Number(alreadyMessages[iter].getAttribute("data-date")) < timstamp
-					&& Number(alreadyMessages[iter+1].getAttribute("data-date")) > timestamp
-				) {
+				if (Number(alreadyMessages[iter].getAttribute("data-date")) < timstamp
+					&& Number(alreadyMessages[iter+1].getAttribute("data-date")) > timestamp) {
+
 					var zgornjiIsti = alreadyMessages[iter].parentElement.classList.contains(whos);
 					var spodnjiIsti = alreadyMessages[iter+1].parentElement.classList.contains(whos);
 					console.log([zgornjiIsti, spodnjiIsti]);
+
 					if(zgornjiIsti && spodnjiIsti) {
 						var messagesnest = alreadyMessages[iter].parentElement;
 						bubblenode.className = "message";
 						messagesnest.insertBefore(bubblenode, alreadyMessages[iter+1]);
 						return;
 					}
+
 					if(zgornjiIsti && !spodnjiIsti) {
 						var messagesnest = alreadyMessages[iter].parentElement;
 						bubblenode.className = "message last";
@@ -206,25 +227,30 @@ function addMessage(whom, body, datePlacement = 0, messageDate = null) { // date
 						messagesnest.appendChild(bubblenode);
 						return;
 					}
+
 					if(!zgornjiIsti && spodnjiIsti) {
 						var messagesnest = alreadyMessages[iter+1].parentElement;
 						bubblenode.className = "message";
 						messagesnest.insertBefore(bubblenode, alreadyMessages[iter+1]);
 						return;
 					}
+
 					throw new RangeError("This should not happen!");
 				}
 			}
 			throw new RangeError("This should not happen!1");
+
 		}
 	}
+
 	// autodetect date is not present here anymore
-	messagesnest.className = whos+" messages";
+	messagesnest.className = whos + " messages";
 	if(datePlacement == 0) {
 		messagesnest.appendChild(bubblenode);
 	} else {
 		messagesnest.prepend(bubblenode);
 	}
+
 	if(!istaoseba) {
 		if(datePlacement == 0) {
 			chatarea.appendChild(messagesnest);
@@ -233,6 +259,7 @@ function addMessage(whom, body, datePlacement = 0, messageDate = null) { // date
 		}
 	}
 }
+
 async function validateName() {
 	if (directory !== null) {
 		document.getElementById("full-name").disabled = false;
@@ -282,7 +309,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	const modals = document.querySelectorAll('.side-modal');
 	M.Sidenav.init(modals, { edge: 'left', draggable: false });
 	prepareAndStartFetchingMessages(); // just opens modal, as there is no recipient selected
-
 });
 
 async function updateSendButton() {
@@ -304,13 +330,17 @@ async function setRecipient(name = null) {
 		UIAlert(D("recipientNotInDirectory"));
 		throw new RangeError("Hello from setRecipient(): name is not in directory");
 	}
+
 	var modal = document.querySelectorAll('#directory-side-menu')[0];
 	var modalInstance = M.Sidenav.getInstance(modal);
 	modalInstance.close();
+
 	document.getElementsByClassName("msg-chattingWith")[0].innerHTML = name;
 	sogovornik = name;
 	currentlyChattingWith = directory[name];
+
 	document.getElementById("chat-mustSelectRecipient").hidden=true;
+
 	updateSendButton();
 	clearMessages(); // <-- do when recipient selected
 	prepareAndStartFetchingMessages(); // <-- same
@@ -337,6 +367,7 @@ async function startFetchingMessages() {
 					password = value;
 			}),
 	];
+
 	setLoading(true);
 	await Promise.all(promises_to_run);
 	try {

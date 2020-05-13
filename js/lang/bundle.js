@@ -367,7 +367,7 @@ var langstrings = {
 		messageBody: "telo",
 		removeImages: "odstrani slike",
 		note: "opomba",
-		largeImagesNote: "GimB strežniki ne marajo velikih sporočil, zato lahko pošiljate le zelo male slike, v nasprotnem primeru sporočilo ne bo dostavljeno",
+		largeImagesNote: "GimB strežniki ne marajo velikih sporočil, zato lahko pošiljate le zelo majhne slike, v nasprotnem primeru sporočilo ne bo dostavljeno",
 		attachedImages: "pripete slike",
 		passwordForE2EE: "geslo za šifriranje sporočila",
 		messages: "sporočila",
@@ -379,7 +379,7 @@ var langstrings = {
 		loadMessageBody: "naloži telo sporočila",
 		thisMessageWasEncrypted: "to sporočilo je šifriral BežiApp",
 		enterPassword: "vnesite geslo",
-		decrypt: "odšifriraj",
+		decrypt: "dešifriraj",
 		nameDirectoryNotSet: "imenik ni nastavljen, pošiljanje ni mogoče",
 		errorFetchingMessages: "sporočil ni bilo mogoče prenesti",
 		unableToReceiveTheMessage: "sporočila ni bilo mogoče prenesti",
@@ -425,7 +425,7 @@ var langstrings = {
 		translatorsForThisLanguage: "prevajalci izbranega jezika",
 		whatIsNew: "kaj je novega",
 		whatsNew: "kaj je novega",
-		reportABug: "prijavite napako ali hrošča",
+		reportABug: "prijavite napako",
 		sendASuggestion: "pošljite pripombo/predlog/pohvalo/pritožbo",
 		instagram: "instagram",
 		// changelog
@@ -460,7 +460,7 @@ var langstrings = {
 		languageSet: "jezik nastavljen, odprite neko drugo stran da se pokažejo spremembe",
 		// gsec
 		gsecErrNet: "napaka povezave na GimSIS",
-		gsecErrLogin: "napaka avtentikacije na GimSISu (napačno geslo?), poskusite se odjaviti",
+		gsecErrLogin: "prijava v GimSIS ni uspela (napačno geslo?), poskusite se odjaviti",
 		gsecErrOther: "neznana napaka GimSISa, poskusite se odjaviti",
 		// videoconferences
 		videoconferences: "GimB konference"

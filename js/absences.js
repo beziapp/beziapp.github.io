@@ -94,22 +94,29 @@ async function loadAbsences(force_refresh = false) {
 function displayData() {
 	absences.forEach(absence => {
 		let li = document.createElement("li");
+
 		let date_string = dateString.longFormatted(absence["date"]); // javascript sucks - zakaj ob vsej svoji "preprostosti" ne morm met Date za key objecta!?!?'!!11~
 		let header = document.createElement("div");
 		header.className = "collapsible-header";
 		header.innerText = date_string;
+
 		let body = document.createElement("div");
 		body.className = "collapsible-body";
+
 		let body_table = document.createElement("table");
 		body_table.className = "highlight";
+
 		let body_table_tbody = document.createElement("tbody");
+
 		Object.keys(absence.subjects).forEach(lesson => {
 			let subject_row = document.createElement("tr");
 			let subject_lesson_icon = document.createElement("td");
 			let subject_lesson_text = document.createElement("td");
 			subject_lesson_text.innerText = S("lesson") + " " + lesson;
+
 			let subject_lesson_icon_i = document.createElement("i");
 			subject_lesson_icon_i.className = "material-icons";
+
 			switch (absence["subjects"][lesson]["status"]) {
 				case 0:
 					subject_lesson_icon_i.innerText = "schedule";
@@ -124,7 +131,9 @@ function displayData() {
 					subject_lesson_icon_i.innerText = "not_interested";
 					break;
 			}
+
 			subject_lesson_icon.appendChild(subject_lesson_icon_i);
+
 			let subject_name = document.createElement("td");
 			subject_name.innerText = S(gseAbsenceTypes[absence["subjects"][lesson]["status"]]) + " : " + absence["subjects"][lesson]["subject"];
 			subject_row.appendChild(subject_lesson_icon);
@@ -132,11 +141,13 @@ function displayData() {
 			subject_row.appendChild(subject_name);
 			body_table_tbody.appendChild(subject_row);
 		});
+
 		body_table.appendChild(body_table_tbody);
 		body.appendChild(body_table);
+
 		li.appendChild(header);
 		li.appendChild(body);
-	$("#absences-col").append(li);
+		$("#absences-col").append(li);
 	});
 }
 
@@ -164,9 +175,9 @@ function setupPickers() {
         setDefaultDate: true,
         firstDay: 1,
         onSelect: refreshAbsences
-    }
+	}
+	
     let instances = M.Datepicker.init(elems, options);
-
 
     date_object.setDate(date_object.getDate() - 14);
 
@@ -199,5 +210,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // Setup side menu
     const menus = document.querySelectorAll('.side-menu');
     M.Sidenav.init(menus, { edge: 'right', draggable: true });
-
 });

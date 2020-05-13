@@ -1,19 +1,23 @@
 // tab = 2 || any spaces; use tabs
 // not tested yet -- NOTE: document.createElement is xssy, use DOMParser!
 var gseAbsenceTypes = ["notProcessed", "authorizedAbsence", "unauthorizedAbsence", "doesNotCount"];
+
 function get_string_between(string, start, end) {
 	return string.split(start).pop().split(end)[0];
 }
+
 function stripHtml(html) {
    var tmp = document.createElement("DIV");
    tmp.innerHTML = html;
    return tmp.textContent || tmp.innerText || "";
 }
+
 function slDayToInt(inputString) { // wtf
 	let fourChars = inputString.substring(1, 5);
 	let fourCharDays = ["oned", "orek", "reda", "etrt", "etek", "obot", "edel"];
 	return fourCharDays.indexOf(fourChars);
 }
+
 const GSE_URL = "https://zgimsis.gimb.tk/gse/";
 const GSEC_ERR_NET = "GSEC NETWORK ERROR (ajax error)";
 const GSEC_ERR_NET_POSTBACK_GET = "GSEC NETWORK ERROR (ajax error) in postback GET"
@@ -26,8 +30,10 @@ const GSEC_NO_ABSENCES = "noAbsences";
 const GSEC_MSGTYPES = ["msgReceived", "msgSent", "msgDeleted"];
 
 class gsec {
+
 	constructor() {
 	}
+
 	parseAndPost(inputHTML, params, formId = null, useDiffAction = null) {
 		return new Promise((resolve, reject) => {
 			let parser = new DOMParser();
@@ -67,6 +73,7 @@ class gsec {
 			});
 		});
 	}
+
 	postback(getUrl, params = {}, formId = null, useDiffAction = null) {
 		return new Promise( (resolve, reject) => {
 			$.ajax({
@@ -92,6 +99,7 @@ class gsec {
 			});
 		});
 	}
+
 	login(usernameToLogin, passwordToLogin) {
 		return new Promise((resolve, reject) => {
 		var dataToSend = {"edtGSEUserId": usernameToLogin, "edtGSEUserPassword": passwordToLogin, "btnLogin": "Prijava"};
@@ -113,6 +121,7 @@ class gsec {
 			});
 		});
 	}
+
 	fetchSessionData() {
 		return new Promise((resolve, reject) => {
 			$.ajax({
@@ -144,6 +153,7 @@ class gsec {
 			});
 		});
 	}
+
 	fetchTeachersDirectory() {
 		return new Promise((resolve, reject) => {
 			var dejt = new Date();
@@ -162,8 +172,15 @@ class gsec {
 				type: "POST",
 				dataType: "json",
 				contentType: "application/json",
-				data: JSON.stringify( { "aIdOsebeRe": "", "aIdSolskoLeto": Number(letnica).toString(), "aMsgType": "null", "aIdType": "null", "aIdUcitelj": "", "aFilter": null} ),
-					// note about the nulls, "null"s and ""s: this is actually how zgimsisext2016 javascripts sends it.
+				data: JSON.stringify({
+					"aIdOsebeRe": "",
+					"aIdSolskoLeto": Number(letnica).toString(),
+					"aMsgType": "null",
+					"aIdType": "null",
+					"aIdUcitelj": "",
+					"aFilter": null
+				}),
+				// note about the nulls, "null"s and ""s: this is actually how zgimsisext2016 javascripts sends it.
 				processData: false,
 				success: (data, textStatus, xhr) => {
 					var teachersDirectory = data.d.split(";"); // data.d je "12434=Ime Primek (učitelj);75353=Ime Drugega Priimek (učitelj)";
@@ -180,6 +197,7 @@ class gsec {
 			});
 		});
 	}
+
 	fetchTimetable(datum = null) {
 		if(datum == null) {
 			var dataToSend = {};
@@ -201,12 +219,19 @@ class gsec {
 					var razred = desc[2];
 					var teacher = desc[3];
 					var place = desc[4];
-					urnik[day][period] = {"subject": subject, "acronym": abkurzung, "class": razred, "teacher":  teacher, "place": place};
+					urnik[day][period] = {
+						"subject": subject,
+						"acronym": abkurzung,
+						"class": razred,
+						"teacher": teacher,
+						"place": place
+					};
 				}
 				resolve(urnik);
 			});
 		});
 	}
+
 	fetchGradings() {
 		return new Promise((resolve, reject) => {
 			var gradings = [];
@@ -232,6 +257,7 @@ class gsec {
 			});
 		});
 	}
+
 	fetchTeachers() { // razrednika ne vrne kot razrednika, če le-ta uči še en predmet. razlog: razrednik je napisan dvakrat, drugič se prepiše. Ne da se mi popravljat.
 		return new Promise((resolve, reject) => {
 			var Teachers = {};
@@ -264,12 +290,16 @@ class gsec {
 			});
 		});
 	}
+
 	sendMessage(recipient, subject = " ", body = " ") {
 		return new Promise((resolve, reject) => {
 			var dataToSend = {
-				"ctl00$ModalMasterBody$edtPrejemniki": ""			,		"ctl00$ModalMasterBody$edtZadeva": subject									,
-				"ctl00$ModalMasterBody$edtBesediloExt": body	,		"__EVENTTARGET": "ctl00$ModalMasterBody$btnDogodekShrani"		,
-				"__EVENTARGUMENT": ""													,		"ctl00$ModalMasterBody$hfPrejemniki": recipient
+				"ctl00$ModalMasterBody$edtPrejemniki": "",
+				"ctl00$ModalMasterBody$edtZadeva": subject,
+				"ctl00$ModalMasterBody$edtBesediloExt": body,
+				"__EVENTTARGET": "ctl00$ModalMasterBody$btnDogodekShrani",
+				"__EVENTARGUMENT": "",
+				"ctl00$ModalMasterBody$hfPrejemniki": recipient
 			};
 			this.postback(GSE_URL+"Page_Gim/Uporabnik/modSporocilo.aspx?params=", dataToSend, null, true).then((response)=>{
 				resolve(null);
@@ -280,7 +310,7 @@ class gsec {
 		return new Promise((resolve, reject) => {
       $.ajax({
         xhrFields: {
-          withCredentials: true
+        	withCredentials: true
         },
         crossDomain: true,
         url: GSE_URL+"Page_Gim/Uporabnik/Sporocila.aspx/DeleteMessage",
@@ -291,11 +321,11 @@ class gsec {
         data: JSON.stringify( { "aIdSporocilo": id.split("|")[0], "aIdZapis": id.split("|")[1] } ),
         processData: false,
         success: (data, textStatus, xhr) => {
-					if(data.d == true) {
-						resolve(true);
-					} else {
-						reject(new Error(false));
-					}
+			if(data.d == true) {
+				resolve(true);
+			} else {
+				reject(new Error(false));
+			}
         },
         error: () => {
           reject(new Error(GSEC_ERR_NET));
@@ -303,6 +333,7 @@ class gsec {
       });
 		});
 	}
+
 	fetchAbsences(fromDate = null, tillDate = null) { // navedba datumov je deprecated. Internet je dovolj hiter za poslat maksimalno 4160 ur (16 ur/dan, 5 dni/ted, 52 ted/leto)
 		return new Promise((resolve, reject)=>{
 			if(!(fromDate instanceof Date) || !(tillDate instanceof Date)) {
@@ -340,20 +371,21 @@ class gsec {
 			});
 		});
 	}
+
 	fetchGrades() {
 		var grades = [];
 		return new Promise((resolve, reject) => {
-      $.ajax({
-        xhrFields: {
-          withCredentials: true
-        },
-        crossDomain: true,
-        url: GSE_URL+"Page_Gim/Ucenec/OceneUcenec.aspx",
-        cache: false,
-        type: "GET",
-        dataType: "html",
-        processData: false,
-        success: (data, textStatus, xhr) => {
+      		$.ajax({
+				xhrFields: {
+					withCredentials: true
+				},
+				crossDomain: true,
+				url: GSE_URL+"Page_Gim/Ucenec/OceneUcenec.aspx",
+				cache: false,
+				type: "GET",
+				dataType: "html",
+				processData: false,
+				success: (data, textStatus, xhr) => {
 					let parser = new DOMParser();
 					let parsed = parser.parseFromString(data, "text/html");
 					let gradeSpans = parsed.getElementsByClassName("txtVOcObd");
@@ -386,17 +418,22 @@ class gsec {
 						grades.push(gradeToAdd);
 					}
 					resolve(grades);
-        },
-        error: () => {
-          reject(new Error(GSEC_ERR_NET));
-        }
-      });
+				},
+				error: () => {
+					reject(new Error(GSEC_ERR_NET));
+				}
+      		});
 		});
 	}
+
 	fetchMessageOld(selectId) { // ne dela, glej fix spodaj (fetchMessage)
 		var message;
 		return new Promise((resolve, reject) => {
-			var dataToBeSent = {"__EVENTTARGET": "ctl00$ContentPlaceHolder1$gvwSporocila", "__EVENTARGUMENT": "Select$"+selectId};
+			var dataToBeSent = {
+				"__EVENTTARGET": "ctl00$ContentPlaceHolder1$gvwSporocila",
+				"__EVENTARGUMENT": "Select$" + selectId
+			};
+
 			this.postback(GSE_URL+"Page_Gim/Uporabnik/Sporocila.aspx", dataToBeSent, null, true).then((response) => {
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
@@ -408,15 +445,26 @@ class gsec {
 				var tume = parsed.querySelectorAll("[id$=Label7]")[0].innerHTML.split(" (").pop().split(")")[0].split(" ").pop(); // "tume"!
 				var dateObj = new Date(Date.parse(date[2]+"-"+date[1]+"-"+date[0]+" "+tume)); // "tume"!
 				var msgId = parsed.getElementById("ctl00_ContentPlaceHolder1_hfIdSporocilo").getAttribute("value");
-				message = {"subject": subject, "body": body, "sender": sender, "recipient": recipient, "date": dateObj};
+				message = {
+					"subject": subject,
+					"body": body,
+					"sender": sender,
+					"recipient": recipient,
+					"date": dateObj
+				};
 				resolve(message);
 			});
 		});
 	}
+
 	fetchMessagesLastPageNumber(category = GSEC_MSGTYPE_RECEIVED) {
 		var msgCategory = GSEC_MSGTYPES[category];
 		return new Promise((resolve, reject) => {
-			var dataToBeSent = {"ctl00$ContentPlaceHolder1$ddlPrikaz": msgCategory, "__EVENTARGUMENT": "Page$Last", "__EVENTTARGET": "ctl00$ContentPlaceHolder1$gvwSporocila"};
+			var dataToBeSent = {
+				"ctl00$ContentPlaceHolder1$ddlPrikaz": msgCategory,
+				"__EVENTARGUMENT": "Page$Last",
+				"__EVENTTARGET": "ctl00$ContentPlaceHolder1$gvwSporocila"
+			};
 			this.postback(GSE_URL+"Page_Gim/Uporabnik/Sporocila.aspx", dataToBeSent, null, true).then((response) => {
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
@@ -430,12 +478,17 @@ class gsec {
 			});
 		});
 	}
+
 	fetchMessagesList(category = GSEC_MSGTYPE_RECEIVED, pageNumber = 1, outputResponse = false) { // outputResponse je probably za debug
 		var msgCategory = GSEC_MSGTYPES[category];
 		var messages = [];
-		var requestURi = GSE_URL+"Page_Gim/Uporabnik/Sporocila.aspx";
+		var requestURi = GSE_URL + "Page_Gim/Uporabnik/Sporocila.aspx";
 		return new Promise((resolve, reject) => {
-			var dataToBeSent = {"ctl00$ContentPlaceHolder1$ddlPrikaz": msgCategory, "__EVENTARGUMENT": "Page$"+pageNumber, "__EVENTTARGET": "ctl00$ContentPlaceHolder1$gvwSporocila"};
+			var dataToBeSent = {
+				"ctl00$ContentPlaceHolder1$ddlPrikaz": msgCategory,
+				"__EVENTARGUMENT": "Page$" + pageNumber,
+				"__EVENTTARGET": "ctl00$ContentPlaceHolder1$gvwSporocila"
+			};
 			this.postback(requestURi, dataToBeSent, null, true).then((response) => {
 				if(outputResponse == true) {
 					response.url = requestURi;
@@ -469,11 +522,21 @@ class gsec {
 			});
 		});
 	}
+
 	fetchMessage(category = GSEC_MSGTYPE_RECEIVED, pageNumber = 1, messageNumberOnPage = 0) {
 		var message;
 		return new Promise((resolve, reject) => {
 			this.fetchMessagesList(category, pageNumber, true).then( (value) => {
-				this.parseAndPost(value.data, {"__EVENTTARGET": "ctl00$ContentPlaceHolder1$gvwSporocila", "__EVENTARGUMENT": "Select$"+messageNumberOnPage}, null, value.url).then((response) => {
+				this.parseAndPost(
+					value.data,
+					{
+						"__EVENTTARGET": "ctl00$ContentPlaceHolder1$gvwSporocila",
+						"__EVENTARGUMENT": "Select$" + messageNumberOnPage
+					},
+					null, 
+					value.url
+				).then((response) => {
+
 					let parser = new DOMParser();
 					let parsed = parser.parseFromString(response.data, "text/html");
 					let subject = parsed.getElementsByClassName("msgSubjectS")[0].innerHTML.trim();
@@ -486,6 +549,7 @@ class gsec {
 					var msgId = parsed.getElementById("ctl00_ContentPlaceHolder1_hfIdSporocilo").getAttribute("value");
 					message = {"subject": subject, "body": body, "sender": sender, "recipient": recipient, "date": dateObj, "msgId": msgId};
 					resolve(message);
+					
 				});
 			});
 		});

@@ -119,10 +119,11 @@ function teacherInfo(teacher_id) {
 	let subject = subjectsString.slice(0, -2);
 	let office_day = dateString.day(teacher_object["tpMeetings"]["day"]);
 	let office_lesson = teacher_object["tpMeetings"]["period"];
-	document.getElementById("teacher-name").innerText = name;
-	document.getElementById("teacher-subject").innerText = S("schoolSubject") + ": " + subject;
-	document.getElementById("teacher-office").innerText = office_day + ", " + S("lesson") + " " + office_lesson;
-	const modal = document.querySelectorAll('.side-modal')[0];
+	$("#teacher-name").text(name);
+	$("#teacher-subject").text(`${S("schoolSubject")}: ${subject}`);
+	$("#teacher-office").text(`${office_day}, ${S("lesson")} ${office_lesson}`);
+
+	const modal = document.querySelectorAll(".side-modal")[0];
 	M.Sidenav.getInstance(modal).open();
 }
 

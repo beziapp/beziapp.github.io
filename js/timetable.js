@@ -224,13 +224,13 @@ function eventClickHandler(eventClickInfo) {
     let lesson_class = lesson_metadata["class"];
     let lesson_duration = lesson_metadata["start"] + " - " + lesson_metadata["end"];
 
-    document.getElementById("lesson-subject").innerText = lesson_subject;
-    document.getElementById("lesson-teacher").innerText = lesson_teacher;
-    document.getElementById("lesson-class").innerText = lesson_class;
-    document.getElementById("lesson-classroom").innerText = lesson_classroom;
-    document.getElementById("lesson-duration").innerText = lesson_duration;
+    $("#lesson-subject").text(lesson_subject);
+    $("#lesson-teacher").text(lesson_teacher);
+    $("#lesson-class").text(lesson_class);
+    $("#lesson-classroom").text(lesson_classroom);
+    $("#lesson-duration").text(lesson_duration);
 
-    const modal = document.querySelectorAll('.side-modal')[0];
+    const modal = document.querySelectorAll(".side-modal")[0];
     M.Sidenav.getInstance(modal).open();
 }
 

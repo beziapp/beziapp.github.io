@@ -12,9 +12,11 @@ if (navigator.serviceWorker) {
         }
     });
 }
+
 if (location.protocol != 'https:') {
  location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
 }
+
 async function UIAlert(usermsg, devmsg) {
   if(true) { // če bo kakšen dev switch?
     M.toast( { html: usermsg } );

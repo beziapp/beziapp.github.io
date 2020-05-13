@@ -40,8 +40,10 @@ async function loadGrades(force_refresh = false) {
 	// If we don't have a list of grades, fetch it
 	if (grades === null || grades === [] || force_refresh) {
 		try {
+
 			let gsecInstance = new gsec();
-			await	gsecInstance.login(username, password);
+			await gsecInstance.login(username, password);
+
 			gsecInstance.fetchGrades().then( (value) => {
 				grades = value;
 				localforage.setItem("grades", value).then((value) => {
@@ -53,10 +55,12 @@ async function loadGrades(force_refresh = false) {
 				gsecErrorHandlerUI(err);
 				setLoading(false);
 			});
+
 		} catch (err) {
 			gsecErrorHandlerUI(err);
 			setLoading(false);
 		}
+
 	} else {
 		displayGrades();
 		setLoading(false);
@@ -69,6 +73,7 @@ function displayGrades() {
 		if (!(grade["subject"] in grades_by_subject)) {
 			grades_by_subject[grade["subject"]] = [];
 		}
+
 		let grade_object = {
 			date: dateString.longFormatted(grade["date"]),
 			teacher: grade["teacher"],
@@ -81,7 +86,9 @@ function displayGrades() {
 			index: index
 		}
 		grades_by_subject[grade["subject"]].push(grade_object);
+
 	});
+
 	let root_element = document.getElementById("grades-collapsible");
 	Object.keys(grades_by_subject).forEach((subject) => {
 		// Create root element for a subject entry
@@ -217,6 +224,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 	// Setup side modal
 	const modals = document.querySelectorAll('.side-modal');
 	M.Sidenav.init(modals, { edge: 'left', draggable: false });
-	await clearGrades();
+	clearGrades();
 	await loadGrades();
 });
