@@ -311,6 +311,10 @@ function displayData(messageType) {
             break;
     }
 
+    // $("#storage-bar").show();
+    $("#storage-progressbar").width(Number(Number(getNumMessages(messageType) / 120) * 100).toFixed(2) + "%");
+    $("#storage-stats").text(`${getNumMessages(messageType)}/120`);
+
     let msg_list = $(div_selector);
     msg_list.html("");
     messages[messageType].forEach(element => {
@@ -354,10 +358,6 @@ function displayData(messageType) {
             `);
 	    }
     });
-
-    $("#storage-bar").show();
-    $("#storage-progressbar").width(Number(Number(getNumMessages(messageType) / 120) * 100).toFixed(2) + "%");
-    $("#storage-stats").html(`${getNumMessages(messageType)}/120`);
 }
 
 // -1 = cumulative
