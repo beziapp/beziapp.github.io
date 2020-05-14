@@ -418,11 +418,11 @@ async function validateName() {
         if ($("#full-name").val() in directory) {
             $("#full-name").addClass("valid");
             $("#full-name").removeClass("invalid");
-            $("#msg-send").prop("disabled", false);
+            $("#msg-send").removeAttr("disabled");
         } else {
             $("#full-name").addClass("invalid");
             $("#full-name").removeClass("valid");
-            $("#msg-send").prop("disabled", true);
+            $("#msg-send").attr("disabled", "disabled");
         }
     }
 }
@@ -493,7 +493,7 @@ function setupEventListeners() {
         localforage.getItem("directory").then(function (value) {
             var msgcontent = $("#msg-body").val() + additionalstufftoaddtomessage;
             var msgsubject = $("#msg-subject").val();
-	        if ($("#msg-e2ee-pass").prop("hidden") !== true) {
+	        if ($("#encryption-key-input").prop("hidden") !== true) {
 		        var randomencdivid = Math.floor(Math.random() * 9999).toString().padStart(4, "0");
                 var addrparts = window.location.href.split("/"); // engleski
                 
@@ -530,7 +530,8 @@ function setupEventListeners() {
             $("#msg-body").val("");
             $("#full-name").val("");
             $("#msg-subject").val("");
-            $("#msg-send").prop("disabled", true);
+            // $("#msg-send").prop("disabled", true);
+            $("#msg-send").attr("disabled", "disabled");
             additionalstufftoaddtomessage = "";
 
 	        $("#msg-added-image").html("");
