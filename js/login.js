@@ -25,7 +25,7 @@ function login() {
 	let password = $("#password").val();
 	var gsecInstance = new gsec();
 	gsecInstance.login(username, password).then( (value) => {
-		if(typeof value == "string") {
+		if (typeof value == "string") {
 			let promises_to_run = [
 				localforage.setItem("logged_in", true),
 				localforage.setItem("username", username),

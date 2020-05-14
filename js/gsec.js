@@ -38,18 +38,18 @@ class gsec {
 		return new Promise((resolve, reject) => {
 			let parser = new DOMParser();
 			let parsed = parser.parseFromString(inputHTML, "text/html");
-			if(formId == null) {
+			if (formId == null) {
 				var form = parsed.getElementsByTagName("form")[0];
 			} else {
 				var form = parsed.getElementById(formId);
 			}
 			var otherParams = $(form).serializeArray();
-			for(const input of otherParams) {
-				if(!(input.name in params)) {
+			for (const input of otherParams) {
+				if (!(input.name in params)) {
 					params[input.name] = input.value; // so we don't overwrite existing values
 				}
 			}
-			if(useDiffAction == null || useDiffAction == false) {
+			if (useDiffAction == null || useDiffAction == false) {
 				var action = new URL($(form).attr("action"), GSE_URL); // absolute == relative + base
 			} else {
 				var action = useDiffAction;
@@ -86,7 +86,7 @@ class gsec {
 				type: "GET",
 				dataType: "html",
 				success: (getData) => {
-					if(useDiffAction == true) {
+					if (useDiffAction == true) {
 						useDiffAction = getUrl;
 					}
 					this.parseAndPost(getData, params, formId, useDiffAction).then((value) => {
@@ -102,17 +102,20 @@ class gsec {
 
 	login(usernameToLogin, passwordToLogin) {
 		return new Promise((resolve, reject) => {
-		var dataToSend = {"edtGSEUserId": usernameToLogin, "edtGSEUserPassword": passwordToLogin, "btnLogin": "Prijava"};
-			this.postback(GSE_URL+"Logon.aspx", dataToSend, null, true).then( (response) => {
+			var dataToSend = {
+				"edtGSEUserId": usernameToLogin,
+				"edtGSEUserPassword": passwordToLogin,
+				"btnLogin": "Prijava"
+			};
+			this.postback(GSE_URL + "Logon.aspx", dataToSend, null, true).then((response) => {
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
-				if(response.code == 302) {
+				if (response.code === 302) {
 					resolve(true);
 				} else {
-					if(!!(parsed.getElementById("lblMsg"))) { // če obstaja lblMsg (napaka pri prijavi)
+					if (!!(parsed.getElementById("lblMsg"))) { // če obstaja lblMsg (napaka pri prijavi)
 						reject(new Error(GSEC_ERR_LOGIN));
-					}
-					if(!(parsed.getElementById("ctl00_lblLoginName"))) { // če ni ctl00_lblLoginName nismo na Default.aspx
+					} else if (!(parsed.getElementById("ctl00_lblLoginName"))) { // če ni ctl00_lblLoginName nismo na Default.aspx
 						reject(new Error(GSEC_ERR_LOGIN));
 					} else {
 						resolve(parsed.getElementById("ctl00_lblLoginName").innerHTML); // vrne ime dijaka, to je lahko uporabno
@@ -129,7 +132,7 @@ class gsec {
 					withCredentials: true
 				},
 				crossDomain: true,
-				url: GSE_URL+"WS_Gim/wsGimSisUtils.asmx/GetSessionData",
+				url: GSE_URL + "WS_Gim/wsGimSisUtils.asmx/GetSessionData",
 				cache: false,
 				type: "POST",
 				dataType: "json",
@@ -156,18 +159,18 @@ class gsec {
 
 	fetchTeachersDirectory() {
 		return new Promise((resolve, reject) => {
-			var dejt = new Date();
-			if(dejt.getMonth() < 7) { // če še ni avgust uporabimo preteklo leto/letnico
-				var letnica = dejt.getFullYear()-1;
+			var current_date = new Date();
+			if (current_date.getMonth() < 7) { // če še ni avgust uporabimo preteklo leto/letnico
+				var letnica = current_date.getFullYear()-1;
 			} else { // je že po avgustu (september), uporabimo trenutno letnico
-				var letnica = dejt.getFullYear();
+				var letnica = current_date.getFullYear();
 			} // skratka uporabi se prvi sklop številk v šolskem letu TOLE(/xxxx)
 			$.ajax({
 				xhrFields: {
 					withCredentials: true
 				},
 				crossDomain: true,
-				url: GSE_URL+"Page_Gim/Uporabnik/modSporociloPrejemniki.aspx/NajdiOsebePrejemniki",
+				url: GSE_URL + "Page_Gim/Uporabnik/modSporociloPrejemniki.aspx/NajdiOsebePrejemniki",
 				cache: false,
 				type: "POST",
 				dataType: "json",
@@ -187,7 +190,7 @@ class gsec {
 					teachersDirectory.pop(); // pop, ker se string konča z ;
 					var formatted = {};
 					teachersDirectory.forEach((v) => {
-							formatted[v.split("=")[1].split(" (")[0]] = v.split("=")[0];
+						formatted[v.split("=")[1].split(" (")[0]] = v.split("=")[0];
 					});
 					resolve(formatted);
 				},
@@ -199,17 +202,19 @@ class gsec {
 	}
 
 	fetchTimetable(datum = null) {
-		if(datum == null) {
+		if (datum == null) {
 			var dataToSend = {};
 		} else {
-			var dataToSend = {"ctl00$ContentPlaceHolder1$wkgDnevnik_edtGridSelectDate": datum.getDate()+"."+Number(datum.getMonth()+1)+"."+datum.getFullYear()};
+			var dataToSend = {
+				"ctl00$ContentPlaceHolder1$wkgDnevnik_edtGridSelectDate": `${datum.getDate()}.${Number(datum.getMonth()+1)}.${datum.getFullYear()}`
+			};
 		}
 		return new Promise((resolve, reject) => {
 			var urnik = { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6:{} } ;
 			this.postback(GSE_URL+"Page_Gim/Ucenec/DnevnikUcenec.aspx", dataToSend, null, true).then( (response) => {
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
-				for(const urnikElement of parsed.querySelectorAll('*[id^="ctl00_ContentPlaceHolder1_wkgDnevnik_btnCell_"]')) {
+				for (const urnikElement of parsed.querySelectorAll('*[id^="ctl00_ContentPlaceHolder1_wkgDnevnik_btnCell_"]')) {
 					var subFields = urnikElement.id.split("_");
 					var period = subFields[4];
 					var day = subFields[5];
@@ -235,23 +240,34 @@ class gsec {
 	fetchGradings() {
 		return new Promise((resolve, reject) => {
 			var gradings = [];
-			this.postback(GSE_URL+"Page_Gim/Ucenec/IzpitiUcenec.aspx", {}, null, true).then( (response) => {
+			this.postback(GSE_URL + "Page_Gim/Ucenec/IzpitiUcenec.aspx", {}, null, true).then( (response) => {
+
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
+
 				var rowElements = parsed.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+
 				for (const row of rowElements) {
 					var subFields = row.getElementsByTagName("td");
 					var date = subFields[0].innerHTML.trim().split(".");
 					var dateObj = new Date(date[2]+"-"+date[1]+"-"+date[0]);
 					var rowSpan = subFields[1].getElementsByTagName("span")[0];
 					var abkurzung = "";
-					if(rowSpan) {
+
+					if (rowSpan) {
 						abkurzung = rowSpan.innerHTML.trim();
 					}
+
 					rowSpan.remove(); // magic
 					var subject = subFields[1].innerHTML.split(" (")[0].trim();
 					var desc = subFields[1].innerHTML.split('(').pop().split(')')[0];
-					gradings.push({"date": dateObj, "acronym": abkurzung, "subject": subject, "description": desc});
+
+					gradings.push({
+						"date": dateObj,
+						"acronym": abkurzung,
+						"subject": subject,
+						"description": desc
+					});
 				}
 				resolve(gradings);
 			});
@@ -261,29 +277,36 @@ class gsec {
 	fetchTeachers() { // razrednika ne vrne kot razrednika, če le-ta uči še en predmet. razlog: razrednik je napisan dvakrat, drugič se prepiše. Ne da se mi popravljat.
 		return new Promise((resolve, reject) => {
 			var Teachers = {};
-			this.postback(GSE_URL+"Page_Gim/Ucenec/UciteljskiZbor.aspx", {}, null, true).then((response)=>{
+			
+			this.postback(GSE_URL + "Page_Gim/Ucenec/UciteljskiZbor.aspx", {}, null, true).then((response) => {
+
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
+
 				var rowElements = parsed.getElementsByTagName("table")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-				for(const row of rowElements) {
+
+				for (const row of rowElements) {
 					var subFields = row.getElementsByTagName("td");
 					var name = stripHtml(subFields[0].innerHTML); // razrednik je namreč bold tekst!
 					var subjectStrings = subFields[2].innerHTML.split("<br>");
 					var subjects = {};
-					for(const subjectString of subjectStrings) {
+
+					for (const subjectString of subjectStrings) {
 						var abkurzung = "";
 						var subjectName = stripHtml(subjectString).split(" (")[0];
 						abkurzung = stripHtml(subjectString).split('(').pop().split(')')[0];
 						subjects[abkurzung] = subjectName;
 					}
+
 					var TP = {};
 					TP.day = slDayToInt(subFields[3].innerHTML.split(", ")[0]);
 					TP.period = Number( subFields[3].innerHTML.split(", ").pop().split(". ura")[0] );
 					TP.from = subFields[3].innerHTML.split("(").pop().split(")")[0].split(" - ")[0];
 					TP.till = subFields[3].innerHTML.split("(").pop().split(")")[0].split(" - ")[1];
-					if(TP.day < 0) { // indexOf vrne -1, če v arrayu ne najde dneva (&nbsp;)
+					if (TP.day < 0) { // indexOf vrne -1, če v arrayu ne najde dneva (&nbsp;)
 						TP = false;
 					}
+
 					Teachers[name] = { "subjects" : subjects , "tpMeetings" : TP };
 				}
 				resolve(Teachers);
@@ -308,57 +331,64 @@ class gsec {
 	}
 	deleteMessage(id) {
 		return new Promise((resolve, reject) => {
-      $.ajax({
-        xhrFields: {
-        	withCredentials: true
-        },
-        crossDomain: true,
-        url: GSE_URL+"Page_Gim/Uporabnik/Sporocila.aspx/DeleteMessage",
-        cache: false,
-        type: "POST",
-        dataType: "json",
-        contentType: "application/json",
-        data: JSON.stringify( { "aIdSporocilo": id.split("|")[0], "aIdZapis": id.split("|")[1] } ),
-        processData: false,
-        success: (data, textStatus, xhr) => {
-			if(data.d == true) {
-				resolve(true);
-			} else {
-				reject(new Error(false));
-			}
-        },
-        error: () => {
-          reject(new Error(GSEC_ERR_NET));
-        }
-      });
+			$.ajax({
+				xhrFields: {
+					withCredentials: true
+				},
+				crossDomain: true,
+				url: GSE_URL + "Page_Gim/Uporabnik/Sporocila.aspx/DeleteMessage",
+				cache: false,
+				type: "POST",
+				dataType: "json",
+				contentType: "application/json",
+				data: JSON.stringify({
+					"aIdSporocilo": id.split("|")[0],
+					"aIdZapis": id.split("|")[1]
+				}),
+				processData: false,
+				success: (data, textStatus, xhr) => {
+					if(data.d == true) {
+						resolve(true);
+					} else {
+						reject(new Error(false));
+					}
+				},
+				error: () => {
+				reject(new Error(GSEC_ERR_NET));
+				}
+			});
 		});
 	}
 
 	fetchAbsences(fromDate = null, tillDate = null) { // navedba datumov je deprecated. Internet je dovolj hiter za poslat maksimalno 4160 ur (16 ur/dan, 5 dni/ted, 52 ted/leto)
 		return new Promise((resolve, reject)=>{
-			if(!(fromDate instanceof Date) || !(tillDate instanceof Date)) {
-				tillDate = new Date(Date.UTC(9999, 11, 30)); // overkill?
+			if (!(fromDate instanceof Date) || !(tillDate instanceof Date)) {
+				tillDate = new Date(Date.UTC(9999, 11, 30)); // overkill? Of course not, cez 8000 let bo ta app se vedno top shit
 				fromDate = new Date(Date.UTC(1, 1, 1)); // i don't thunk so
 			}
+
 			var dataToBeSent = {
-				"ctl00$ContentPlaceHolder1$edtDatZacetka": fromDate.getDay()+"."+fromDate.getMonth()+"."+fromDate.getFullYear(),
-				"ctl00$ContentPlaceHolder1$edtDatKonca": tillDate.getDay()+"."+tillDate.getMonth()+"."+tillDate.getFullYear(),
+				"ctl00$ContentPlaceHolder1$edtDatZacetka": `${fromDate.getDay()}.${fromDate.getMonth()}.${fromDate.getFullYear()}`,
+				"ctl00$ContentPlaceHolder1$edtDatKonca": `${tillDate.getDay()}.${tillDate.getMonth()}.${tillDate.getFullYear()}`,
 			};
-			this.postback(GSE_URL+"Page_Gim/Ucenec/IzostankiUcenec.aspx", dataToBeSent, null, true).then((response)=>{
+			this.postback(GSE_URL+"Page_Gim/Ucenec/IzostankiUcenec.aspx", dataToBeSent, null, true).then((response) => {
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
+
 				try {
 					var rowElements = parsed.getElementById("ctl00_ContentPlaceHolder1_gvwIzostankiGroup").getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 				} catch (err) {
 					resolve(GSEC_NO_ABSENCES);
 				}
+
 				var absences = [];
-			 	for(const izostanek of rowElements) {
+			 	for (const izostanek of rowElements) {
 					var subFields = izostanek.getElementsByTagName("td");
 					var date = subFields[0].innerHTML.trim().split(".");
-					var dateObj = new Date(Date.parse(date[2]+"-"+date[1]+"-"+date[0]));
+					var dateObj = new Date(Date.parse(`${date[2]}-${date[1]}-${date[0]}`));
 					var subjects = {};
-					for(const subject of subFields[2].innerHTML.split(", ")) {
+
+					for (const subject of subFields[2].innerHTML.split(", ")) {
 						var subjectName = subject.split(" (")[0];
 						var status = Number(subject.split('(<span class="opr').pop().split('">')[0]);
 						// statusi so: 0: ni obdelano, 1: opravičeno, 2: neopravičeno, 3: ne šteje, uporabi S(gseAbsenceTypes[num]) za i18n pre3vod
@@ -380,33 +410,47 @@ class gsec {
 					withCredentials: true
 				},
 				crossDomain: true,
-				url: GSE_URL+"Page_Gim/Ucenec/OceneUcenec.aspx",
+				url: GSE_URL + "Page_Gim/Ucenec/OceneUcenec.aspx",
 				cache: false,
 				type: "GET",
 				dataType: "html",
 				processData: false,
+
 				success: (data, textStatus, xhr) => {
+
 					let parser = new DOMParser();
 					let parsed = parser.parseFromString(data, "text/html");
+
 					let gradeSpans = parsed.getElementsByClassName("txtVOcObd");
-					for(const grade of gradeSpans) {
+					for (const grade of gradeSpans) {
 						var ist = grade.getElementsByTagName("span")[0].getAttribute("title").split("\n");
 						var date = ist[0].split(": ")[1].trim().split(".");
 						var dateObj = new Date(Date.parse(date[2]+"-"+date[1]+"-"+date[0]));
 						var teacher = ist[1].split(": ")[1].trim();
 						var subject = ist[2].split(": ")[1].trim();
 						var name = [];
+
 						name.push(ist[3].split(": ")[1].trim())
 						name.push(ist[4].split(": ")[1].trim())
 						name.push(ist[5].split(": ")[1].trim())
+
 						var gradeNumber = Number(grade.getElementsByTagName("span")[0].innerHTML);
-						if(grade.getElementsByTagName("span")[0].classList.contains("ocVmesna")) {
+						if (grade.getElementsByTagName("span")[0].classList.contains("ocVmesna")) {
 							var temporary = true;
 						} else {
 							var temporary = false;
 						}
-						var gradeToAdd = {"date": dateObj, "teacher": teacher, "subject": subject, "name": name, "temporary": temporary, "grade": gradeNumber};
-						if(grade.getElementsByTagName("span").length > 1) {
+
+						var gradeToAdd = {
+							"date": dateObj,
+							"teacher": teacher,
+							"subject": subject,
+							"name": name,
+							"temporary": temporary,
+							"grade": gradeNumber
+						};
+
+						if (grade.getElementsByTagName("span").length > 1) {
 							if(grade.getElementsByTagName("span")[1].classList.contains("ocVmesna")) {
 								gradeToAdd["temporary"] = true;
 							} else {
@@ -416,6 +460,7 @@ class gsec {
 							gradeToAdd["oldgrade"] = Number(grade.getElementsByTagName("span")[0].innerHTML);
 						}
 						grades.push(gradeToAdd);
+
 					}
 					resolve(grades);
 				},
