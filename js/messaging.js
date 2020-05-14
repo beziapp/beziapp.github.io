@@ -1,5 +1,8 @@
 const API_ENDPOINT = "https://gimb.tk/test.php";
 const DIRECTORY_URL = "/directory.json";
+
+const ENCRYPTED_MESSAGE_REGEX = /<!-- beziapp-e2eemsg-(\d{4}) -->(\S+?)<!-- end-msg -->/g;
+
 // "Global" object for name directory
 var directory = null;
 
@@ -249,8 +252,9 @@ async function deleteMsg(id) {
 }
 
 function displayMessage(id, data) {
-    if(data["telo"].substring(0, 21) == "<!-- beziapp-e2eemsg-") {
-	    var datatodecrypt = data["telo"].substring(29 + Number(data["telo"].substring(21, 25)), data["telo"].length - 6) // length-6 da zbrišemo zadnji </div>
+    let regex_results = ENCRYPTED_MESSAGE_REGEX.exec(data["telo"]);
+    if (regex_results != null) {
+	    var datatodecrypt = regex_results[1]; // length-6 da zbrišemo zadnji </div>
         var randomencdivid = Math.floor(Math.random() * 9999).toString().padStart(4, "0");
 
         var msgcontent = `
@@ -274,7 +278,7 @@ function displayMessage(id, data) {
                     $('#beziapp-msg-e2ee-form-${randomencdivid}').hide();
                 "
             >
-                ${S("decrypt")}!
+                ${S("decrypt")}
             </button>
         </div>
         <div id="beziapp-msg-e2ee-content-${randomencdivid}" hidden>
@@ -464,9 +468,7 @@ function setupEventListeners() {
                         >
                     </div>
                     <div id="beziapp-msg-e2ee-content-${randomencdivid}" hidden>
-                        <!-- beziapp-e2eemsg-${msgcontent.length.toString().padStart(4, "0")} -->
-                        ${msgcontent}
-                        ${sjcl.encrypt($("#msg-e2ee-pass-input").val(), $("#msg-body").val())}
+                        <!-- beziapp-e2eemsg-${msgcontent.length.toString().padStart(4, "0")} -->${sjcl.encrypt($("#msg-e2ee-pass-input").val(), msgcontent)}<!-- end-msg -->
                     </div>
                 `
 	        }
