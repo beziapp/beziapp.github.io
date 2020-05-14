@@ -82,6 +82,7 @@ class gsec {
 				},
 				crossDomain: true,
 				url: getUrl,
+				cache: false,
 				type: "GET",
 				dataType: "html",
 				success: (data, textStatus, request) => {
@@ -134,6 +135,7 @@ class gsec {
 				url: GSE_URL + "WS_Gim/wsGimSisUtils.asmx/GetSessionData",
 				type: "POST",
 				dataType: "json",
+				cache: false,
 				contentType: "application/json",
 				data: "{}",
 				processData: false,
@@ -172,6 +174,7 @@ class gsec {
 				type: "POST",
 				dataType: "json",
 				contentType: "application/json",
+				cache: false,
 				data: JSON.stringify({
 					"aIdOsebeRe": "",
 					"aIdSolskoLeto": Number(letnica).toString(),
@@ -336,6 +339,7 @@ class gsec {
 				url: GSE_URL + "Page_Gim/Uporabnik/Sporocila.aspx/DeleteMessage",
 				type: "POST",
 				dataType: "json",
+				cache: false,
 				contentType: "application/json",
 				data: JSON.stringify({
 					"aIdSporocilo": id.split("|")[0],
