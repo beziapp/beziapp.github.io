@@ -321,7 +321,7 @@ function displayData(messageType) {
 
     let msg_list = $(div_selector);
     msg_list.html("");
-    messages[messageType].forEach(element => {
+    messages[messageType.toString()].forEach(element => {
         if (!element["zadeva"].startsWith("beziapp-ctlmsg")) {
 
             msg_list.append(`
