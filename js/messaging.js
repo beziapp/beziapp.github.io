@@ -515,7 +515,7 @@ function setupEventListeners() {
 	                            $('#beziapp-msg-e2ee-content-${randomencdivid}').html(
 	                                sjcl.decrypt(
 	                                    $('#beziapp-msg-e2ee-password-${randomencdivid}').val(),
-																			ENCRYPTED_MESSAGE_REGEX.exec($('beziapp-msg-e2ee-content-${randomencdivid}').text())[2];
+																			ENCRYPTED_MESSAGE_REGEX.exec($('beziapp-msg-e2ee-content-${randomencdivid}').text())[2]
 	                                )
 	                            );
 	                            $('#beziapp-msg-e2ee-content-${randomencdivid}').show();
