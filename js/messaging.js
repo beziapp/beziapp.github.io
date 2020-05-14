@@ -271,16 +271,20 @@ function displayMessage(id, data) {
                 value="Decrypt"
                 class="btn waves-effect waves-light"
                 onclick="
-                    $('#beziapp-msg-e2ee-content-${randomencdivid}').html(
-                        filterXSS(
-                            sjcl.decrypt(
-                                $('#beziapp-msg-e2ee-password-${randomencdivid}').val(),
-                                $('#beziapp-msg-e2ee-content-${randomencdivid}').html()
-                            )
-                        )
-                    );
-                    $('#beziapp-msg-e2ee-content-${randomencdivid}').show();
-                    $('#beziapp-msg-e2ee-form-${randomencdivid}').hide();
+										try {
+	                    $('#beziapp-msg-e2ee-content-${randomencdivid}').html(
+	                        filterXSS(
+	                            sjcl.decrypt(
+	                                $('#beziapp-msg-e2ee-password-${randomencdivid}').val(),
+	                                $('#beziapp-msg-e2ee-content-${randomencdivid}').html()
+	                            )
+	                        )
+	                    );
+      	              $('#beziapp-msg-e2ee-content-${randomencdivid}').show();
+    	                $('#beziapp-msg-e2ee-form-${randomencdivid}').hide();
+										} catch (err) {
+											alert(${D("incorrectPassword")});
+										}
                 "
             >
                 ${S("decrypt")}
@@ -505,15 +509,19 @@ function setupEventListeners() {
                         This message was encrypted by BežiApp.
                         <input type="password" autocomplete="new-password" id="beziapp-msg-e2ee-password-${randomencdivid}" placeholder="Enter password ...">
                         <input type="button" value="Decrypt" onclick="
-                            console.log($('beziapp-msg-e2ee-content-${randomencdivid}').text());
-                            $('#beziapp-msg-e2ee-content-${randomencdivid}').html(
-                                sjcl.decrypt(
-                                    $('#beziapp-msg-e2ee-password-${randomencdivid}').val(),
-                                    $('beziapp-msg-e2ee-content-${randomencdivid}').text()
-                                )
-                            );
-                            $('#beziapp-msg-e2ee-content-${randomencdivid}').show();
-                            $('#beziapp-msg-e2ee-form-${randomencdivid}').hide();
+														try {
+	                            console.log($('beziapp-msg-e2ee-content-${randomencdivid}').text());
+	                            $('#beziapp-msg-e2ee-content-${randomencdivid}').html(
+	                                sjcl.decrypt(
+	                                    $('#beziapp-msg-e2ee-password-${randomencdivid}').val(),
+	                                    $('beziapp-msg-e2ee-content-${randomencdivid}').text()
+	                                )
+	                            );
+	                            $('#beziapp-msg-e2ee-content-${randomencdivid}').show();
+	                            $('#beziapp-msg-e2ee-form-${randomencdivid}').hide();
+														} catch(err) {
+															alert(${D("incorrectPassword")});
+														}
                             "
                         >
                     </div>
