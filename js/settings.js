@@ -1,13 +1,14 @@
 // settings.js -- TODO
 
 async function setLanguage(langCode)  {
-	localforage.setItem("chosenLang", langCode).then( () => {
+	localforage.setItem("chosenLang", langCode).then((value) => {
+		console.log("Language set: " + value);
 		UIAlert(D("languageSet"), "setLanguage(): languageSet");
 	});
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-	$(document).on("click", ".settings-language-selector", () => {
+	$(".settings-language-selector").click(function () {
 		let languageToSet = $(this).attr("data-language");
 		setLanguage(languageToSet);
 	});
