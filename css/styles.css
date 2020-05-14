@@ -189,3 +189,14 @@ a.collection-item {
 .fab-new-message {
     background-color: var(--color-secondary) !important;
 }
+
+/* About right buttons */
+.about-button-box {
+    display: flex;
+    flex-direction: row;
+}
+
+.about-button-box > * {
+    margin-left: 5px;
+    margin-right: 5px;
+}
