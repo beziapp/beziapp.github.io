@@ -99,7 +99,7 @@
                 <label for="full-name"><x-su>recipient</x-su></label>
             </div>
 
-            <div class="row">
+            <div class="row" style="display: flex;">
 
                 <div class="col s10 m11">
                     <div class="input-field">
