@@ -7,7 +7,7 @@ function checkLogin() {
     localforage.getItem("logged_in").then((value) => {
         // This code runs once the value has been loaded
         // from the offline store.
-        if (value != true) {
+        if (value !== true) {
             window.location.replace("/index.html");
         }
     }).catch((err) => {
@@ -27,6 +27,13 @@ function setLoading(state) {
 
 // ----GET COLOR FROM STRING--------
 
+/**
+ * 
+ * Calculate hash code from a string
+ * @param {string} input_string String to convert to hash
+ * @returns {string} calculated hash code
+ * 
+ */
 function hashCode(str) { // java String#hashCode
     var hash = 0;
     for (var i = 0; i < str.length; i++) {
@@ -35,6 +42,13 @@ function hashCode(str) { // java String#hashCode
     return hash;
 }
 
+/**
+ * 
+ * Convert last 3 bytes of an integer to RGB color
+ * @param {integer} input_integer Integer that will be converted to RGB color
+ * @returns {string} Hex color code
+ *  
+ */
 function intToRGB(i) {
     var c = (i & 0x00FFFFFF)
         .toString(16)
@@ -44,6 +58,12 @@ function intToRGB(i) {
 }
 
 // http://www.w3.org/TR/AERT#color-contrast
+/**
+ * 
+ * Calculate the matching foreground color for a given background (improves UX)
+ * @param {string} background_color Background color of the object
+ * @returns {string} Forground color that will match background color
+ */
 function getForegroundFromBackground(background_color) {
     let color_hex = background_color.replace("#", "");
     let rgb = [
@@ -59,6 +79,12 @@ function getForegroundFromBackground(background_color) {
     }
 }
 
+/**
+ * 
+ * Convert a given string to hex color
+ * @param {string} input_string Input string
+ * @returns {string} Hex RGB color
+ */
 function getHexColorFromString(str) {
     return "#" + intToRGB(hashCode(str));
 }
@@ -66,7 +92,6 @@ function getHexColorFromString(str) {
 
 // ---------DATE FUNCTION-------------
 function getDateString(date) {
-
     let year_str = date.getFullYear();
     let month_str = date.getMonth() + 1
     month_str = month_str.toString().padStart(2, "0");

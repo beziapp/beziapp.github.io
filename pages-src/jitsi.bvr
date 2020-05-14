@@ -38,15 +38,16 @@
 			</div>
 		</nav>
 		<@?i navigation@>
+		<!-- Maybe in the future? https://github.com/jitsi/jitsi-meet/blob/master/doc/api.md -->
 		<div class="container" style="height: calc(100vh - 70px); width: 100%">
 			<iframe allow="geolocation; microphone; camera" src="https://video.gimb.tk" frameBorder="0" style="width: 100%; height: 100%">
-				Ur browser does not support iframes, you have no Internet connection or the GimB videoconference server is down or does
-				not allow iframes. Probably we fucked something up, so drop us a message.
+				Your browser does not support iframes, you have no Internet connection or the GimB videoconference server is down or does
+				not allow iframes. Probably we <s>fucked</s> messed something up, so drop us a message.
 				<hr>
-				Vaš brkljalnik ne podpira iframov, nimate povezave v medmrežje ali pa so se GimB videokonferenčni strežniki odločili ne
-				dovoliti iframov ali pa so sploh nedostopni. Kakorkoli že, verjetno smo mi kaj zajebali, zato nam napiši sporočilo!
+				Vaš brskalnik ne podpira iframov, nimate povezave v medmrežje ali pa so se GimB videokonferenčni strežniki odločili ne
+				dovoliti iframov ali pa so sploh nedostopni. Kakorkoli že, verjetno smo mi kaj <s>zajebali</s> zamočili, zato nam napiši sporočilo!
 				<hr>
-				Danke schön.
+				Danke schön. Gracias.
 			</iframe>
 		</div>
 	</body>

@@ -1,11 +1,7 @@
 function getUrlParameter(sParam) {
     const url_params = new URLSearchParams(window.location.search);
     const found_param = url_params.get(sParam);
-    if (found_param === null) {
-        return ""
-    } else {
-        return found_param
-    }
+    return found_param === null ? "" : found_param;
 }
 
 
@@ -34,7 +30,6 @@ localforage.getItem("logged_in")
         }
     ).catch(
         function (err) {
-            // This code runs if there were any errors
             console.log(err);
         }
     );

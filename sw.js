@@ -1,5 +1,5 @@
 // Change version to cause cache refresh
-const static_cache_name = "site-static-v1.0.13.1";
+const static_cache_name = "site-static-v1.0.13.2";
 // Got them with find . -not -path '*/\.*' | sed "s/.*/\"&\",/" | grep -v sw.js
 // sw.js NE SME BITI CACHAN, ker vsebuje verzijo!
 
@@ -41,8 +41,8 @@ const assets = [
     "/js/app.js",
     "/js/meals.js",
     "/js/settings.js",
-		"/js/lang/bundle.js",
-		"/js/setup-storage.js",
+	"/js/lang/bundle.js",
+	"/js/setup-storage.js",
 
     "/js/lib/materialize.min.js",
     "/js/lib/jquery.min.js",
@@ -77,12 +77,12 @@ const assets = [
     "/index.html",
     "/login.html",
     "/logout.html",
-		"/favicon.png",
-		"/pages/jitsi.html",
-		"/js/jitsi.js",
-		"/pages/chats.html",
-		"/js/chats.js",
-		"/css/bubbles.css"
+	"/favicon.png",
+	"/pages/jitsi.html",
+	"/js/jitsi.js",
+	"/pages/chats.html",
+	"/js/chats.js",
+	"/css/bubbles.css"
 ];
 
 importScripts("/js/lib/localforage.min.js");

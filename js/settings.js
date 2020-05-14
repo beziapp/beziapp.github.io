@@ -7,10 +7,11 @@ async function setLanguage(langCode)  {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-	$(document).on("click",".settings-language-selector", function () {
+	$(document).on("click", ".settings-language-selector", () => {
 		let languageToSet = $(this).attr("data-language");
 		setLanguage(languageToSet);
 	});
+
 	// Setup side menu
 	const menus = document.querySelectorAll(".side-menu");
 	M.Sidenav.init(menus, { edge: "right", draggable: true });

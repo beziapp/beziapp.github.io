@@ -3,11 +3,11 @@ const API_ENDPOINT = "https://lopolis-api.gimb.tk/";
 async function checkLogin() {
 	localforage.getItem("logged_in_lopolis").then((value) => {
 		if (value != true) {
-			document.getElementById("meals-container").hidden = true;
-			document.getElementById("meals-login").hidden = false;
+			$("#meals-container").hide();
+			$("#meals-login").show();
 		} else {
-			document.getElementById("meals-container").hidden = false;
-			document.getElementById("meals-login").hidden = true;
+			$("#meals-container").show();
+			$("#meals-login").hide();
 			loadMeals();
 		}
 	}).catch((err) => {
@@ -34,18 +34,23 @@ async function getToken(callback, callbackparams = []) {
 		})
 	];
 	await Promise.all(promises_to_run);
+
 	$.ajax({
-		url: API_ENDPOINT+"gettoken",
+		url: API_ENDPOINT + "gettoken",
 		crossDomain: true,
 		contentType: "application/json",
-		data: JSON.stringify( { "username": username, "password": password } ),
+		data: JSON.stringify({
+			"username": username,
+			"password": password
+		}),
+
 		dataType: "json",
 		cache: false,
 		type: "POST",
+
 		success: (dataauth) => {
 			if(dataauth === null || dataauth.error == true) {
 				UIAlert(D("authenticationError"), "getToken(): response error or null");
-				setLoading(false);
 				localforage.setItem("logged_in_lopolis", false).then( function(){
 					checkLogin();
 				});
@@ -54,11 +59,10 @@ async function getToken(callback, callbackparams = []) {
 				empty.token = dataauth.data;
 				let argumentsToCallback = [empty].concat(callbackparams);
 				callback(...argumentsToCallback); // poslje token v {token: xxx}
-				setLoading(false);
 			} else {
 				UIAlert( D("authenticationError"), "getToken(): invalid response, no condition met");
-				setLoading(false);
 			}
+			setLoading(false);
 		},
 		error: () => {
 			UIAlert( D("lopolisAPIConnectionError"), "getToken(): AJAX error");
@@ -69,22 +73,29 @@ async function getToken(callback, callbackparams = []) {
 
 async function getMenus(dataauth, callback, callbackparams = []) {
 	setLoading(true);
-	let datee = new Date();
+	let current_date = new Date();
 	// naloži za dva meseca vnaprej (če so zadnji dnevi v mesecu)
 	let mealsgathered = {};
 	let promises_to_wait_for = [];
 	for (let iteration = 1; iteration <= 2; iteration++) {
+
 		promises_to_wait_for[iteration] = $.ajax({
 			url: API_ENDPOINT+"getmenus",
 			crossDomain: true,
 			contentType: "application/json",
-			data: JSON.stringify({"month": datee.getMonth()+iteration, "year": datee.getFullYear()}),
+			data: JSON.stringify({
+				"month": current_date.getMonth() + iteration,
+				"year": current_date.getFullYear()
+			}),
+
 			headers: {
-				"Authorization": "Bearer "+dataauth.token
+				"Authorization": `Bearer ${dataauth.token}`
 			},
+
 			dataType: "json",
 			cache: false,
 			type: "POST",
+
 			success: (meals) => {
 				if(meals === null || meals.error == true) {
 					UIAlert( D("errorGettingMenus"), "getMenus(): response error or null");
@@ -100,6 +111,7 @@ async function getMenus(dataauth, callback, callbackparams = []) {
 					UIAlert( D("errorUnexpectedResponse") , "getMenus(): invalid response, no condition met");
 				}
 			},
+
 			error: () => {
 				setLoading(false);
 				UIAlert( D("lopolisAPIConnectionError"), "getMenus(): AJAX error");
@@ -112,7 +124,7 @@ async function getMenus(dataauth, callback, callbackparams = []) {
 	let allmeals = {};
 	let passtocallback = {};
 
-	for(const [index, monthmeals] of Object.entries(mealsgathered)) { // although this is not very javascripty
+	for (const [index, monthmeals] of Object.entries(mealsgathered)) { // although this is not very javascripty
 		allmeals = mergeDeep(allmeals, monthmeals.data);
 	}
 
@@ -131,7 +143,7 @@ function displayMeals(meals) {
 	// console.log(JSON.stringify(meals)); // debug // dela!
 
 	let root_element = document.getElementById("meals-collapsible");
-	for(const [date, mealzz] of Object.entries(meals.data)) {
+	for (const [date, mealzz] of Object.entries(meals.data)) {
 		let unabletochoosequestionmark = "";
 		let readonly = mealzz.readonly;
 		var datum = new Date(date);
@@ -148,7 +160,7 @@ function displayMeals(meals) {
 		let subject_header_text = document.createElement("span");
 
 		if(mealzz.readonly) {
-			unabletochoosequestionmark = "*" + S("readOnly") + "*";
+			unabletochoosequestionmark = `*${S("readOnly")}*`;
 		}
 	
 		// Use ES6 templates
@@ -222,28 +234,33 @@ function refreshMeals(force) {
 
 function lopolisLogout() {
 	localforage.setItem("logged_in_lopolis", false);
-	document.getElementById("meals-collapsible").innerHTML = "";
+	$("#meals-collapsible").html("");
 	checkLogin();
 }
 
 async function lopolisLogin() {
 	setLoading(true);
-	var usernameEl = document.getElementById("meals_username");
-	var passwordEl = document.getElementById("meals_password");
+	var usernameEl = $("#meals_username");
+	var passwordEl = $("#meals_password");
 	$.ajax({
 		url: API_ENDPOINT+"gettoken",
 		crossDomain: true,
 		contentType: "application/json",
-		data: JSON.stringify({"username": usernameEl.value, "password": passwordEl.value}),
+		data: JSON.stringify({
+			"username": usernameEl.val(),
+			"password": passwordEl.val()
+		}),
+
 		dataType: "json",
 		cache: false,
 		type: "POST",
+
 		success: async function(data) {
 			if(data == null) {
 				UIAlert( S("requestForAuthenticationFailed"), "lopolisLogin(): date is is null");
 				setLoading(false);
-				usernameEl.value = "";
-				passwordEl.value = "";
+				usernameEl.val("");
+				passwordEl.val("");
 			} else if(data.error == true) {
 				UIAlert( S("loginFailed"), "lopolisLogin(): login failed. data.error is true");
 				usernameEl.value = "";
@@ -252,14 +269,15 @@ async function lopolisLogin() {
 			} else {
 				let promises_to_run = [
 					localforage.setItem("logged_in_lopolis", true),
-					localforage.setItem("lopolis_username", usernameEl.value),
-					localforage.setItem("lopolis_password", passwordEl.value)
+					localforage.setItem("lopolis_username", usernameEl.val()),
+					localforage.setItem("lopolis_password", passwordEl.val())
 				];
 				await Promise.all(promises_to_run);
 				checkLogin();
 				UIAlert("Credential match!");
 			}
 		},
+
 		error: () => {
 			UIAlert( D("loginError"), "lopolisLogin(): ajax.error");
 			setLoading(false);
@@ -268,7 +286,8 @@ async function lopolisLogin() {
 }
 
 async function setMenus(currentmeals = 69, toBeSentChoices) { // currentmeals je getMenus response in vsebuje tudi token.
-	if(currentmeals === 69) {
+
+	if (currentmeals === 69) {
 		getToken(getMenus, [setMenus, toBeSentChoices]);
 		return;
 	}
@@ -354,5 +373,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 		showClearBtn: true,
 		format: "dddd, dd. mmmm yyyy"
 	});
+
 	refreshMeals();
 });

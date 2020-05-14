@@ -123,7 +123,7 @@ function displayData() {
 					break;
 				case 1:
 					subject_lesson_icon_i.innerText = "check_circle_outline";
-	        break;
+	        		break;
 				case 2:
 					subject_lesson_icon_i.innerText = "error_outline";
 					break;
@@ -135,7 +135,7 @@ function displayData() {
 			subject_lesson_icon.appendChild(subject_lesson_icon_i);
 
 			let subject_name = document.createElement("td");
-			subject_name.innerText = S(gseAbsenceTypes[absence["subjects"][lesson]["status"]]) + " : " + absence["subjects"][lesson]["subject"];
+			subject_name.innerText = `${S(gseAbsenceTypes[absence["subjects"][lesson]["status"]])} : ${absence["subjects"][lesson]["subject"]}`;
 			subject_row.appendChild(subject_lesson_icon);
 			subject_row.appendChild(subject_lesson_text);
 			subject_row.appendChild(subject_name);

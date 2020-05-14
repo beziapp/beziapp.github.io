@@ -379,8 +379,8 @@ async function startFetchingMessages() {
 		}
 	} catch (err) {
 		gsecErrorHandlerUI(err);
-		setLoading(false);
 	}
+	setLoading(false);
 }
 
 async function startLoadingMessagesForCategory(gsecInstance, category, lastpage) {

@@ -137,10 +137,10 @@ function gradingClickHandler(eventClickInfo) {
 	let grading_date_obj = gradings[grading_id]["date"];
 	let grading_date = dateString.longFormatted(grading_date_obj);
 	let grading_description = gradings[grading_id]["description"];
-	document.getElementById("grading-subject").innerText = grading_subject;
-	document.getElementById("grading-date").innerText = grading_date;
-	document.getElementById("grading-description").innerText = grading_description;
-	const modal = document.querySelectorAll('.side-modal')[0];
+	$("#grading-subject").text(grading_subject);
+	$("#grading-date").text(grading_date);
+	$("#grading-description").text(grading_description);
+	const modal = document.querySelectorAll(".side-modal")[0];
 	M.Sidenav.getInstance(modal).open();
 }
 /*
