@@ -5,6 +5,7 @@
     --color-primary-light: rgba(230, 250, 231, 1);
     --color-invalid: rgba(192, 0, 0, 1);
     --background-color: rgba(255, 255, 255, 1);
+    --background-accent: rgba(0, 156, 101, 0.2);
 }
 
 body {
@@ -161,4 +162,30 @@ a.collection-item {
 	background-color: white;
 	text-align: center;
 	z-index: 60;
+}
+
+/* Tabs */
+.tab a {
+    color: var(--color-secondary) !important;
+}
+
+.tab a:hover {
+    color: var(--color-primary) !important;
+}
+
+.tab a.active {
+    color: var(--color-primary) !important;
+}
+
+.tab a:focus.active {
+    background-color: var(--background-accent) !important;
+}
+
+.tabs .indicator {
+    background-color: var(--color-primary) !important;
+}
+
+/* Floating action button */
+.fab-new-message {
+    background-color: var(--color-secondary) !important;
 }

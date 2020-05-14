@@ -3,8 +3,14 @@ const DIRECTORY_URL = "/directory.json";
 
 const ENCRYPTED_MESSAGE_REGEX = /<!-- beziapp-e2eemsg-(\d{4}) -->(\S+?)<!-- end-msg -->/g;
 
-// "Global" object for name directory
+// "Global" object for name directory and messages
 var directory = null;
+var messages = {
+    "0": [],
+    "1": [],
+    "2": []
+}
+var current_tab = 0;
 
 async function checkLogin() {
     localforage.getItem("logged_in").then(function (value) {
@@ -85,10 +91,8 @@ function populateAutocomplete() {
         minLength: 0
     });
 
-    if(window.location.hash.length > 1) {
+    if (window.location.hash.length > 1 && !window.location.hash.substring(1).startsWith("beziapp")) {
     	$("#full-name").val(decodeURIComponent(window.location.hash.substring(1)));
-    } else {
-    	$("#full-name").val(getUrlParameter("m"));
     }
 
     M.updateTextFields();
@@ -105,7 +109,7 @@ function setLoading(state) {
 }
 
 // Function, responsible for fetching and displaying data
-async function loadMessages(force_refresh = true, katera = 0) {
+async function loadMessages(force_refresh = true, messageType = 0) {
     setLoading(true);
     // Load required data
     let promises_to_run = [
@@ -122,7 +126,7 @@ async function loadMessages(force_refresh = true, katera = 0) {
 
     Promise.all(promises_to_run).then(() => {
 
-        if (messages === null || force_refresh) {
+        if (messages[messageType] == null || messages[messageType].length === 0 || force_refresh) {
             $.ajax({
                 url: API_ENDPOINT,
                 crossDomain: true,
@@ -130,7 +134,7 @@ async function loadMessages(force_refresh = true, katera = 0) {
                     "u": username,
                     "p": password,
                     "m": "fetchsporocilaseznam",
-                    "a": katera // Message type, see API doc for details
+                    "a": messageType // Message type, see API doc for details
                 },
                 dataType: "json",
                 cache: false,
@@ -144,9 +148,9 @@ async function loadMessages(force_refresh = true, katera = 0) {
                     } else {
                         // Save messages & populate view
                         // console.log(data); // debug
-                        localforage.setItem("messages", data).then((value) => {
-                            messages = value;
-                            displayData();
+                        messages[messageType.toString()] = data;
+                        localforage.setItem("messages", messages).then((value) => {
+                            displayData(messageType);
                             setLoading(false);
                         });
                     }
@@ -158,7 +162,7 @@ async function loadMessages(force_refresh = true, katera = 0) {
                 }
             })
         } else {
-            displayData();
+            displayData(messageType);
             setLoading(false);
         }
     });
@@ -293,13 +297,27 @@ function displayMessage(id, data) {
 }
 
 // Function for displaying data
-function displayData() {
-    let msg_list = $("#msg-list");
+function displayData(messageType) {
+    let div_selector = "";
+    switch (messageType) {
+        case 0:
+            div_selector = "#beziapp-received";
+            break;
+        case 1:
+            div_selector = "#beziapp-sent";
+            break;
+        case 2:
+            div_selector = "#beziapp-deleted";
+            break;
+    }
+
+    let msg_list = $(div_selector);
     msg_list.html("");
-    messages.forEach(element => {
-        if (element["zadeva"].substr(0, 14) != "beziapp-ctlmsg") {
+    messages[messageType].forEach(element => {
+        if (!element["zadeva"].startsWith("beziapp-ctlmsg")) {
+
             msg_list.append(`
-                <div class="col s12 m6" id="msg_box-${filterXSS(element["id"])}">
+                <div class="col s12 m12" id="msg_box-${filterXSS(element["id"])}">
                     <div class="card blue-grey darken-1">
                         <div class="card-content white-text">
                             <span class="card-title">
@@ -311,8 +329,8 @@ function displayData() {
                                     onclick="loadMsg('${filterXSS(element["id"])}')"
                                     type="submit"
                                 >
-                                    Load message body
-                                    <i class="material-icons right">system_update</i>
+                                    Load message
+                                    <i class="material-icons right">move_to_inbox</i>
                                 </button>
                             <p>
                         </div>
@@ -329,16 +347,30 @@ function displayData() {
                             >
                                 <i class="material-icons">reply</i>
                             </a>
-                            ${filterXSS(element["posiljatelj"])} &raquo; ${filterXSS(element["datum"]["dan"])}. ${filterXSS(element["datum"]["mesec"])}. ${filterXSS(element["datum"]["leto"])} at ${filterXSS(element["cas"]["ura"])} : ${filterXSS(element["cas"]["minuta"])}
+                            ${filterXSS(element["posiljatelj"])} &raquo; ${filterXSS(element["datum"]["dan"])}. ${filterXSS(element["datum"]["mesec"])}. ${filterXSS(element["datum"]["leto"])} at ${filterXSS(element["cas"]["ura"]).padStart(2, "0")}:${filterXSS(element["cas"]["minuta"]).padStart(2, "0")}
                         </div>
                     </div>
                 </div>
             `);
-	}
+	    }
     });
+
     $("#storage-bar").show();
-    $("#storage-progressbar").width(Number(Number(messages.length / 120) * 100).toFixed(2) + "%");
-    $("#storage-desc").html( `${messages.length}/120 ${s("messages")} ${$("#storage-progressbar").width()}`);
+    $("#storage-progressbar").width(Number(Number(getNumMessages(messageType) / 120) * 100).toFixed(2) + "%");
+    $("#storage-desc").html( `${getNumMessages(messageType)}/120 ${s("messages")} ${$("#storage-progressbar").width()}`);
+}
+
+// -1 = cumulative
+function getNumMessages(messageType = -1) {
+    if (messageType === -1) {
+        let sum = 0;
+        for (const [messageType, messageList] of Object.entries(messages)) {
+            sum += messageList.length;
+        }
+        return sum;
+    } else {
+        return (messages[messageType].length ?? 0);
+    }
 }
 
 async function sendMessage(recipient_number, subject, body) {
@@ -442,6 +474,20 @@ function setupEventListeners() {
     // Verify recipient when input loses focus
     $("#full-name").on("blur", validateName);
 
+    // Setup refresh icon
+    $("#refresh-icon").click(() => {
+		loadMessages(true, current_tab);
+    });
+
+    // Setup checkbox handler
+	$("#encrypt-checkbox").change(function() {
+		if (this.checked) {
+            $("#encryption-key-input").prop("hidden", false);
+        } else {
+            $("#encryption-key-input").prop("hidden", true);
+        }
+	});
+
     // Button to send message
     $("#msg-send").click(() => {
         localforage.getItem("directory").then(function (value) {
@@ -510,6 +556,48 @@ document.addEventListener("DOMContentLoaded", () => {
     loadDirectory();
     setupEventListeners();
 
+    // Setup tabs
+    const tabs = document.querySelectorAll(".tabs");
+    const tab_options = {
+        // swipeable: true, // TODO: figure out how to fix height when it's enabled (it's good for UX to have it enabled)
+        onShow: (tab) => {
+            if ($(tab).hasClass("active")) {
+                switch (tab.id) {
+                    case "beziapp-received":
+                        current_tab = 0;
+                        loadMessages(false, 0);
+                        break;
+                    case "beziapp-sent":
+                        current_tab = 1;
+                        loadMessages(false, 1);
+                        break;
+                    case "beziapp-deleted":
+                        current_tab = 2;
+                        loadMessages(false, 2);
+                        break;
+                }
+            }
+        }
+    };
+    var instance = M.Tabs.init(tabs, tab_options);
+
+    // Setup floating action button
+    const fab_options = {
+        hoverEnabled: false,
+        toolbarEnabled: false
+    }
+    const fab_elem = document.querySelectorAll(".fixed-action-btn");
+    var instances = M.FloatingActionButton.init(fab_elem, fab_options);
+
+    // Setup modals
+    const modal_elems = document.querySelectorAll('.modal');
+    const modal_options = {
+        onOpenStart: () => { $("#fab-new").hide() },
+        onCloseEnd: () => { $("#fab-new").show() },
+        dismissible: false
+    };
+    var instances = M.Modal.init(modal_elems, modal_options);
+
     var receivedmessages = null;
     loadMessages(true, 0);
     M.updateTextFields();
@@ -517,5 +605,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // Setup side menu
     const menus = document.querySelectorAll(".side-menu");
     M.Sidenav.init(menus, { edge: "right", draggable: true });
-
 });
