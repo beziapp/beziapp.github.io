@@ -82,14 +82,13 @@ class gsec {
 				},
 				crossDomain: true,
 				url: getUrl,
-				cache: false,
 				type: "GET",
 				dataType: "html",
-				success: (getData) => {
+				success: (data, textStatus, request) => {
 					if (useDiffAction == true) {
 						useDiffAction = getUrl;
 					}
-					this.parseAndPost(getData, params, formId, useDiffAction).then((value) => {
+					this.parseAndPost(data, params, formId, useDiffAction).then((value) => {
 						resolve(value);
 					});
 				},
@@ -113,7 +112,7 @@ class gsec {
 				if (response.code === 302) {
 					resolve(true);
 				} else {
-					if (!!(parsed.getElementById("lblMsg"))) { // če obstaja lblMsg (napaka pri prijavi)
+					if (!(parsed.getElementById("lblMsg"))) { // če obstaja lblMsg (napaka pri prijavi)
 						reject(new Error(GSEC_ERR_LOGIN));
 					} else if (!(parsed.getElementById("ctl00_lblLoginName"))) { // če ni ctl00_lblLoginName nismo na Default.aspx
 						reject(new Error(GSEC_ERR_LOGIN));
@@ -133,7 +132,6 @@ class gsec {
 				},
 				crossDomain: true,
 				url: GSE_URL + "WS_Gim/wsGimSisUtils.asmx/GetSessionData",
-				cache: false,
 				type: "POST",
 				dataType: "json",
 				contentType: "application/json",
@@ -171,7 +169,6 @@ class gsec {
 				},
 				crossDomain: true,
 				url: GSE_URL + "Page_Gim/Uporabnik/modSporociloPrejemniki.aspx/NajdiOsebePrejemniki",
-				cache: false,
 				type: "POST",
 				dataType: "json",
 				contentType: "application/json",
@@ -337,7 +334,6 @@ class gsec {
 				},
 				crossDomain: true,
 				url: GSE_URL + "Page_Gim/Uporabnik/Sporocila.aspx/DeleteMessage",
-				cache: false,
 				type: "POST",
 				dataType: "json",
 				contentType: "application/json",
