@@ -62,7 +62,7 @@ function loadDirectory() {
 					UIAlert( D("nameDirectoryNotSet"), "loadDirectory(): stored_directory === null" );
                     directory = null;
                     // Disable send button
-                    document.getElementById("msg-send").disabled = true;
+                    $("#msg-send").prop("disabled", true);
                 } else {
                     directory = stored_directory;
                     // Populate autocomplete
@@ -79,20 +79,23 @@ function populateAutocomplete() {
     // in se bo spremenil z spremembo "originala". spodnja stvar itak ni preveč efficent, loop čez vseh 7000 ljudi bi lahko delal težave...
     // kakšen Object.keys bi bila boljša varianta ampak raje napišem tale komentar... idk, to se mi je zdelo uporabno ampak sedaj obžalujem
     // samo guglal sem "copying an object js"
-    let autocomplete_entries = Object.assign({}, directory);
+	let autocomplete_entries = Object.assign({}, directory);
     for (let variableKey in autocomplete_entries) {
         autocomplete_entries[variableKey] = null;
-    }
+	}
+
     M.Autocomplete.init(elems, {
         data: autocomplete_entries,
         onAutocomplete: validateName,
         minLength: 0
-    });
-    if(window.location.hash.length > 1) {
+	});
+
+    if (window.location.hash.length > 1) {
     	document.getElementById("full-name").value = decodeURIComponent(window.location.hash.substring(1));
     } else {
     	document.getElementById("full-name").value = getUrlParameter("m");
-    }
+	}
+
     M.updateTextFields();
     validateName();
 }
@@ -107,32 +110,33 @@ function setLoading(state) {
 }
 
 async function sendMessage(recipient_number = null, body = null) {
-	if(recipient_number == null || recipient_number == undefined) {
+	// == catches null & undefined
+	if (recipient_number == null) {
 		recipient_number = directory[sogovornik];
 	}
-	if(body == null || body == undefined) {
+	if (body == null) {
 		body = document.getElementById("msg-body").value;
 	}
-	if(body.length > 180) {
+	if (body.length > 180) {
 		throw new RangeError("sendMessage(): message is longer than 180 characters.");
 	}
 	let promises_to_run = [
-			localforage.getItem("username").then((value) => {
-					username = value;
-			}),
-			localforage.getItem("password").then((value) => {
-					password = value;
-			}),
+		localforage.getItem("username").then((value) => {
+			username = value;
+		}),
+		localforage.getItem("password").then((value) => {
+			password = value;
+		}),
 	];
 	setLoading(true);
 	Promise.all(promises_to_run).then(() => {
 		try {
 			let gsecInstance = new gsec();
 			gsecInstance.login(username, password).then( () => {
-				gsecInstance.sendMessage(recipient_number, "beziapp-ctlmsg-chat-"+body, "BežiApp chat: "+body).then( (value) => {
+				gsecInstance.sendMessage(recipient_number, "beziapp-ctlmsg-chat-" + body, "BežiApp chat: " + body).then((value) => {
 					addMessage(0, body);
 					setLoading(false);
-				}).catch( (err) => {
+				}).catch((err) => {
 					gsecErrorHandlerUI(err);
 					setLoading(false);
 				});
@@ -145,18 +149,18 @@ async function sendMessage(recipient_number = null, body = null) {
 }
 
 function addMessage(whom, body, datePlacement = 0, messageDate = null) { // datePlacement: 0=append bubble to end, 1=append bubble to start.
-	if(whom == 0) {
+	if (whom == 0) {
 		var whos = "mine";
 	} else {
 		var whos = "yours";
 	}
 
 	var timestamp = Date.now();
-	if(messageDate instanceof Date) {
+	if (messageDate instanceof Date) {
 		timestamp = messageDate.getTime();
 	}
 
-	if(typeof messageDate == "number") {
+	if (typeof messageDate == "number") {
 		timestamp = messageDate;
 	}
 
@@ -168,18 +172,18 @@ function addMessage(whom, body, datePlacement = 0, messageDate = null) { // date
 	bubblenode.setAttribute("data-date", timestamp);
 	bubblenode.appendChild(textnode);
 
-	if(chatarea.childElementCount == 0) {
+	if (chatarea.childElementCount == 0) {
 		bubblenode.className = "message last";
 		var messagesnest = document.createElement("div");
 		var istaoseba = false;
 	} else {
 
-		if(datePlacement == 0 || timestamp > Number(alreadyMessages[alreadyMessages.length - 1].getAttribute("data-date"))) {
+		if (datePlacement == 0 || timestamp > Number(alreadyMessages[alreadyMessages.length - 1].getAttribute("data-date"))) {
 
 			datePlacement = 0;
 			console.log(alreadyMessages[0].getAttribute("data-date"));
 			bubblenode.className = "message last";
-			if(chatarea.children.item(chatarea.children.length - 1).classList.contains(whos)) { // ista oseba
+			if (chatarea.children.item(chatarea.children.length - 1).classList.contains(whos)) { // ista oseba
 				var istaoseba = true;
 				var messagesnest = chatarea.children.item(chatarea.children.length - 1);
 				messagesnest.children.item(messagesnest.children.length - 1).classList.remove("last");
@@ -205,7 +209,7 @@ function addMessage(whom, body, datePlacement = 0, messageDate = null) { // date
 		} else { // auto place (slower, so 0 or 1 are options
 
 			console.log("if3");
-			for(var iter = 0; iter < alreadyMessages.length - 2; iter++) { // (-2 zato, ker potem iter+1 ne obstaja pri zadnjem elementu)
+			for (var iter = 0; iter < alreadyMessages.length - 2; iter++) { // (-2 zato, ker potem iter+1 ne obstaja pri zadnjem elementu)
 				if (Number(alreadyMessages[iter].getAttribute("data-date")) < timstamp
 					&& Number(alreadyMessages[iter+1].getAttribute("data-date")) > timestamp) {
 
@@ -213,14 +217,14 @@ function addMessage(whom, body, datePlacement = 0, messageDate = null) { // date
 					var spodnjiIsti = alreadyMessages[iter+1].parentElement.classList.contains(whos);
 					console.log([zgornjiIsti, spodnjiIsti]);
 
-					if(zgornjiIsti && spodnjiIsti) {
+					if (zgornjiIsti && spodnjiIsti) {
 						var messagesnest = alreadyMessages[iter].parentElement;
 						bubblenode.className = "message";
 						messagesnest.insertBefore(bubblenode, alreadyMessages[iter+1]);
 						return;
 					}
 
-					if(zgornjiIsti && !spodnjiIsti) {
+					if (zgornjiIsti && !spodnjiIsti) {
 						var messagesnest = alreadyMessages[iter].parentElement;
 						bubblenode.className = "message last";
 						messagesnest.children.item(messagesnest.childElementCount - 1).classList.remove("last");
@@ -228,7 +232,7 @@ function addMessage(whom, body, datePlacement = 0, messageDate = null) { // date
 						return;
 					}
 
-					if(!zgornjiIsti && spodnjiIsti) {
+					if (!zgornjiIsti && spodnjiIsti) {
 						var messagesnest = alreadyMessages[iter+1].parentElement;
 						bubblenode.className = "message";
 						messagesnest.insertBefore(bubblenode, alreadyMessages[iter+1]);
@@ -245,14 +249,14 @@ function addMessage(whom, body, datePlacement = 0, messageDate = null) { // date
 
 	// autodetect date is not present here anymore
 	messagesnest.className = whos + " messages";
-	if(datePlacement == 0) {
+	if (datePlacement == 0) {
 		messagesnest.appendChild(bubblenode);
 	} else {
 		messagesnest.prepend(bubblenode);
 	}
 
-	if(!istaoseba) {
-		if(datePlacement == 0) {
+	if (!istaoseba) {
+		if (datePlacement == 0) {
 			chatarea.appendChild(messagesnest);
 		} else{
 			chatarea.prepend(messagesnest);
@@ -262,30 +266,29 @@ function addMessage(whom, body, datePlacement = 0, messageDate = null) { // date
 
 async function validateName() {
 	if (directory !== null) {
-		document.getElementById("full-name").disabled = false;
+		$("#full-name").prop("disabled", false);
 		if ($("#full-name").val() in directory) {
 			$("#full-name").addClass("valid");
 			$("#full-name").removeClass("invalid");
-			document.getElementById("chat-recipient-select-btn").disabled = false;
-			document.getElementById("msg-body").disabled = false;
+			$("#chat-recipient-select-btn").prop("disabled", false);
+			$("#msg-body").prop("disabled", false);
 		} else {
 			$("#full-name").addClass("invalid");
 			$("#full-name").removeClass("valid");
-			document.getElementById("chat-recipient-select-btn").disabled = true;
-			document.getElementById("msg-body").disabled = true;
-			document.getElementById("msg-body").value = "";
+			$("#chat-recipient-select-btn").prop("disabled", true);
+			$("#msg-body").prop("disabled", true);
+			$("#msg-body").val("");
 		}
 	} else {
-		document.getElementById("chat-recipient-select-btn").disabled = true;
-		document.getElementById("full-name").value = D("nameDirectoryNotSet");
-		document.getElementById("full-name").disabled = true;
-		document.getElementById("msg-body").value = "";
+		$("#chat-recipient-select-btn").prop("disabled", true);
+		$("#full-name").val(D("nameDirectoryNotSet"));
+		$("#full-name").prop("disabled", true);
+		$("#msg-body").val("");
 	}
 }
 
 async function clearMessages() {
-	var chatarea = document.getElementsByClassName("chat")[0];
-	chatarea.innerHTML = "";
+	$(".chat").eq(0).html("");
 }
 
 function getUrlParameter(sParam) {
@@ -298,48 +301,50 @@ document.addEventListener("DOMContentLoaded", () => {
 	checkLogin();
 	loadDirectory();
 	updateSendButton();
-	var receivedmessages = null;
+
+	// var receivedmessages = null;
+
 	M.updateTextFields();
 	// Setup side menu
 	const menus = document.querySelectorAll(".side-menu");
 	M.Sidenav.init(menus, { edge: "right", draggable: true });
-	let elems = document.querySelectorAll('.modal');
+	let elems = document.querySelectorAll(".modal");
 	let instances = M.Modal.init(elems, {});
 	// Setup side modal
-	const modals = document.querySelectorAll('.side-modal');
-	M.Sidenav.init(modals, { edge: 'left', draggable: false });
+	const modals = document.querySelectorAll(".side-modal");
+	M.Sidenav.init(modals, { edge: "left", draggable: false });
 	prepareAndStartFetchingMessages(); // just opens modal, as there is no recipient selected
 });
 
 async function updateSendButton() {
-	if(document.getElementById("msg-body").value.length == 0) {
-		document.getElementById("msg-send").disabled = true;
+	if ($("#msg-body").val().length == 0) {
+		$("#msg-send").prop("disabled", true);
 	} else {
-		document.getElementById("msg-send").disabled = false;
+		$("#msg-send").prop("disabled", false);
 	}
 }
 
 async function setRecipient(name = null) {
-	if(name == null || name == false || name == undefined) {
-		name = document.getElementById("full-name").value;
+	if (name == null || name == false || name == undefined) {
+		name = $("#full-name").val();
 	} else if (typeof name != "number") {
 		throw new TypeError('Hello from setRecipient(): name can only be string or null!');
 	}
 
-	if(Object.keys(directory).includes(name)) {} else {
+	if (Object.keys(directory).includes(name)) {} else {
 		UIAlert(D("recipientNotInDirectory"));
 		throw new RangeError("Hello from setRecipient(): name is not in directory");
 	}
 
-	var modal = document.querySelectorAll('#directory-side-menu')[0];
+	var modal = document.querySelectorAll("#directory-side-menu")[0];
 	var modalInstance = M.Sidenav.getInstance(modal);
 	modalInstance.close();
 
-	document.getElementsByClassName("msg-chattingWith")[0].innerHTML = name;
+	$(".msg-chattingWith").eq(0).html(name);
 	sogovornik = name;
 	currentlyChattingWith = directory[name];
 
-	document.getElementById("chat-mustSelectRecipient").hidden=true;
+	$("#chat-mustSelectRecipient").prop("hidden", true);
 
 	updateSendButton();
 	clearMessages(); // <-- do when recipient selected
@@ -347,12 +352,12 @@ async function setRecipient(name = null) {
 }
 
 async function prepareAndStartFetchingMessages() {
-	if(currentlyChattingWith === 0 || (currentlyChattingWith >= 1 && currentlyChattingWith < 69420)) {
-		document.getElementById("msg-body").disabled = false;
+	if (currentlyChattingWith === 0 || (currentlyChattingWith >= 1 && currentlyChattingWith < 69420)) {
+		$("#msg-body").prop("disabled", false);
 		await clearMessages();
 		startFetchingMessages();
 	} else {
-		var modal = document.querySelectorAll('#directory-side-menu')[0];
+		var modal = document.querySelectorAll("#directory-side-menu")[0];
 		var modalInstance = M.Sidenav.getInstance(modal);
 		modalInstance.open();
 	}
@@ -360,12 +365,12 @@ async function prepareAndStartFetchingMessages() {
 
 async function startFetchingMessages() {
 	let promises_to_run = [
-			localforage.getItem("username").then((value) => {
-					username = value;
-			}),
-			localforage.getItem("password").then((value) => {
-					password = value;
-			}),
+		localforage.getItem("username").then((value) => {
+			username = value;
+		}),
+		localforage.getItem("password").then((value) => {
+			password = value;
+		}),
 	];
 
 	setLoading(true);
@@ -384,9 +389,9 @@ async function startFetchingMessages() {
 }
 
 async function startLoadingMessagesForCategory(gsecInstance, category, lastpage) {
-	for(var page = 1; page <= lastpage; page++) {
+	for (var page = 1; page <= lastpage; page++) {
 		var gsecMsgList = await gsecInstance.fetchMessagesList(category, page);
-		if(category == 0) {
+		if (category == 0) {
 			whom = 1;
 		} else {
 			whom = 0;
@@ -396,8 +401,8 @@ async function startLoadingMessagesForCategory(gsecInstance, category, lastpage)
 }
 
 async function renderMessages(gsecMsgList, whom, order = 1) { // order: 1=newest>olest 0=oldest>newest 2=autodetect (todo-not implemented)
-	for(const message of gsecMsgList) { // whom: 0=me 1=you
-		if(message.subject.substring(0, 20) == "beziapp-ctlmsg-chat-") {
+	for (const message of gsecMsgList) { // whom: 0=me 1=you
+		if (message.subject.substring(0, 20) === "beziapp-ctlmsg-chat-") {
 			addMessage(whom, message.subject.substring(20), 2, message.date.getTime);
 		}
 	}
