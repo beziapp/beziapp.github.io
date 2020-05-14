@@ -1,0 +1,11 @@
+#!/bin/bash
+cd tmp
+rm -rf bverbose
+git clone https://github.com/sijanec/bverbose
+cd bverbose
+gcc test/tape-test.c -I lib -I src -o ../../bin/compose-single
+gcc test/compose-all-in-dir.c -I lib -I src -o ../../bin/compose-html
+cd ..
+rm -rf bverbose
+cd ..
+

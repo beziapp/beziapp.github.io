@@ -10,22 +10,24 @@ navigation@>` in a .bvr file in [pages-src](pages-src) will include [`navigation
 `<@?s variable_name variable value@>` and read with `<@?s variable_name@>`. To execute a command and surpress output, use 
 `<@#?x arg@>` where `x` is the command.
 
-So now pages are now in pages-src and before deployment, `./compose_html pages-src/ pages/` has to be run to update the pages 
+So pages are now in pages-src and before deployment, `./compose_html pages-src/ pages/` has to be run to update the pages 
 dir.
 
 
 idkr, it seemed like a good idea, but feel free not to use it (write about it here so I won't override your commits).
 
-the compiled binary works on "`Linux kondenzator 5.3.0-46-generic #38~18.04.1-Ubuntu SMP Tue Mar 31 04:17:56 UTC 2020 x86_64
+the compiled binaries work on "`Linux kondenzator 5.3.0-46-generic #38~18.04.1-Ubuntu SMP Tue Mar 31 04:17:56 UTC 2020 x86_64
 x86_64 x86_64 GNU/Linux`".
 
-this is close to how I compiled it:
+there's now a configure script (bash) that compiles all binaries (use if the prebuilt binaries don't work).
+
 ```
-idrk=`pwd`
-cd /tmp
-git clone https://github.com/sijanec/bverbose
-cd bverbose
-gcc test/compose-all-in-dir.c -I lib -I src
-mv a.out $idrk/compose_html
-cd $idrk
+# install dependencies
+sudo apt install git gcc
+# run from project directory
+./configure
 ```
+creates binaries so you can use the ./install everytime you make changes (and hook to post-commit)
+
+should there be any conflicts with the developers on different platforms, .gitignore files will be created to ignore binaries
+from being comitted every time.

@@ -1,2 +1,3 @@
 #!/bin/bash
-./compose-html pages-src/ pages/
+./bin/compose-html pages-src/ pages/
+./bin/compose-single sw.js.bvr sw.js

@@ -52,7 +52,8 @@
                     <b class="title-secondary">Beži</b><span class="title-primary">App</span>
                 </h3>
                 <!-- One day in the future we may have sw cache version covered by this as well -->
-                <h5 class="subheader"><x-su>version</x-su> <@?i version@></h5>
+# I agree, will make a script
+                <h5 class="subheader"><x-su>version</x-su> <@?g app_version@></h5>
             </div>
         </div>
         <div class="row">
