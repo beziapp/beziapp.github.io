@@ -302,7 +302,7 @@ function displayData() {
                     <div class="card blue-grey darken-1">
                         <div class="card-content white-text">
                             <span class="card-title">
-                                ${filterXSS(element["id"])}
+                                ${filterXSS(element["zadeva"])}
                             </span>
                             <p id="msg_body-${filterXSS(element["id"]).replace(/\|/g, "_")}">
                                 <button
