@@ -450,12 +450,15 @@ function setupEventListeners() {
 		        var randomencdivid = Math.floor(Math.random() * 9999).toString().padStart(4, "0");
                 var addrparts = window.location.href.split("/"); // engleski
                 
+                var encrypted_message = sjcl.encrypt($("#msg-e2ee-pass-input").val(), msgcontent);
+
                 msgcontent = `
                     <script src="${addrparts[0]}//${addrparts[2]}/js/lib/sjcl.js"></script>
                     <div id="beziapp-msg-e2ee-form-${randomencdivid}">
                         This message was encrypted by BežiApp.
                         <input type="password" autocomplete="new-password" id="beziapp-msg-e2ee-password-${randomencdivid}" placeholder="Enter password ...">
                         <input type="button" value="Decrypt" onclick="
+                            console.log($('beziapp-msg-e2ee-content-${randomencdivid}').text());
                             $('#beziapp-msg-e2ee-content-${randomencdivid}').html(
                                 sjcl.decrypt(
                                     $('#beziapp-msg-e2ee-password-${randomencdivid}').val(),
@@ -468,10 +471,14 @@ function setupEventListeners() {
                         >
                     </div>
                     <div id="beziapp-msg-e2ee-content-${randomencdivid}" hidden>
-                        <!-- beziapp-e2eemsg-${msgcontent.length.toString().padStart(4, "0")} -->${sjcl.encrypt($("#msg-e2ee-pass-input").val(), msgcontent)}<!-- end-msg -->
+                        <!-- beziapp-e2eemsg-${msgcontent.length.toString().padStart(4, "0")} -->${encrypted_message}<!-- end-msg -->
                     </div>
                 `
-	        }
+            }
+            
+            console.log(msgcontent);
+            console.log(encrypted_message);
+
             sendMessage(value[$("#full-name").val()], msgsubject, htmlEncode(msgcontent));
             $("#msg-body").val("");
             $("#full-name").val("");
