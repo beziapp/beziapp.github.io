@@ -254,7 +254,7 @@ async function deleteMsg(id) {
 function displayMessage(id, data) {
     let regex_results = ENCRYPTED_MESSAGE_REGEX.exec(data["telo"]);
     if (regex_results != null) {
-	    var datatodecrypt = regex_results[1]; // length-6 da zbrišemo zadnji </div>
+	    var datatodecrypt = regex_results[2]; // length-6 da zbrišemo zadnji </div>
         var randomencdivid = Math.floor(Math.random() * 9999).toString().padStart(4, "0");
 
         var msgcontent = `
