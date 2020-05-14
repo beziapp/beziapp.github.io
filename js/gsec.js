@@ -510,7 +510,7 @@ class gsec {
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
 				let currentPage;
-				if(parsed.getElementsByClassName("pager").length == 0) { // pager is not shown, there is only page one.
+				if (parsed.getElementsByClassName("pager").length == 0) { // pager is not shown, there is only page one.
 					currentPage = 1;
 				} else {
 					currentPage = Number(parsed.getElementsByClassName("pager")[0].getElementsByTagName("span")[0].innerHTML);
@@ -531,21 +531,22 @@ class gsec {
 				"__EVENTTARGET": "ctl00$ContentPlaceHolder1$gvwSporocila"
 			};
 			this.postback(requestURi, dataToBeSent, null, true).then((response) => {
-				if(outputResponse == true) {
+				if (outputResponse == true) {
 					response.url = requestURi;
 					resolve(response);
 				}
+
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
 				let messageElements = parsed.getElementById("ctl00_ContentPlaceHolder1_gvwSporocila").getElementsByTagName("tbody")[0].getElementsByTagName("td");
-				for(const messageElement of messageElements) {
+				for (const messageElement of messageElements) {
 					let msgId = messageElement.getElementsByTagName("input")[0].value;
 					var date = messageElement.getElementsByClassName("msgSubDate")[0].innerHTML.split(" ")[0].split(".");
 					var today = new Date();
-					if(date[2] == undefined || date[2].length < 1) {
+					if (date[2] == undefined || date[2].length < 1) {
 						date[2] = today.getFullYear();
 					}
-					if(date[1] == undefined || date[1].length < 1) {
+					if (date[1] == undefined || date[1].length < 1) {
 						date[1] = today.getMonth()+1;
 						date[0] = today.getDate();
 					}
@@ -553,11 +554,16 @@ class gsec {
 					if (tume == undefined || tume == null) { // js nism kriv za to pizdraijo; gimsis je.
 						tume = messageElement.getElementsByClassName("msgSubDate")[0].innerHTML;
 					}
-					var dateStringToParse = date[2]+"-"+date[1]+"-"+date[0]+" "+tume;
+					var dateStringToParse = `${date[2]}-${date[1]}-${date[0]} ${tume}`;
 					var dateObj = new Date(Date.parse(dateStringToParse)); // "tume"!
 					var person = messageElement.getElementsByClassName("msgDir")[0].innerHTML;
 					var subject = messageElement.getElementsByClassName("msgSubject")[0].innerHTML;
-					messages.push({"date": dateObj, "sender": person, "subject": subject, "msgId": msgId});
+					messages.push({
+						"date": dateObj,
+						"sender": person,
+						"subject": subject,
+						"msgId": msgId
+					});
 				}
 				resolve(messages);
 			});
@@ -586,9 +592,16 @@ class gsec {
 					let recipient = parsed.querySelectorAll("[id$=Label8]")[0].innerHTML;
 					var date = parsed.querySelectorAll("[id$=Label7]")[0].innerHTML.split(" (").pop().split(" ")[0].split(".");
 					var tume = parsed.querySelectorAll("[id$=Label7]")[0].innerHTML.split(" (").pop().split(")")[0].split(" ").pop(); // "tume"!
-					var dateObj = new Date(Date.parse(date[2]+"-"+date[1]+"-"+date[0]+" "+tume)); // "tume"!
+					var dateObj = new Date(Date.parse(`${date[2]}-${date[1]}-${date[0]} ${tume}`)); // "tume"!
 					var msgId = parsed.getElementById("ctl00_ContentPlaceHolder1_hfIdSporocilo").getAttribute("value");
-					message = {"subject": subject, "body": body, "sender": sender, "recipient": recipient, "date": dateObj, "msgId": msgId};
+					message = {
+						"subject": subject,
+						"body": body,
+						"sender": sender,
+						"recipient": recipient,
+						"date": dateObj,
+						"msgId": msgId
+					};
 					resolve(message);
 					
 				});

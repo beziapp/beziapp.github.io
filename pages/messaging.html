@@ -105,48 +105,48 @@
                         </button>
                     </div>
                 </div>
-		<div hidden="hidden" class="row" id="msg-e2ee-pass">
+		        <div hidden="hidden" class="row" id="msg-e2ee-pass">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">lock</i>
                         <input id="msg-e2ee-pass-input" type="password" autocomplete="new-password" class="">
                         <label for="msg-e2ee-pass-input"><x-su>passwordForE2EE</x-su></label>
                     </div>
-		</div>
+		        </div>
             </div>
             <div id="msg-added-image"></div>
         </div>
         <h4><x-su>messages</x-su></h4>
         <button class="btn waves-effect waves-light" id="msg-load-btn" onclick="loadMessages(true, 0);" type="button">
-					<x-su>received</x-su>
-					<i class="material-icons right">system_update</i>
+			<x-su>received</x-su>
+			<i class="material-icons right">inbox</i>
         </button>
         <button class="btn waves-effect waves-light" id="msg-load-btn" onclick="loadMessages(true, 1);" type="button">
-					<x-su>sent</x-su>
-					<i class="material-icons right">system_update</i>
+			<x-su>sent</x-su>
+			<i class="material-icons right">forward</i>
         </button>
         <button class="btn waves-effect waves-light" id="msg-load-btn" onclick="loadMessages(true, 2);" type="button">
-					<x-su>deleted</x-su>
-					<i class="material-icons right">system_update</i>
+			<x-su>deleted</x-su>
+			<i class="material-icons right">delete</i>
         </button>
         <div id="msg-list"></div>
-	<p>
-		<div class="row" id="storage-bar">
-			<div class="col s4">
-				<x-su>messageStorageUsed</x-su>: 
-			</div>
-			<div class="col s3" id="storage-desc">
-				0/120 <x-sl>messages</x-sl> 10%
-			</div>
-			<div class="progress col s5">
-				<div class="determinate" id="storage-progressbar" style="width: 0%"></div>
-			</div>
-		</div>
-		<div class="row">
-			<p>
-				<x-du>maxMessagesNote</x-du>
-			</p>
-		</div>
-	</p>
+        <p>
+            <div class="row" id="storage-bar">
+                <div class="col s4">
+                    <x-su>messageStorageUsed</x-su>: 
+                </div>
+                <div class="col s3" id="storage-desc">
+                    0/120 <x-sl>messages</x-sl> 10%
+                </div>
+                <div class="progress col s5">
+                    <div class="determinate" id="storage-progressbar" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="row">
+                <p>
+                    <x-du>maxMessagesNote</x-du>
+                </p>
+            </div>
+        </p>
     </div>
 </body>
 </html>
