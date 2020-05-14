@@ -271,16 +271,20 @@ function displayMessage(id, data) {
                 value="Decrypt"
                 class="btn waves-effect waves-light"
                 onclick="
-                    $('#beziapp-msg-e2ee-content-${randomencdivid}').html(
-                        filterXSS(
-                            sjcl.decrypt(
-                                $('#beziapp-msg-e2ee-password-${randomencdivid}').val(),
-                                $('#beziapp-msg-e2ee-content-${randomencdivid}').html()
-                            )
-                        )
-                    );
-                    $('#beziapp-msg-e2ee-content-${randomencdivid}').show();
-                    $('#beziapp-msg-e2ee-form-${randomencdivid}').hide();
+										try {
+	                    $('#beziapp-msg-e2ee-content-${randomencdivid}').html(
+	                        filterXSS(
+	                            sjcl.decrypt(
+	                                $('#beziapp-msg-e2ee-password-${randomencdivid}').val(),
+	                                $('#beziapp-msg-e2ee-content-${randomencdivid}').html()
+	                            )
+	                        )
+	                    );
+      	              $('#beziapp-msg-e2ee-content-${randomencdivid}').show();
+    	                $('#beziapp-msg-e2ee-form-${randomencdivid}').hide();
+										} catch (err) {
+											alert('${D("incorrectPassword")}');
+										}
                 "
             >
                 ${S("decrypt")}
@@ -418,11 +422,11 @@ async function validateName() {
         if ($("#full-name").val() in directory) {
             $("#full-name").addClass("valid");
             $("#full-name").removeClass("invalid");
-            $("#msg-send").prop("disabled", false);
+            $("#msg-send").removeAttr("disabled");
         } else {
             $("#full-name").addClass("invalid");
             $("#full-name").removeClass("valid");
-            $("#msg-send").prop("disabled", true);
+            $("#msg-send").attr("disabled", "disabled");
         }
     }
 }
@@ -493,7 +497,7 @@ function setupEventListeners() {
         localforage.getItem("directory").then(function (value) {
             var msgcontent = $("#msg-body").val() + additionalstufftoaddtomessage;
             var msgsubject = $("#msg-subject").val();
-	        if ($("#msg-e2ee-pass").prop("hidden") !== true) {
+	        if ($("#encryption-key-input").prop("hidden") !== true) {
 		        var randomencdivid = Math.floor(Math.random() * 9999).toString().padStart(4, "0");
                 var addrparts = window.location.href.split("/"); // engleski
                 
@@ -505,15 +509,19 @@ function setupEventListeners() {
                         This message was encrypted by BežiApp.
                         <input type="password" autocomplete="new-password" id="beziapp-msg-e2ee-password-${randomencdivid}" placeholder="Enter password ...">
                         <input type="button" value="Decrypt" onclick="
-                            console.log($('beziapp-msg-e2ee-content-${randomencdivid}').text());
-                            $('#beziapp-msg-e2ee-content-${randomencdivid}').html(
-                                sjcl.decrypt(
-                                    $('#beziapp-msg-e2ee-password-${randomencdivid}').val(),
-                                    $('beziapp-msg-e2ee-content-${randomencdivid}').text()
-                                )
-                            );
-                            $('#beziapp-msg-e2ee-content-${randomencdivid}').show();
-                            $('#beziapp-msg-e2ee-form-${randomencdivid}').hide();
+														try {
+	                            console.log($('beziapp-msg-e2ee-content-${randomencdivid}').text());
+	                            $('#beziapp-msg-e2ee-content-${randomencdivid}').html(
+	                                sjcl.decrypt(
+	                                    $('#beziapp-msg-e2ee-password-${randomencdivid}').val(),
+	                                    $('beziapp-msg-e2ee-content-${randomencdivid}').text()
+	                                )
+	                            );
+	                            $('#beziapp-msg-e2ee-content-${randomencdivid}').show();
+	                            $('#beziapp-msg-e2ee-form-${randomencdivid}').hide();
+														} catch(err) {
+															alert('${D("incorrectPassword")}');
+														}
                             "
                         >
                     </div>
@@ -530,7 +538,8 @@ function setupEventListeners() {
             $("#msg-body").val("");
             $("#full-name").val("");
             $("#msg-subject").val("");
-            $("#msg-send").prop("disabled", true);
+            // $("#msg-send").prop("disabled", true);
+            $("#msg-send").attr("disabled", "disabled");
             additionalstufftoaddtomessage = "";
 
 	        $("#msg-added-image").html("");

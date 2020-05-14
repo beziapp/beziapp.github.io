@@ -211,6 +211,7 @@ var langstrings = {
 		imageAddedAsAnAttachment: "image added as an attachment",
 		unableToReadDirectory: "unable to read directory of people",
 		messageCouldNotBeSent: "message could to be sent",
+		incorrectPassword: "incorrect password",
 		// chats
 		chat: "chat",
 		chattingWith: "chatting with",
@@ -393,6 +394,7 @@ var langstrings = {
 		imageAddedAsAnAttachment: "slika dodana kot priloga",
 		unableToReadDirectory: "imenika ni bilo mogoče prebrati",
 		messageCouldNotBeSent: "sporočila ni bilo mogoče poslati",
+		incorrectPassword: "nepravilno geslo",
 		// chats
 		chat: "klepet",
 		chattingWith: "klepet z osebo",
