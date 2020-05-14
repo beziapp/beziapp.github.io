@@ -48,9 +48,11 @@
     <div class="container">
         <div class="row">
             <div class="col s12">
-                <h3><b class="title-secondary">Beži</b><span class="title-primary">App</span>
+                <h3>
+                    <b class="title-secondary">Beži</b><span class="title-primary">App</span>
                 </h3>
-                <h5 class="subheader"><x-su>version</x-su> 1.0.13-beta</h5>
+                <!-- One day in the future we may have sw cache version covered by this as well -->
+                <h5 class="subheader"><x-su>version</x-su> <@?i version@></h5>
             </div>
         </div>
         <div class="row">
@@ -59,29 +61,35 @@
                     <li class="collection-header">
                         <h5><x-su>authors</x-su></h5>
                     </li>
-                    <li class="collection-item avatar">
+                    <li class="valign-wrapper collection-item avatar">
                         <img src="/img/avatars/rstular.png" class="circle">
                         <span class="title about-text">Rok Štular</span>
-			&nbsp;&nbsp;&nbsp;&nbsp; <!-- technology -->
-			<a href="messaging.html#Rok Štular" class="btn waves-effect waves-light" type="button">
-                            <i class="material-icons">message</i>
-                        </a>
-                        <a target="_blank" href="https://instagram.com/rstular/"
-                            class="secondary-content btn-floating btn-medium waves-effect waves-light button-theme-gimb"><i
-                                class="fab fa-instagram"></i></a>
+                        
+                        <div class="secondary-content about-button-box">
+                            <a href="messaging.html#Rok Štular" class="btn-floating btn-medium waves-effect waves-light button-theme-gimb" type="button">
+                                <i class="material-icons">message</i>
+                            </a>
+                            <a target="_blank" href="https://instagram.com/rstular/"
+                                class="btn-floating btn-medium waves-effect waves-light button-theme-gimb">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                            
                     </li>
 
-                    <li class="collection-item avatar">
+                    <li class="valign-wrapper collection-item avatar">
                         <img src="/img/avatars/asijanec.png" class="circle">
                         <span class="title about-text">Anton Luka Šijanec</span>
-                        <a target="_blank" href="https://instagram.com/asijanec/"
-                            class="secondary-content btn-floating btn-medium waves-effect waves-light button-theme-gimb"><i
-                                class="fab fa-instagram"></i></a>
-			</a>
-			&nbsp;&nbsp;&nbsp;&nbsp; <!-- technology -->
-			<a href="messaging.html#Anton Luka Šijanec" class="btn waves-effect waves-light" type="button">
-                            <i class="material-icons">message</i>
-                        </a>
+
+                        <div class="secondary-content about-button-box">
+                            <a href="messaging.html#Anton Luka Šijanec" class="btn-floating btn-medium waves-effect waves-light button-theme-gimb" type="button">
+                                <i class="material-icons">message</i>
+                            </a>
+                            <a target="_blank" href="https://instagram.com/rstular/"
+                                class="btn-floating btn-medium waves-effect waves-light button-theme-gimb">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -92,7 +100,7 @@
                     <li class="collection-header">
                         <h5><x-su>translatorsForThisLanguage</x-su> - <x-su>miscTranslationLanguage</x-su></h5>
                     </li>
-                    <li class="collection-item avatar">
+                    <li class="collection-item">
                         <span class="title about-text"><x-su>miscTranslationAuthors</x-su></span>
                     </li>
                 </ul>
@@ -105,8 +113,8 @@
                     <a href="/pages/tos.html" class="collection-item"><x-su>theToS</x-su></a>
                     <a href="/pages/privacypolicy.html" class="collection-item"><x-su>thePrivacyPolicy</x-su></a>
                     <a href="https://instagram.com/beziapp/" target="_blank" class="collection-item">
-											<x-su>reportABug</x-su> / <x-su>sendASuggestion</x-su> (<x-su>instagram></x-su>: @beziapp)
-										</a>
+						<x-su>reportABug</x-su> / <x-su>sendASuggestion</x-su> (<x-su>instagram</x-su>: @beziapp)
+					</a>
                 </div>
             </div>
         </div>

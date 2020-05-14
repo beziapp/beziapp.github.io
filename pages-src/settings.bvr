@@ -50,21 +50,29 @@
             <div class="col s12">
                 <h3><b class="title-secondary">Beži</b><span class="title-primary">App</span>
                 </h3>
-                <h5 class="subheader"><x-su>settings</x-su></h5>
+                <h4 class="subheader"><x-su>settings</x-su></h4>
             </div>
         </div>
         <div class="row">
+            <h5><x-su>language</x-su></h5>
             <div class="col s12">
-                <ul class="collection with-header">
-                    <li class="collection-header">
-                        <h5><x-su>language</x-su></h5>
-                    </li>
-                    <li data-language="sl" class="settings-language-selector collection-item waves-effect">
-                        <span class="title about-text">Slovenščina</span>
-                    </li>
-                    <li date-language="en" class="collection-item waves-effect">
-                        <span class="title about-text">English</span>
-                    </li>
+                <div class="collection">
+                    <a data-language="sl" class="collection-item settings-language-selector" href="#">
+                        <div>
+                            Slovenščina
+                            <div class="secondary-content">
+                                <img class="flag-icon" src="/img/flags/sl.svg" />
+                            </div>
+                        </div>
+                    </a>
+                    <a data-language="en" class="collection-item settings-language-selector" href="#">
+                        <div>
+                            English
+                            <div class="secondary-content">
+                                <img class="flag-icon" src="/img/flags/en.svg" />
+                            </div>
+                        </div>
+                    </a>
 										<!--
 	                    <li class="collection-item waves-effect">
 	                        <span class="title about-text">Srpskohrvatski</span>
@@ -94,7 +102,7 @@
 	                        <span class="title about-text">Lingua latīna</span>
 	                    </li>
 										-->
-                </ul>
+                </div>
             </div>
         </div>
     </div>
