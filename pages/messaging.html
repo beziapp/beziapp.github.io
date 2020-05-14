@@ -73,21 +73,17 @@
     <div class="container">
         <div class="row">
 
-            <div class="row" id="storage-bar">
-                <div class="col s4">
-                    <x-su>messageStorageUsed</x-su>: 
+            <div class="row grey-text text-darken-2" id="storage-bar">
+                <div class="col s6">
+                    <x-su>messageStorageUsed</x-su>: <span id="#storage-stats">0/120</span> <x-sl>messages</x-sl>
                 </div>
-                <div class="col s3" id="storage-desc">
-                    0/120 <x-sl>messages</x-sl> 10%
-                </div>
-                <div class="progress col s5">
+                <div class="progress col s6">
                     <div class="determinate" id="storage-progressbar" style="width: 0%"></div>
                 </div>
             </div>
-            <div class="row">
-                <p>
-                    <x-du>maxMessagesNote</x-du>
-                </p>
+
+            <div class="row grey-text text-darken-2" style="text-align: center;">
+                <x-du>maxMessagesNote</x-du>
             </div>
 
             <div class="col s12 m12">

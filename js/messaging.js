@@ -357,7 +357,7 @@ function displayData(messageType) {
 
     $("#storage-bar").show();
     $("#storage-progressbar").width(Number(Number(getNumMessages(messageType) / 120) * 100).toFixed(2) + "%");
-    $("#storage-desc").html( `${getNumMessages(messageType)}/120 ${s("messages")} ${$("#storage-progressbar").width()}`);
+    $("#storage-stats").html(`${getNumMessages(messageType)}/120`);
 }
 
 // -1 = cumulative
