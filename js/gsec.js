@@ -112,7 +112,7 @@ class gsec {
 				if (response.code === 302) {
 					resolve(true);
 				} else {
-					if ((parsed.getElementById("lblMsg"))) { // če obstaja lblMsg (napaka pri prijavi)
+					if (parsed.getElementById("lblMsg")) { // če obstaja lblMsg (napaka pri prijavi)
 						reject(new Error(GSEC_ERR_LOGIN));
 					} else if (!(parsed.getElementById("ctl00_lblLoginName"))) { // če ni ctl00_lblLoginName nismo na Default.aspx
 						reject(new Error(GSEC_ERR_LOGIN));
