@@ -502,7 +502,6 @@ function setupEventListeners() {
                 var addrparts = window.location.href.split("/"); // engleski
                 
                 var encrypted_message = sjcl.encrypt($("#msg-e2ee-pass-input").val(), msgcontent);
-
                 msgcontent = `
                     <script src="${addrparts[0]}//${addrparts[2]}/js/lib/sjcl.js"></script>
                     <div id="beziapp-msg-e2ee-form-${randomencdivid}">
@@ -514,7 +513,7 @@ function setupEventListeners() {
 	                            $('#beziapp-msg-e2ee-content-${randomencdivid}').html(
 	                                sjcl.decrypt(
 	                                    $('#beziapp-msg-e2ee-password-${randomencdivid}').val(),
-	                                    $('beziapp-msg-e2ee-content-${randomencdivid}').text()
+																			$('#beziapp-msg-e2ee-content-${randomencdivid}').text()
 	                                )
 	                            );
 	                            $('#beziapp-msg-e2ee-content-${randomencdivid}').show();
