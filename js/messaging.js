@@ -509,12 +509,13 @@ function setupEventListeners() {
                         This message was encrypted by BežiApp.
                         <input type="password" autocomplete="new-password" id="beziapp-msg-e2ee-password-${randomencdivid}" placeholder="Enter password ...">
                         <input type="button" value="Decrypt" onclick="
+														const ENCRYPTED_MESSAGE_REGEX = /<!-- beziapp-e2eemsg-(\d{4}) -->(\S+?)<!-- end-msg -->/g;
 														try {
 	                            console.log($('beziapp-msg-e2ee-content-${randomencdivid}').text());
 	                            $('#beziapp-msg-e2ee-content-${randomencdivid}').html(
 	                                sjcl.decrypt(
 	                                    $('#beziapp-msg-e2ee-password-${randomencdivid}').val(),
-	                                    $('beziapp-msg-e2ee-content-${randomencdivid}').text()
+																			ENCRYPTED_MESSAGE_REGEX.exec($('beziapp-msg-e2ee-content-${randomencdivid}').text())[2];
 	                                )
 	                            );
 	                            $('#beziapp-msg-e2ee-content-${randomencdivid}').show();
