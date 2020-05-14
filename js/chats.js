@@ -344,7 +344,7 @@ async function setRecipient(name = null) {
 	sogovornik = name;
 	currentlyChattingWith = directory[name];
 
-	$("#chat-mustSelectRecipient").prop("hidden", true);
+	$("#chat-mustSelectRecipient").hide();
 
 	updateSendButton();
 	clearMessages(); // <-- do when recipient selected

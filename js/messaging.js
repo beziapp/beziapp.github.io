@@ -181,7 +181,7 @@ async function loadMsg(id) {
                 "u": username,
                 "p": password,
                 "m": "fetchsporocilo",
-                "a": id
+                "a": id.replace("_", "|")
             },
             dataType: "json",
             cache: false,
@@ -224,7 +224,7 @@ async function deleteMsg(id) {
                 "u": username,
                 "p": password,
                 "m": "izbrisisporocilo",
-                "a": id
+                "a": id.replace("_", "|")
             },
             dataType: "json",
             cache: false,
@@ -281,9 +281,9 @@ function displayMessage(id, data) {
             ${datatodecrypt}
         </div>
         `
-	    $(`#msg_body-${id}`).html(msgcontent);
+	    $(`#msg_body-${id.replace("|", "_")}`).html(msgcontent);
     } else {
-        $(`#msg_body-${id}`).html(filterXSS(data["telo"]));
+        $(`#msg_body-${id.replace("|", "_")}`).html(filterXSS(data["telo"]));
     }
 }
 
@@ -300,7 +300,7 @@ function displayData() {
                             <span class="card-title">
                                 ${filterXSS(element["id"])}
                             </span>
-                            <p id="msg_body-${filterXSS(element["id"])}">
+                            <p id="msg_body-${filterXSS(element["id"]).replace("|", "_")}">
                                 <button
                                     class="btn waves-effect waves-light"
                                     onclick="loadMsg('${filterXSS(element["id"])}')"
