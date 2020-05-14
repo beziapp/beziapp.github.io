@@ -283,7 +283,7 @@ function displayMessage(id, data) {
       	              $('#beziapp-msg-e2ee-content-${randomencdivid}').show();
     	                $('#beziapp-msg-e2ee-form-${randomencdivid}').hide();
 										} catch (err) {
-											alert(${D("incorrectPassword")});
+											alert('${D("incorrectPassword")}');
 										}
                 "
             >
@@ -520,7 +520,7 @@ function setupEventListeners() {
 	                            $('#beziapp-msg-e2ee-content-${randomencdivid}').show();
 	                            $('#beziapp-msg-e2ee-form-${randomencdivid}').hide();
 														} catch(err) {
-															alert(${D("incorrectPassword")});
+															alert('${D("incorrectPassword")}');
 														}
                             "
                         >
