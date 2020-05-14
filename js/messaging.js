@@ -232,7 +232,7 @@ async function deleteMsg(id) {
                 "u": username,
                 "p": password,
                 "m": "izbrisisporocilo",
-                "a": id.replace(/_/g, "|")
+                "a": id
             },
             dataType: "json",
             cache: false,
