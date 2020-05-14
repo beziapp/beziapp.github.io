@@ -329,6 +329,7 @@ class gsec {
 			});
 		});
 	}
+
 	deleteMessage(id) {
 		return new Promise((resolve, reject) => {
 			$.ajax({
