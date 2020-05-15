@@ -1,7 +1,7 @@
 const API_ENDPOINT = "https://gimb.tk/test.php";
 const DIRECTORY_URL = "/directory.json";
 
-const ENCRYPTED_MESSAGE_REGEX = /<!-- beziapp-e2eemsg-(\d{4}) -->(\S+?)<!-- end-msg -->/g;
+const ENCRYPTED_MESSAGE_REGEX = /<!-- ba-e2eemsg-(\d{4}) -->(\S+?)<!-- end-msg -->/g;
 
 // "Global" object for name directory and messages
 var directory = null;
@@ -263,25 +263,25 @@ function displayMessage(id, data) {
         var randomencdivid = Math.floor(Math.random() * 9999).toString().padStart(4, "0");
 
         var msgcontent = `
-        <div id='beziapp-msg-e2ee-form-${randomencdivid}'>
+        <div id='ba-msg-e2ee-form-${randomencdivid}'>
             ${D("thisMessageWasEncrypted")}
-            <input type="password" autocomplete="new-password" id="beziapp-msg-e2ee-password-${randomencdivid}" placeholder="${S("password")} ...">
+            <input type="password" autocomplete="new-password" id="ba-msg-e2ee-password-${randomencdivid}" placeholder="${S("password")} ...">
             <button
                 type="button"
                 value="Decrypt"
                 class="btn waves-effect waves-light"
                 onclick="
 					try {
-	                    $('#beziapp-msg-e2ee-content-${randomencdivid}').html(
+	                    $('#ba-msg-e2ee-content-${randomencdivid}').html(
 	                        filterXSS(
 	                            sjcl.decrypt(
-                                        $('#beziapp-msg-e2ee-password-${randomencdivid}').val(),
-                                        $('#beziapp-msg-e2ee-content-${randomencdivid}').html()
+                                        $('#ba-msg-e2ee-password-${randomencdivid}').val(),
+                                        $('#ba-msg-e2ee-content-${randomencdivid}').html()
 	                            )
 	                        )
 	                    );
-                        $('#beziapp-msg-e2ee-content-${randomencdivid}').show();
-                        $('#beziapp-msg-e2ee-form-${randomencdivid}').hide();
+                        $('#ba-msg-e2ee-content-${randomencdivid}').show();
+                        $('#ba-msg-e2ee-form-${randomencdivid}').hide();
                     } catch (err) {
                         alert('${D("incorrectPassword")}');
                     }
@@ -290,7 +290,7 @@ function displayMessage(id, data) {
                 ${S("decrypt")}
             </button>
         </div>
-        <div id="beziapp-msg-e2ee-content-${randomencdivid}" hidden>
+        <div id="ba-msg-e2ee-content-${randomencdivid}" hidden>
             ${datatodecrypt}
         </div>
         `
@@ -322,7 +322,7 @@ function displayData(messageType) {
     let msg_list = $(div_selector);
     msg_list.html("");
     messages[messageType.toString()].forEach(element => {
-        if (!element["zadeva"].startsWith("beziapp-ctlmsg")) {
+        if (!element["zadeva"].startsWith("ba-ctlmsg")) {
 
             msg_list.append(`
                 <div class="col s12 m12" id="msg_box-${filterXSS(element["id"])}">
@@ -504,27 +504,27 @@ function setupEventListeners() {
                 var encrypted_message = sjcl.encrypt($("#msg-e2ee-pass-input").val(), msgcontent);
                 msgcontent = `
                     <script src="${addrparts[0]}//${addrparts[2]}/js/lib/sjcl.js"></script>
-                    <div id="beziapp-msg-e2ee-form-${randomencdivid}">
+                    <div id="ba-msg-e2ee-form-${randomencdivid}">
                         This message was encrypted by BežiApp.
-                        <input type="password" autocomplete="new-password" id="beziapp-msg-e2ee-password-${randomencdivid}" placeholder="Enter password ...">
+                        <input type="password" autocomplete="new-password" id="ba-msg-e2ee-password-${randomencdivid}" placeholder="Enter password ...">
                         <input type="button" value="Decrypt" onclick="
 							try {
-	                            console.log($('beziapp-msg-e2ee-content-${randomencdivid}').text());
-	                            $('#beziapp-msg-e2ee-content-${randomencdivid}').html(
+	                            console.log($('ba-msg-e2ee-content-${randomencdivid}').text());
+	                            $('#ba-msg-e2ee-content-${randomencdivid}').html(
 	                                sjcl.decrypt(
-	                                    $('#beziapp-msg-e2ee-password-${randomencdivid}').val(),
-										$('#beziapp-msg-e2ee-content-${randomencdivid}').text()
+	                                    $('#ba-msg-e2ee-password-${randomencdivid}').val(),
+										$('#ba-msg-e2ee-content-${randomencdivid}').text()
 	                                )
 	                            );
-	                            $('#beziapp-msg-e2ee-content-${randomencdivid}').show();
-	                            $('#beziapp-msg-e2ee-form-${randomencdivid}').hide();
+	                            $('#ba-msg-e2ee-content-${randomencdivid}').show();
+	                            $('#ba-msg-e2ee-form-${randomencdivid}').hide();
 							} catch(err) {
 								alert('${D("incorrectPassword")}');
 							}
                         ">
                     </div>
-                    <div id="beziapp-msg-e2ee-content-${randomencdivid}" hidden>
-                        <!-- beziapp-e2eemsg-${msgcontent.length.toString().padStart(4, "0")} -->${encrypted_message}<!-- end-msg -->
+                    <div id="ba-msg-e2ee-content-${randomencdivid}" hidden>
+                        <!-- ba-e2eemsg-${msgcontent.length.toString().padStart(4, "0")} -->${encrypted_message}<!-- end-msg -->
                     </div>
                 `
             }

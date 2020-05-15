@@ -133,7 +133,7 @@ async function sendMessage(recipient_number = null, body = null) {
 		try {
 			let gsecInstance = new gsec();
 			gsecInstance.login(username, password).then( () => {
-				gsecInstance.sendMessage(recipient_number, "beziapp-ctlmsg-chat-" + body, "BežiApp chat: " + body).then((value) => {
+				gsecInstance.sendMessage(recipient_number, "ba-ctlmsg-chat-" + body, "BežiApp chat: " + body).then((value) => {
 					addMessage(0, body);
 					setLoading(false);
 				}).catch((err) => {
@@ -402,7 +402,7 @@ async function startLoadingMessagesForCategory(gsecInstance, category, lastpage)
 
 async function renderMessages(gsecMsgList, whom, order = 1) { // order: 1=newest>olest 0=oldest>newest 2=autodetect (todo-not implemented)
 	for (const message of gsecMsgList) { // whom: 0=me 1=you
-		if (message.subject.substring(0, 20) === "beziapp-ctlmsg-chat-") {
+		if (message.subject.substring(0, 20) === "ba-ctlmsg-chat-") {
 			addMessage(whom, message.subject.substring(20), 2, message.date.getTime);
 		}
 	}
