@@ -3,6 +3,7 @@ const DIRECTORY_URL = "/directory.json";
 const CHATS_BEGIN_TAG = "<!-- ba-ctlmsg-chat-begin -->";
 const CHATS_END_TAG = "<!-- ba-ctlmsg-chat-end -->";
 const CHAT_REGEX = /<!-- ba-ctlmsg-chat-begin -->([\S\s]+?)<!-- ba-ctlmsg-chat-end -->/g;
+const CHATS_SUBJECT_PREFIX = "ba-ctlmsg-chat-";
 
 // "Global" object for name directory
 var directory = null;
@@ -136,7 +137,7 @@ async function sendMessage(recipient_number = null, body = null) {
 		try {
 			let gsecInstance = new gsec();
 			gsecInstance.login(username, password).then( () => {
-				gsecInstance.sendMessage(recipient_number, "ba-ctlmsg-chat-" + body, S("chatExternalInfo") + CHATS_BEGIN_TAG + body +
+				gsecInstance.sendMessage(recipient_number, CHATS_SUBJECT_PREFIX + body, S("chatExternalInfo") + CHATS_BEGIN_TAG + body +
 						CHATS_END_TAG).then((value) => {
 					addMessage(0, body);
 					setLoading(false);
@@ -214,7 +215,7 @@ function addMessage(whom, body, datePlacement = 0, messageDate = null) { // date
 
 			console.log("if3");
 			for (var iter = 0; iter < alreadyMessages.length - 2; iter++) { // (-2 zato, ker potem iter+1 ne obstaja pri zadnjem elementu)
-				if (Number(alreadyMessages[iter].getAttribute("data-date")) < timstamp
+				if (Number(alreadyMessages[iter].getAttribute("data-date")) < timestamp
 					&& Number(alreadyMessages[iter+1].getAttribute("data-date")) > timestamp) {
 
 					var zgornjiIsti = alreadyMessages[iter].parentElement.classList.contains(whos);
@@ -406,8 +407,9 @@ async function startLoadingMessagesForCategory(gsecInstance, category, lastpage)
 
 async function renderMessages(gsecMsgList, whom, order = 1) { // order: 1=newest>olest 0=oldest>newest 2=autodetect (todo-not implemented)
 	for (const message of gsecMsgList) { // whom: 0=me 1=you
-		if (message.subject.startsWith("ba-ctlmsg-chat-")) {
-			addMessage(whom, message.subject.substring(20), 2, message.date.getTime);
+		if (message.subject.startsWith(CHATS_SUBJECT_PREFIX)) {
+			console.log(message);
+			addMessage(whom, message.subject.substring(CHATS_SUBJECT_PREFIX.length), 2, message.date.getTime);
 		}
 	}
 }
