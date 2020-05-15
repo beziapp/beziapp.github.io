@@ -221,6 +221,7 @@ var langstrings = {
 		select: "select",
 		mustSelectRecipient: "you have to select a recipient before chatting. Open directory on the left side by clicking on the top left addressbook button and select a recipient in order to start chatting with them",
 		recipientNotInDirectory: "recipient is not in directory.",
+		chatExternalInfo: "you have just received a chat. Chats are not supported by GimSIS, so you must reply by changing the subject to something else. Chat body: ",
 		// meals
 		loginToLopolis: "login to Lopolis",
 		loginToLopolisNote: "it seems like you're not currently logged in to eRestavracija, so this form has been presented to you. You have a different username and password combination used for applying and opting out of of menus. In order to use this feature, you have to log in with your Lopolis account.",
@@ -404,6 +405,7 @@ var langstrings = {
 		select: "izberi",
 		mustSelectRecipient: "pred klepetom morate izbrati sogovornika. Odprite imenik (meni na levi strani) s pritiskom na gumb \"imenik\" zgoraj desno in izberite sogovornika.",
 		recipientNotInDirectory: "izbrane osebe ni v imeniku",
+		chatExternalInfo: "dobili ste kratko sporočilo v standardu, ki ga GimSIS ne podpira. Pri odgovarjanju spremenite zadevo. Vsebina sporočila: ",
 		// meals
 		loginToLopolis: "prijava v Lopolis",
 		loginToLopolisNote: "izgleda, da niste prijavljeni v eRestavracijo, zato se vam je prikazal prijavni obrazec. Za uporavljanje s prehrano se uporablja druga kombinacija uporabniškega imena in gesla, zato se prijavite s svojimi Lopolis prijavnimi podatki za nadaljevanje.",

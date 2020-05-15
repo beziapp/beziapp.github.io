@@ -133,7 +133,7 @@ async function sendMessage(recipient_number = null, body = null) {
 		try {
 			let gsecInstance = new gsec();
 			gsecInstance.login(username, password).then( () => {
-				gsecInstance.sendMessage(recipient_number, "ba-ctlmsg-chat-" + body, "BežiApp chat: " + body).then((value) => {
+				gsecInstance.sendMessage(recipient_number, "ba-ctlmsg-chat-" + body, S("chatExternalInfo") + body).then((value) => {
 					addMessage(0, body);
 					setLoading(false);
 				}).catch((err) => {
