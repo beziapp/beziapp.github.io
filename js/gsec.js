@@ -319,7 +319,7 @@ class gsec {
 			var dataToSend = {
 				"ctl00$ModalMasterBody$edtPrejemniki": "",
 				"ctl00$ModalMasterBody$edtZadeva": subject,
-				"ctl00$ModalMasterBody$edtBesediloExt": body,
+				"ctl00$ModalMasterBody$edtBesediloExt": he.encode(body),
 				"__EVENTTARGET": "ctl00$ModalMasterBody$btnDogodekShrani",
 				"__EVENTARGUMENT": "",
 				"ctl00$ModalMasterBody$hfPrejemniki": recipient
