@@ -1,5 +1,8 @@
 // const API_ENDPOINT = "https://gimb.tk/test.php";
 const DIRECTORY_URL = "/directory.json";
+const CHATS_BEGIN_TAG = "<!-- ba-ctlmsg-chat-begin -->";
+const CHATS_END_TAG = "<!-- ba-ctlmsg-chat-end -->";
+const CHAT_REGEX = /<!-- ba-ctlmsg-chat-begin -->([\S\s]+?)<!-- ba-ctlmsg-chat-end -->/g;
 
 // "Global" object for name directory
 var directory = null;
@@ -133,7 +136,8 @@ async function sendMessage(recipient_number = null, body = null) {
 		try {
 			let gsecInstance = new gsec();
 			gsecInstance.login(username, password).then( () => {
-				gsecInstance.sendMessage(recipient_number, "ba-ctlmsg-chat-" + body, S("chatExternalInfo") + body).then((value) => {
+				gsecInstance.sendMessage(recipient_number, "ba-ctlmsg-chat-" + body, S("chatExternalInfo") + CHATS_BEGIN_TAG + body +
+						CHATS_END_TAG).then((value) => {
 					addMessage(0, body);
 					setLoading(false);
 				}).catch((err) => {
