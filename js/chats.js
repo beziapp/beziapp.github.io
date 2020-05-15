@@ -402,7 +402,7 @@ async function startLoadingMessagesForCategory(gsecInstance, category, lastpage)
 
 async function renderMessages(gsecMsgList, whom, order = 1) { // order: 1=newest>olest 0=oldest>newest 2=autodetect (todo-not implemented)
 	for (const message of gsecMsgList) { // whom: 0=me 1=you
-		if (message.subject.substring(0, 20) === "ba-ctlmsg-chat-") {
+		if (message.subject.startsWith("ba-ctlmsg-chat-")) {
 			addMessage(whom, message.subject.substring(20), 2, message.date.getTime);
 		}
 	}
