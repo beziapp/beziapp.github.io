@@ -1,3 +1,6 @@
+/**
+ * Redirects user to login page if it's not logged int
+ */
 async function checkLogin() {
     localforage.getItem("logged_in").then(function (value) {
         // This code runs once the value has been loaded

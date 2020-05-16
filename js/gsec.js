@@ -363,7 +363,8 @@ class gsec {
 
 	fetchAbsences(fromDate = null, tillDate = null) { // navedba datumov je deprecated. Internet je dovolj hiter za poslat maksimalno 4160 ur (16 ur/dan, 5 dni/ted, 52 ted/leto)
 	
-		const FIELDS_REGEX = /^(.+) \(<span class="opr(\d)">(\dP?)<\/span>/;
+		const SUBJECT_LIST_REGEX = /(.+? \(<span class="opr\d">\dP?<\/span>\))(?:,\s*|$)/g;
+		const FIELDS_REGEX = /^(.+?) \(<span class="opr(\d)">(\dP?)<\/span>\)/;
 
 		return new Promise((resolve, reject)=>{
 			if (!(fromDate instanceof Date) || !(tillDate instanceof Date)) {
@@ -390,9 +391,15 @@ class gsec {
 					var subFields = izostanek.getElementsByTagName("td");
 					var date = subFields[0].innerHTML.trim().split(".");
 					var dateObj = new Date(Date.parse(`${date[2]}-${date[1]}-${date[0]}`));
-					var subjects = {};
 
-					for (const subject of subFields[2].innerHTML.split(", ")) {
+					var subjects = [];
+					subFields[2].innerHTML.match(SUBJECT_LIST_REGEX).forEach((subject) => {
+						subjects.push(subject);
+					});
+
+					var absencesBySubject = {};
+
+					for (const subject of subjects) {
 						const matched_info = FIELDS_REGEX.exec(subject);
 
 						var subjectName = matched_info[1];
@@ -401,9 +408,9 @@ class gsec {
 						// Ce je v "stevilki" P, gre za popoldansko uro -> +7 ur
 						var period = matched_info[3];
 						period = period.includes("P") ? Number(period.replace("P", "")) + 7 : Number(period);
-						subjects[period] = {status: status, subject: subjectName};
+						absencesBySubject[period] = {status: status, subject: subjectName};
 					}
-					absences.push({subjects: subjects, date: dateObj});
+					absences.push({subjects: absencesBySubject, date: dateObj});
 				}
 				resolve(absences);
 			});

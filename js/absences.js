@@ -1,6 +1,9 @@
 // const API_ENDPOINT = "https://gimb.tk/test.php"; // deprecated
 // const API_ENDPOINT = "http://localhost:5000/test.php";
-var absences;
+
+/**
+ * Redirects user to login page if it's not logged int
+ */
 async function checkLogin() {
     localforage.getItem("logged_in").then(function (value) {
         // This code runs once the value has been loaded
@@ -14,7 +17,10 @@ async function checkLogin() {
     });
 }
 
-// Set loading bar visibility
+/**
+ * Sets visibility of the loading bar
+ * @param {boolean} state Desired visibility
+ */
 function setLoading(state) {
     if (state) {
         $("#loading-bar").removeClass("hidden");
@@ -23,10 +29,14 @@ function setLoading(state) {
     }
 }
 
-async function loadAbsences(force_refresh = false) {
+/**
+ * Loads absences from API and displays them
+ * @param {boolean} forceRefresh If true, cached absences are ignored
+ */
+async function loadAbsences(forceRefresh = false) {
 	setLoading(true);
 	// Load required data
-	let promises_to_run = [
+	let promisesToRun = [
 		localforage.getItem("username").then(function (value) {
 			username = value;
 		}),
@@ -37,12 +47,12 @@ async function loadAbsences(force_refresh = false) {
 			absences = value;
 		})
 	];
-	await Promise.all(promises_to_run);
+	await Promise.all(promisesToRun);
 	// If we don't have a list of absences, query it
-	if (absences === null || force_refresh) {
+	if (absences === null || forceRefresh) {
 		try {
 			let gsecInstance = new gsec();
-			await	gsecInstance.login(username, password);
+			await gsecInstance.login(username, password);
 			let date = {};
 			date.from = $("#datepicker-from").val().split(".");
 			date.till = $("#datepicker-to").val().split(".");
@@ -91,11 +101,16 @@ async function loadAbsences(force_refresh = false) {
 	}
 }
 
+/**
+ * Display absences data - called by loadAbsences
+ */
 function displayData() {
 	absences.forEach(absence => {
 		let li = document.createElement("li");
+		
+		// dateString comes from bundle.js
+		let date_string = dateString.longFormatted(absence["date"]);
 
-		let date_string = dateString.longFormatted(absence["date"]); // javascript sucks - zakaj ob vsej svoji "preprostosti" ne morm met Date za key objecta!?!?'!!11~
 		let header = document.createElement("div");
 		header.className = "collapsible-header";
 		header.innerText = date_string;
@@ -112,7 +127,7 @@ function displayData() {
 			let subject_row = document.createElement("tr");
 			let subject_lesson_icon = document.createElement("td");
 			let subject_lesson_text = document.createElement("td");
-			subject_lesson_text.innerText = S("lesson") + " " + lesson;
+			subject_lesson_text.innerText = `${S("lesson")} ${lesson}`;
 
 			let subject_lesson_icon_i = document.createElement("i");
 			subject_lesson_icon_i.className = "material-icons";
@@ -151,6 +166,9 @@ function displayData() {
 	});
 }
 
+/**
+ * Clear all displayed absences
+ */
 function clearAbsences() {
     const table = document.getElementById("absences-col");
     while (table.firstChild) {
@@ -158,11 +176,17 @@ function clearAbsences() {
     }
 }
 
+/**
+ * Force reloading of absences
+ */
 function refreshAbsences() {
     clearAbsences();
     loadAbsences(true);
 }
 
+/**
+ * Setup date pickers (from date and to date)
+ */
 function setupPickers() {
     // Setup pickers
     var date_object = new Date();

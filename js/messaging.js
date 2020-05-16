@@ -1,7 +1,7 @@
 const API_ENDPOINT = "https://gimb.tk/test.php";
 const DIRECTORY_URL = "/directory.json";
 
-const ENCRYPTED_MESSAGE_REGEX = /<!-- ba-e2eemsg-(\d{4}) -->(\S+?)<!-- end-msg -->/g;
+const ENCRYPTED_MESSAGE_REGEX = /<!-- ba-e2eemsg-(\d{4}) -->(\S+?)<!-- end-msg -->/;
 
 // "Global" object for name directory and messages
 var directory = null;

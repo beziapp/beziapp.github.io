@@ -13,6 +13,11 @@ if (navigator.serviceWorker) {
     });
 }
 
+/**
+ * Displays a user-friendly text to the user and detailed text to developer (console)
+ * @param {string} usermsg User-friendly message
+ * @param {string} devmsg Developer-friendly message
+ */
 async function UIAlert(usermsg, devmsg) {
   if(true) { // če bo kakšen dev switch?
     M.toast( { html: usermsg } );
@@ -22,6 +27,10 @@ async function UIAlert(usermsg, devmsg) {
   }
 }
 
+/**
+ * Handles GSEC error - notifies the user and prints a console message
+ * @param {Object} err GSEC error object
+ */
 function gsecErrorHandlerUI(err) {
 	console.log(`gsecErrorHanderUI: handling ${err}`);
   if(err == GSEC_ERR_NET || err == GSEC_ERR_NET_POSTBACK_GET || err == GSEC_ERR_NET_POSTBACK_POST) {
