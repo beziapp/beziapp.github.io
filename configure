@@ -1,4 +1,5 @@
 #!/bin/bash
+mkdir tmp
 cd tmp
 rm -rf bverbose
 git clone https://github.com/sijanec/bverbose
