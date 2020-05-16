@@ -362,10 +362,13 @@ class gsec {
 	}
 
 	fetchAbsences(fromDate = null, tillDate = null) { // navedba datumov je deprecated. Internet je dovolj hiter za poslat maksimalno 4160 ur (16 ur/dan, 5 dni/ted, 52 ted/leto)
+	
+		const FIELDS_REGEX = /^(.+) \(<span class="opr(\d)">(\dP?)<\/span>/;
+
 		return new Promise((resolve, reject)=>{
 			if (!(fromDate instanceof Date) || !(tillDate instanceof Date)) {
 				tillDate = new Date(Date.UTC(9999, 11, 30)); // overkill? Of course not, cez 8000 let bo ta app se vedno top shit
-				fromDate = new Date(Date.UTC(1, 1, 1)); // i don't thunk so
+				fromDate = new Date(Date.UTC(1, 1, 1)); // i don't think so
 			}
 
 			var dataToBeSent = {
@@ -390,10 +393,14 @@ class gsec {
 					var subjects = {};
 
 					for (const subject of subFields[2].innerHTML.split(", ")) {
-						var subjectName = subject.split(" (")[0];
-						var status = Number(subject.split('(<span class="opr').pop().split('">')[0]);
-						// statusi so: 0: ni obdelano, 1: opravičeno, 2: neopravičeno, 3: ne šteje, uporabi S(gseAbsenceTypes[num]) za i18n pre3vod
-						var period = Number(subject.split('">').pop().split('</span>')[0]);
+						const matched_info = FIELDS_REGEX.exec(subject);
+
+						var subjectName = matched_info[1];
+						var status = Number(matched_info[2]);
+						// statusi so: 0: ni obdelano, 1: opravičeno, 2: neopravičeno, 3: ne šteje, uporabi S(gseAbsenceTypes[num]) za i18n prevod
+						// Ce je v "stevilki" P, gre za popoldansko uro -> +7 ur
+						var period = matched_info[3];
+						period = period.includes("P") ? Number(period.replace("P", "")) + 7 : Number(period);
 						subjects[period] = {status: status, subject: subjectName};
 					}
 					absences.push({subjects: subjects, date: dateObj});
