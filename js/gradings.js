@@ -75,116 +75,116 @@ function getDateString() {
 }
 
 async function loadGradings(force_refresh = false) {
-	setLoading(true);
-	let promises_to_run = [
-		localforage.getItem("username").then((value) => {
-			username = value;
-		}),
-		localforage.getItem("password").then((value) => {
-			password = value;
-		}),
-		localforage.getItem("gradings").then((value) => {
-			gradings = value;
-		})
-	];
-	await Promise.all(promises_to_run);
-	if (gradings === null || gradings === [] || gradings === -1 || force_refresh) {
-		try {
-			let gsecInstance = new gsec();
-			await gsecInstance.login(username, password);
-			gsecInstance.fetchGradings().then( (value) => {
-				gradings = value;
-				localforage.setItem("gradings", value).then((value) => {
-					displayData();
-					setLoading(false);
-				});
-				setLoading(false);
-			}).catch( (err) => {
-				gsecErrorHandlerUI(err);
-				setLoading(false);
-			});
-		} catch (err) {
-			gsecErrorHandlerUI(err);
-			setLoading(false);
-		}
-	} else {
-		displayData();
-		setLoading(false);
-	}
+    setLoading(true);
+    let promises_to_run = [
+        localforage.getItem("username").then((value) => {
+            username = value;
+        }),
+        localforage.getItem("password").then((value) => {
+            password = value;
+        }),
+        localforage.getItem("gradings").then((value) => {
+            gradings = value;
+        })
+    ];
+    await Promise.all(promises_to_run);
+    if (gradings === null || gradings === [] || gradings === -1 || force_refresh) {
+        try {
+            let gsecInstance = new gsec();
+            await gsecInstance.login(username, password);
+            gsecInstance.fetchGradings().then( (value) => {
+                gradings = value;
+                localforage.setItem("gradings", value).then(() => {
+                    displayData();
+                    setLoading(false);
+                });
+                setLoading(false);
+            }).catch( (err) => {
+                gsecErrorHandlerUI(err);
+                setLoading(false);
+            });
+        } catch (err) {
+            gsecErrorHandlerUI(err);
+            setLoading(false);
+        }
+    } else {
+        displayData();
+        setLoading(false);
+    }
 }
 
 function displayData() {
-	let transformed_gradings = [];
-	gradings.forEach((element, index) => {
-		let bg_color = getHexColorFromString(element["acronym"]);
-		let fg_color = getForegroundFromBackground(bg_color);
-		let grading_object = {
-			start: element["date"].toISOString().substring(0, 10), // če se da direktno date object, se doda še 1a zraven (prefixa tajtlu) (verjetno 1am ura)
-			title: element["acronym"],
-			id: index.toString(),
-			backgroundColor: bg_color,
-			textColor: fg_color
-		};
-		transformed_gradings.push(grading_object);
-	});
-	calendar_obj.removeAllEvents();
-	calendar_obj.addEventSource(transformed_gradings);
+    let transformed_gradings = [];
+    gradings.forEach((element, index) => {
+        let bg_color = getHexColorFromString(element["acronym"]);
+        let fg_color = getForegroundFromBackground(bg_color);
+        let grading_object = {
+            start: element["date"].toISOString().substring(0, 10), // če se da direktno date object, se doda še 1a zraven (prefixa tajtlu) (verjetno 1am ura)
+            title: element["acronym"],
+            id: index.toString(),
+            backgroundColor: bg_color,
+            textColor: fg_color
+        };
+        transformed_gradings.push(grading_object);
+    });
+    calendar_obj.removeAllEvents();
+    calendar_obj.addEventSource(transformed_gradings);
 }
 
 function gradingClickHandler(eventClickInfo) {
-	let grading_id = parseInt(eventClickInfo.event.id);
-	let grading_subject = gradings[grading_id]["subject"];
-	let grading_date_obj = gradings[grading_id]["date"];
-	let grading_date = dateString.longFormatted(grading_date_obj);
-	let grading_description = gradings[grading_id]["description"];
-	$("#grading-subject").text(grading_subject);
-	$("#grading-date").text(grading_date);
-	$("#grading-description").text(grading_description);
-	const modal = document.querySelectorAll(".side-modal")[0];
-	M.Sidenav.getInstance(modal).open();
+    let grading_id = parseInt(eventClickInfo.event.id);
+    let grading_subject = gradings[grading_id]["subject"];
+    let grading_date_obj = gradings[grading_id]["date"];
+    let grading_date = dateString.longFormatted(grading_date_obj);
+    let grading_description = gradings[grading_id]["description"];
+    $("#grading-subject").text(grading_subject);
+    $("#grading-date").text(grading_date);
+    $("#grading-description").text(grading_description);
+    const modal = document.querySelectorAll(".side-modal")[0];
+    M.Sidenav.getInstance(modal).open();
 }
 /*
-	function setupPickers() {
-		// Setup pickers, todo (adding an event), to be stored in messages
-		var date_object = new Date();
-		let elems = document.querySelectorAll('#datepicker-add');
-		let options = {
-			autoClose: true,
-			format: "dd.mm.yyyy",
-			defaultDate: date_object,
-			setDefaultDate: true,
-			firstDay: 1
-		}
-		let instances = M.Datepicker.init(elems, options);
-		instances = M.Datepicker.init(elems, options);
-	}
+    function setupPickers() {
+        // Setup pickers, todo (adding an event), to be stored in messages
+        var date_object = new Date();
+        let elems = document.querySelectorAll('#datepicker-add');
+        let options = {
+            autoClose: true,
+            format: "dd.mm.yyyy",
+            defaultDate: date_object,
+            setDefaultDate: true,
+            firstDay: 1
+        }
+        let instances = M.Datepicker.init(elems, options);
+        instances = M.Datepicker.init(elems, options);
+    }
 */
 
 document.addEventListener("DOMContentLoaded", () => {
-	checkLogin();
-	// Calendar setup
-	var calendarEl = document.getElementById("calendar");
-	calendar_obj = new FullCalendar.Calendar(calendarEl, {
-		firstDay: 1,
-		plugins: ["dayGrid"],
-		defaultDate: getDateString(),
-		navLinks: false,
-		editable: false,
-		events: [],
-		eventClick: gradingClickHandler,
-		height: "parent"
-	});
-	calendar_obj.render();
-	// setupPickers(); // todo (adding an event), to be stored in messages
-	loadGradings();
-	// Setup refresh handler
-	$("#refresh-icon").click(() => {
-		loadGradings(true);
-	});
-	// Setup side menu
-	const menus = document.querySelectorAll(".side-menu");
-	M.Sidenav.init(menus, { edge: "right", draggable: true });
-	// Setup side modal
-	const modals = document.querySelectorAll('.side-modal');
-	M.Sidenav.init(modals, { edge: 'left', draggable: false });
+    checkLogin();
+    // Calendar setup
+    var calendarEl = document.getElementById("calendar");
+    calendar_obj = new FullCalendar.Calendar(calendarEl, {
+        firstDay: 1,
+        plugins: ["dayGrid"],
+        defaultDate: getDateString(),
+        navLinks: false,
+        editable: false,
+        events: [],
+        eventClick: gradingClickHandler,
+        height: "parent"
+    });
+    calendar_obj.render();
+    // setupPickers(); // todo (adding an event), to be stored in messages
+    loadGradings();
+    // Setup refresh handler
+    $("#refresh-icon").click(() => {
+        loadGradings(true);
+    });
+    // Setup side menu
+    const menus = document.querySelectorAll(".side-menu");
+    M.Sidenav.init(menus, { edge: "right", draggable: true });
+    // Setup side modal
+    const modals = document.querySelectorAll('.side-modal');
+    M.Sidenav.init(modals, { edge: 'left', draggable: false });
 });

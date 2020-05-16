@@ -60,7 +60,7 @@ function loadDirectory() {
             localforage.getItem("directory").then((stored_directory) => {
                 if (stored_directory === null) {
                     // If unable, set directory to null (so other functions know that we don't have it)
-					UIAlert( D("nameDirectoryNotSet"), "loadDirectory(): stored_directory === null" );
+                    UIAlert( D("nameDirectoryNotSet"), "loadDirectory(): stored_directory === null" );
                     directory = null;
                     // Disable send button
                     document.getElementById("msg-send").disabled = true;
@@ -92,7 +92,7 @@ function populateAutocomplete() {
     });
 
     if (window.location.hash.length > 1 && !window.location.hash.substring(1).startsWith("beziapp")) {
-    	$("#full-name").val(decodeURIComponent(window.location.hash.substring(1)));
+        $("#full-name").val(decodeURIComponent(window.location.hash.substring(1)));
     }
 
     M.updateTextFields();
@@ -143,7 +143,7 @@ async function loadMessages(force_refresh = true, messageType = 0) {
                 success: (data) => {
                     // If data is null, the request failed
                     if (data === null) {
-						UIAlert( D("requestFailed") );
+                        UIAlert( D("requestFailed") );
                         setLoading(false);
                     } else {
                         // Save messages & populate view
@@ -157,7 +157,7 @@ async function loadMessages(force_refresh = true, messageType = 0) {
                 },
 
                 error: () => {
-					UIAlert( D("errorFetchingMessages") );
+                    UIAlert( D("errorFetchingMessages") );
                     setLoading(false);
                 }
             })
@@ -197,7 +197,7 @@ async function loadMsg(id) {
             success: (data) => {
                 // If data is null, the request failed
                 if (data === null) {
-					UIAlert( `${D("unableToReceiveTheMessage")} ${D("requestFailed")}` );
+                    UIAlert( `${D("unableToReceiveTheMessage")} ${D("requestFailed")}` );
                 } else {
                     displayMessage(id, data);
                 }
@@ -205,7 +205,7 @@ async function loadMsg(id) {
             },
 
             error: () => {
-				UIAlert( `${D("unableToReceiveTheMessage")} ${D("noInternetConnection")}` );
+                UIAlert( `${D("unableToReceiveTheMessage")} ${D("noInternetConnection")}` );
                 setLoading(false);
             }
 
@@ -240,7 +240,7 @@ async function deleteMsg(id) {
             success: (data) => {
                 // If data is null, the request failed
                 if (data === null) {
-					UIAlert( `${D("unableToDeleteTheMessage")} ${D("requestFailed")}` );
+                    UIAlert( `${D("unableToDeleteTheMessage")} ${D("requestFailed")}` );
                 } else {
                     document.getElementById("msg_box-" + id).remove();
                 }
@@ -248,7 +248,7 @@ async function deleteMsg(id) {
             },
 
             error: () => {
-				UIAlert( `${D("unableToDeleteTheMessage")} ${D("noInternetConnection")}` );
+                UIAlert( `${D("unableToDeleteTheMessage")} ${D("noInternetConnection")}` );
                 setLoading(false);
             }
 
@@ -259,7 +259,7 @@ async function deleteMsg(id) {
 function displayMessage(id, data) {
     let regex_results = ENCRYPTED_MESSAGE_REGEX.exec(data["telo"]);
     if (regex_results != null) {
-	    var datatodecrypt = regex_results[2];
+        var datatodecrypt = regex_results[2];
         var randomencdivid = Math.floor(Math.random() * 9999).toString().padStart(4, "0");
 
         var msgcontent = `
@@ -271,15 +271,15 @@ function displayMessage(id, data) {
                 value="Decrypt"
                 class="btn waves-effect waves-light"
                 onclick="
-					try {
-	                    $('#ba-msg-e2ee-content-${randomencdivid}').html(
-	                        filterXSS(
-	                            sjcl.decrypt(
+                    try {
+                        $('#ba-msg-e2ee-content-${randomencdivid}').html(
+                            filterXSS(
+                                sjcl.decrypt(
                                         $('#ba-msg-e2ee-password-${randomencdivid}').val(),
                                         $('#ba-msg-e2ee-content-${randomencdivid}').html()
-	                            )
-	                        )
-	                    );
+                                )
+                            )
+                        );
                         $('#ba-msg-e2ee-content-${randomencdivid}').show();
                         $('#ba-msg-e2ee-form-${randomencdivid}').hide();
                     } catch (err) {
@@ -294,7 +294,7 @@ function displayMessage(id, data) {
             ${datatodecrypt}
         </div>
         `
-	    $(`#msg_body-${id.replace(/\|/g, "_")}`).html(msgcontent);
+        $(`#msg_body-${id.replace(/\|/g, "_")}`).html(msgcontent);
     } else {
         $(`#msg_body-${id.replace(/\|/g, "_")}`).html(filterXSS(data["telo"]));
     }
@@ -360,7 +360,7 @@ function displayData(messageType) {
                     </div>
                 </div>
             `);
-	    }
+        }
     });
 }
 
@@ -406,11 +406,11 @@ async function sendMessage(recipient_number, subject, body) {
             type: "POST",
             success: () => {
                 // we CAN'T know wether the message was delievered
-				UIAlert(D("messageWasProbablySent"));
+                UIAlert(D("messageWasProbablySent"));
                 setLoading(false);
             },
             error: () => {
-				UIAlert(D("errorSendingMessage"), D("noInternetConnection"));
+                UIAlert(D("errorSendingMessage"), D("noInternetConnection"));
                 setLoading(false);
             }
         })
@@ -449,7 +449,7 @@ function setupEventListeners() {
                 additionalstufftoaddtomessage += `<br><img src="${readerEvent.target.result}" />`; // this is the content!
                 if ($("#msg-added-image").html().length > 1) {
                     $("#msg-added-image").append(`<img style="width: 20mm" src="${readerEvent.target.result}" />`);
-		        } else {
+                } else {
                     $("#msg-added-image").html(`
                         <input
                             type="button"
@@ -468,8 +468,8 @@ function setupEventListeners() {
                         <img style="width:20mm" src="${readerEvent.target.result}" />
                     `);
                     // ravno obratni narekovaji
-		        }
-		        UIAlert(D("imageAddedAsAnAttachment"));
+                }
+                UIAlert(D("imageAddedAsAnAttachment"));
             }
         }
         input.click();
@@ -480,27 +480,27 @@ function setupEventListeners() {
 
     // Setup refresh icon
     $("#refresh-icon").click(() => {
-		loadMessages(true, current_tab);
+        loadMessages(true, current_tab);
     });
 
     // Setup checkbox handler
-	$("#encrypt-checkbox").change(function() {
-		if (this.checked) {
+    $("#encrypt-checkbox").change(function() {
+        if (this.checked) {
             $("#encryption-key-input").prop("hidden", false);
         } else {
             $("#encryption-key-input").prop("hidden", true);
         }
-	});
+    });
 
     // Button to send message
     $("#msg-send").click(() => {
         localforage.getItem("directory").then(function (value) {
             var msgcontent = $("#msg-body").val() + additionalstufftoaddtomessage;
             var msgsubject = $("#msg-subject").val();
-	        if ($("#encryption-key-input").prop("hidden") !== true) {
-		        var randomencdivid = Math.floor(Math.random() * 9999).toString().padStart(4, "0");
+            if ($("#encryption-key-input").prop("hidden") !== true) {
+                var randomencdivid = Math.floor(Math.random() * 9999).toString().padStart(4, "0");
                 var addrparts = window.location.href.split("/"); // engleski
-                
+
                 var encrypted_message = sjcl.encrypt($("#msg-e2ee-pass-input").val(), msgcontent);
                 msgcontent = `
                     <script src="${addrparts[0]}//${addrparts[2]}/js/lib/sjcl.js"></script>
@@ -508,19 +508,19 @@ function setupEventListeners() {
                         This message was encrypted by BežiApp.
                         <input type="password" autocomplete="new-password" id="ba-msg-e2ee-password-${randomencdivid}" placeholder="Enter password ...">
                         <input type="button" value="Decrypt" onclick="
-							try {
-	                            console.log($('ba-msg-e2ee-content-${randomencdivid}').text());
-	                            $('#ba-msg-e2ee-content-${randomencdivid}').html(
-	                                sjcl.decrypt(
-	                                    $('#ba-msg-e2ee-password-${randomencdivid}').val(),
-										$('#ba-msg-e2ee-content-${randomencdivid}').text()
-	                                )
-	                            );
-	                            $('#ba-msg-e2ee-content-${randomencdivid}').show();
-	                            $('#ba-msg-e2ee-form-${randomencdivid}').hide();
-							} catch(err) {
-								alert('${D("incorrectPassword")}');
-							}
+                            try {
+                                console.log($('ba-msg-e2ee-content-${randomencdivid}').text());
+                                $('#ba-msg-e2ee-content-${randomencdivid}').html(
+                                    sjcl.decrypt(
+                                        $('#ba-msg-e2ee-password-${randomencdivid}').val(),
+                                        $('#ba-msg-e2ee-content-${randomencdivid}').text()
+                                    )
+                                );
+                                $('#ba-msg-e2ee-content-${randomencdivid}').show();
+                                $('#ba-msg-e2ee-form-${randomencdivid}').hide();
+                            } catch(err) {
+                                alert('${D("incorrectPassword")}');
+                            }
                         ">
                     </div>
                     <div id="ba-msg-e2ee-content-${randomencdivid}" hidden>
@@ -528,7 +528,7 @@ function setupEventListeners() {
                     </div>
                 `
             }
-            
+
             console.log(msgcontent);
             console.log(encrypted_message);
 
@@ -540,11 +540,11 @@ function setupEventListeners() {
             $("#msg-send").attr("disabled", "disabled");
             additionalstufftoaddtomessage = "";
 
-	        $("#msg-added-image").html("");
+            $("#msg-added-image").html("");
             $("#msg-e2ee-pass").hide();
-            
+
         }).catch(function (err) {
-			UIAlert( `${D("unableToReadDirectory")} ${D("messageCouldNotBeSend")}`, "45245" );
+            UIAlert( `${D("unableToReadDirectory")} ${D("messageCouldNotBeSend")}`, "45245" );
             console.log(err);
         });
     });
@@ -586,7 +586,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     };
-    var instance = M.Tabs.init(tabs, tab_options);
+    M.Tabs.init(tabs, tab_options);
 
     // Setup floating action button
     const fab_options = {
@@ -594,7 +594,7 @@ document.addEventListener("DOMContentLoaded", () => {
         toolbarEnabled: false
     }
     const fab_elem = document.querySelectorAll(".fixed-action-btn");
-    var instances = M.FloatingActionButton.init(fab_elem, fab_options);
+    M.FloatingActionButton.init(fab_elem, fab_options);
 
     // Setup modals
     const modal_elems = document.querySelectorAll('.modal');
@@ -603,7 +603,7 @@ document.addEventListener("DOMContentLoaded", () => {
         onCloseEnd: () => { $("#fab-new").show() },
         dismissible: false
     };
-    var instances = M.Modal.init(modal_elems, modal_options);
+    M.Modal.init(modal_elems, modal_options);
 
     var receivedmessages = null;
     loadMessages(true, 0);

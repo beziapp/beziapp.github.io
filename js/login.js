@@ -21,25 +21,25 @@ function setupEventListeners() {
 
 // Handle login button click
 function login() {
-	let username = $("#username").val();
-	let password = $("#password").val();
-	var gsecInstance = new gsec();
-	gsecInstance.login(username, password).then( (value) => {
-		if (typeof value == "string") {
-			let promises_to_run = [
-				localforage.setItem("logged_in", true),
-				localforage.setItem("username", username),
-				localforage.setItem("password", password)
-			];
-			Promise.all(promises_to_run).then(function () {
-				window.location.replace("/pages/timetable.html");
-			});
-		} else {
-			UIAlert("loginFailed");
-			$("#password").val("");
-		}
-	}).catch((err) => {
-		gsecErrorHandlerUI(err);
-		$("#password").val("");
-	});
+    let username = $("#username").val();
+    let password = $("#password").val();
+    var gsecInstance = new gsec();
+    gsecInstance.login(username, password).then( (value) => {
+        if (typeof value == "string") {
+            let promises_to_run = [
+                localforage.setItem("logged_in", true),
+                localforage.setItem("username", username),
+                localforage.setItem("password", password)
+            ];
+            Promise.all(promises_to_run).then(function () {
+                window.location.replace("/pages/timetable.html");
+            });
+        } else {
+            UIAlert("loginFailed");
+            $("#password").val("");
+        }
+    }).catch((err) => {
+        gsecErrorHandlerUI(err);
+        $("#password").val("");
+    });
 }

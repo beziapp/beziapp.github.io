@@ -34,141 +34,144 @@ function setLoading(state) {
  * @param {boolean} forceRefresh If true, cached absences are ignored
  */
 async function loadAbsences(forceRefresh = false) {
-	setLoading(true);
-	// Load required data
-	let promisesToRun = [
-		localforage.getItem("username").then(function (value) {
-			username = value;
-		}),
-		localforage.getItem("password").then(function (value) {
-			password = value;
-		}),
-		localforage.getItem("absences").then(function (value) {
-			absences = value;
-		})
-	];
-	await Promise.all(promisesToRun);
-	// If we don't have a list of absences, query it
-	if (absences === null || forceRefresh) {
-		try {
-			let gsecInstance = new gsec();
-			await gsecInstance.login(username, password);
-			let date = {};
-			date.from = $("#datepicker-from").val().split(".");
-			date.till = $("#datepicker-to").val().split(".");
-			Object.keys(date).map((key, index) => {
-				date[key] = new Date(Date.parse(date[key].reverse().join("-")));
-			});
-			gsecInstance.fetchAbsences().then( (fetchedAbsences) => {
-				fetchedAbsences.sort((a, b) => {
-					// Turn your strings into dates, and then subtract them
-					// to get a value that is either negative, positive, or zero.
-					return new Date(b.date) - new Date(a.date);
-				});
+    setLoading(true);
+    // Load required data
+    let promisesToRun = [
+        localforage.getItem("username").then(function (value) {
+            username = value;
+        }),
+        localforage.getItem("password").then(function (value) {
+            password = value;
+        }),
+        localforage.getItem("absences").then(function (value) {
+            absences = value;
+        })
+    ];
+    await Promise.all(promisesToRun);
+    // If we don't have a list of absences, query it
+    if (absences === null || forceRefresh) {
+        try {
+            let gsecInstance = new gsec();
+            await gsecInstance.login(username, password);
+            let date = {};
+            date.from = $("#datepicker-from").val().split(".");
+            date.till = $("#datepicker-to").val().split(".");
+            Object.keys(date).map((key) => {
+                date[key] = new Date(Date.parse(date[key].reverse().join("-")));
+            });
+            gsecInstance.fetchAbsences().then( (fetchedAbsences) => {
+                fetchedAbsences.sort((a, b) => {
+                    // Turn your strings into dates, and then subtract them
+                    // to get a value that is either negative, positive, or zero.
+                    return new Date(b.date) - new Date(a.date);
+                });
 
-				var fromKey = fetchedAbsences.findIndex((processedElement, processedIndex) => {
-					if (processedElement.date.getTime() >= date.from.getTime()) {
-						return true;
-					}
-				});
+                var fromKey = fetchedAbsences.findIndex((procEl) => {
+                    if (procEl.date.getTime() >= date.from.getTime()) {
+                        return true;
+                    }
+                });
 
-				var tillKey = fetchedAbsences.findIndex((processedElement, processedIndex) => {
-					if (processedElement.date.getTime() > date.till.getTime()) {
-						return true;
-					}
-				});
+                var tillKey = fetchedAbsences.findIndex((procEl) => {
+                    if (procEl.date.getTime() > date.till.getTime()) {
+                        return true;
+                    }
+                });
 
-				// Both were -1, but we increased fromKey and decreased tillKey
-				// Means no absences in the provided timeframe
-				if (fromKey === 0 && tillKey === -2) {
-					fetchedAbsences = [];
-				} else {
-					fetchedAbsences = fetchedAbsences.slice(fromKey, tillKey);
-				}
+                // Both were -1, but we increased fromKey and decreased tillKey
+                // Means no absences in the provided timeframe
+                if (fromKey === 0 && tillKey === -2) {
+                    fetchedAbsences = [];
+                } else {
+                    fetchedAbsences = fetchedAbsences.slice(fromKey, tillKey);
+                }
 
-				absences = fetchedAbsences;
-				localforage.setItem("absences", fetchedAbsences).then((value) => {
-					displayData();
-					setLoading(false);
-				});
-				setLoading(false);
-			}).catch( (err) => {
-				gsecErrorHandlerUI(err);
-				setLoading(false);
-			});
-		} catch (err) {
-			gsecErrorHandlerUI(err);
-			setLoading(false);
-		}
-	} else {
-		displayData();
-		setLoading(false);
-	}
+                absences = fetchedAbsences;
+                localforage.setItem("absences", fetchedAbsences).then(() => {
+                    displayData();
+                    setLoading(false);
+                });
+                setLoading(false);
+            }).catch( (err) => {
+                gsecErrorHandlerUI(err);
+                setLoading(false);
+            });
+        } catch (err) {
+            gsecErrorHandlerUI(err);
+            setLoading(false);
+        }
+    } else {
+        displayData();
+        setLoading(false);
+    }
 }
 
 /**
  * Display absences data - called by loadAbsences
  */
 function displayData() {
-	absences.forEach(absence => {
-		let li = document.createElement("li");
-		
-		// dateString comes from bundle.js
-		let date_string = dateString.longFormatted(absence["date"]);
+    absences.forEach(absence => {
+        let li = document.createElement("li");
 
-		let header = document.createElement("div");
-		header.className = "collapsible-header";
-		header.innerText = date_string;
+        // dateString comes from bundle.js
+        let dateStringValue = dateString.longFormatted(absence["date"]);
 
-		let body = document.createElement("div");
-		body.className = "collapsible-body";
+        let header = document.createElement("div");
+        header.className = "collapsible-header";
+        header.innerText = dateStringValue;
 
-		let body_table = document.createElement("table");
-		body_table.className = "highlight";
+        let body = document.createElement("div");
+        body.className = "collapsible-body";
 
-		let body_table_tbody = document.createElement("tbody");
+        let body_table = document.createElement("table");
+        body_table.className = "highlight";
 
-		Object.keys(absence.subjects).forEach(lesson => {
-			let subject_row = document.createElement("tr");
-			let subject_lesson_icon = document.createElement("td");
-			let subject_lesson_text = document.createElement("td");
-			subject_lesson_text.innerText = `${S("lesson")} ${lesson}`;
+        let body_table_tbody = document.createElement("tbody");
 
-			let subject_lesson_icon_i = document.createElement("i");
-			subject_lesson_icon_i.className = "material-icons";
+        Object.keys(absence.subjects).forEach(lesson => {
 
-			switch (absence["subjects"][lesson]["status"]) {
-				case 0:
-					subject_lesson_icon_i.innerText = "schedule";
-					break;
-				case 1:
-					subject_lesson_icon_i.innerText = "check_circle_outline";
-	        		break;
-				case 2:
-					subject_lesson_icon_i.innerText = "error_outline";
-					break;
-				case 3:
-					subject_lesson_icon_i.innerText = "not_interested";
-					break;
-			}
+            let absenceLessonObject = absence["subjects"][lesson];
 
-			subject_lesson_icon.appendChild(subject_lesson_icon_i);
+            let subjectRow = document.createElement("tr");
+            let subjectLessonIcon = document.createElement("td");
+            let subjectLessonText = document.createElement("td");
+            subjectLessonText.innerText = `${S("lesson")} ${lesson}`;
 
-			let subject_name = document.createElement("td");
-			subject_name.innerText = `${S(gseAbsenceTypes[absence["subjects"][lesson]["status"]])} : ${absence["subjects"][lesson]["subject"]}`;
-			subject_row.appendChild(subject_lesson_icon);
-			subject_row.appendChild(subject_lesson_text);
-			subject_row.appendChild(subject_name);
-			body_table_tbody.appendChild(subject_row);
-		});
+            let subjectLessonIconInner = document.createElement("i");
+            subjectLessonIconInner.className = "material-icons";
 
-		body_table.appendChild(body_table_tbody);
-		body.appendChild(body_table);
+            switch (absenceLessonObject["status"]) {
+                case 0:
+                    subjectLessonIconInner.innerText = "schedule";
+                    break;
+                case 1:
+                    subjectLessonIconInner.innerText = "check_circle_outline";
+                    break;
+                case 2:
+                    subjectLessonIconInner.innerText = "error_outline";
+                    break;
+                case 3:
+                    subjectLessonIconInner.innerText = "not_interested";
+                    break;
+            }
 
-		li.appendChild(header);
-		li.appendChild(body);
-		$("#absences-col").append(li);
-	});
+            subjectLessonIcon.appendChild(subjectLessonIconInner);
+
+            let subjectName = document.createElement("td");
+            subjectName.innerText = `${S(gseAbsenceTypes[absenceLessonObject["status"]])} : ${absenceLessonObject["subject"]}`;
+            subjectRow.appendChild(subjectLessonIcon);
+            subjectRow.appendChild(subjectLessonText);
+            subjectRow.appendChild(subjectName);
+            body_table_tbody.appendChild(subjectRow);
+        });
+
+        body_table.appendChild(body_table_tbody);
+        body.appendChild(body_table);
+
+        li.appendChild(header);
+        li.appendChild(body);
+        $("#absences-col").append(li);
+    });
 }
 
 /**
@@ -194,32 +197,32 @@ function refreshAbsences() {
  */
 function setupPickers() {
     // Setup pickers
-    var date_object = new Date();
+    var dateObject = new Date();
 
     let elems = document.querySelectorAll('#datepicker-to');
     let options = {
         autoClose: true,
         format: "dd.mm.yyyy",
-        defaultDate: date_object,
+        defaultDate: dateObject,
         setDefaultDate: true,
         firstDay: 1,
         onSelect: refreshAbsences
-	}
-	
-    let instances = M.Datepicker.init(elems, options);
+    }
 
-    date_object.setDate(date_object.getDate() - 14);
+    M.Datepicker.init(elems, options);
+
+    dateObject.setDate(dateObject.getDate() - 14);
 
     elems = document.querySelectorAll('#datepicker-from');
     options = {
         autoClose: true,
         format: "dd.mm.yyyy",
-        defaultDate: date_object,
+        defaultDate: dateObject,
         setDefaultDate: true,
         firstDay: 1,
         onSelect: refreshAbsences
     }
-    instances = M.Datepicker.init(elems, options);
+    M.Datepicker.init(elems, options);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -233,8 +236,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setupPickers();
 
-    let coll_elem = document.querySelectorAll('.collapsible');
-    let coll_instance = M.Collapsible.init(coll_elem, {});
+    let collectionElem = document.querySelectorAll('.collapsible');
+    M.Collapsible.init(collectionElem, {});
 
     // Setup side menu
     const menus = document.querySelectorAll('.side-menu');

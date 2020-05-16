@@ -2,7 +2,7 @@
 // const API_ENDPOINT = "http://localhost:5000/test.php";
 
 var calendar_obj = null;
-var transformed_storage = [];
+
 function checkLogin() {
     localforage.getItem("logged_in").then((value) => {
         // This code runs once the value has been loaded
@@ -28,11 +28,11 @@ function setLoading(state) {
 // ----GET COLOR FROM STRING--------
 
 /**
- * 
+ *
  * Calculate hash code from a string
  * @param {string} input_string String to convert to hash
  * @returns {string} calculated hash code
- * 
+ *
  */
 function hashCode(str) { // java String#hashCode
     var hash = 0;
@@ -43,11 +43,11 @@ function hashCode(str) { // java String#hashCode
 }
 
 /**
- * 
+ *
  * Convert last 3 bytes of an integer to RGB color
  * @param {integer} input_integer Integer that will be converted to RGB color
  * @returns {string} Hex color code
- *  
+ *
  */
 function intToRGB(i) {
     var c = (i & 0x00FFFFFF)
@@ -59,7 +59,7 @@ function intToRGB(i) {
 
 // http://www.w3.org/TR/AERT#color-contrast
 /**
- * 
+ *
  * Calculate the matching foreground color for a given background (improves UX)
  * @param {string} background_color Background color of the object
  * @returns {string} Forground color that will match background color
@@ -80,7 +80,7 @@ function getForegroundFromBackground(background_color) {
 }
 
 /**
- * 
+ *
  * Convert a given string to hex color
  * @param {string} input_string Input string
  * @returns {string} Hex RGB color
@@ -113,59 +113,59 @@ function getLastMonday(date_object) {
 // ----------------------------------
 
 async function loadTimetable(date_object, force_refresh = false) {
-	setLoading(true);
-	var timetable, username, password;
-	let date_monday = getLastMonday(date_object);
-	let date_string = getDateString(date_monday);
-	let promises_to_run = [
-		localforage.getItem("username").then(function (value) {
-			username = value;
-		}),
-		localforage.getItem("password").then(function (value) {
-			password = value;
-		}),
-		localforage.getItem("timetable").then(function (value) {
-			timetable = value;
-		})
-	];
-	await Promise.all(promises_to_run);
-	if (force_refresh || timetable == null || !(date_string in timetable)) {
-		try {
-			let gsecInstance = new gsec();
-			await	gsecInstance.login(username, password);
-			gsecInstance.fetchTimetable(date_object).then( (value) => {
-				containsPeriods = false;
-				for(var iteration = 0; iteration <= 6; iteration++) {
-					if(Object.keys(value[iteration]).length > 0) {
-						containsPeriods = true;
-						// break;
-					}
-				}
-				if(!containsPeriods) {
-					UIAlert( D("noPeriods") );
-					setLoading(false);
-				} else {
-					if (timetable === null) {
-						timetable = {};
-					}
-					timetable[date_string] = value;
-					localforage.setItem("timetable", timetable).then(() => {
-						displayTimetable(value, date_monday);
-						setLoading(false);
-					});
-				}
-			}).catch( (err) => {
-				gsecErrorHandlerUI(err);
-				setLoading(false);
-			});
-		} catch (err) {
-			gsecErrorHandlerUI(err);
-			setLoading(false);
-		}
-	} else {
-		displayTimetable(timetable[date_string], date_monday);
-		setLoading(false);
-	}
+    setLoading(true);
+    var timetable, username, password;
+    let date_monday = getLastMonday(date_object);
+    let date_string = getDateString(date_monday);
+    let promises_to_run = [
+        localforage.getItem("username").then((value) => {
+            username = value;
+        }),
+        localforage.getItem("password").then((value) => {
+            password = value;
+        }),
+        localforage.getItem("timetable").then((value) => {
+            timetable = value;
+        })
+    ];
+    await Promise.all(promises_to_run);
+    if (force_refresh || timetable == null || !(date_string in timetable)) {
+        try {
+            let gsecInstance = new gsec();
+            await gsecInstance.login(username, password);
+            gsecInstance.fetchTimetable(date_object).then( (value) => {
+                containsPeriods = false;
+                for(var iteration = 0; iteration <= 6; iteration++) {
+                    if(Object.keys(value[iteration]).length > 0) {
+                        containsPeriods = true;
+                        // break;
+                    }
+                }
+                if(!containsPeriods) {
+                    UIAlert( D("noPeriods") );
+                    setLoading(false);
+                } else {
+                    if (timetable === null) {
+                        timetable = {};
+                    }
+                    timetable[date_string] = value;
+                    localforage.setItem("timetable", timetable).then(() => {
+                        displayTimetable(value, date_monday);
+                        setLoading(false);
+                    });
+                }
+            }).catch( (err) => {
+                gsecErrorHandlerUI(err);
+                setLoading(false);
+            });
+        } catch (err) {
+            gsecErrorHandlerUI(err);
+            setLoading(false);
+        }
+    } else {
+        displayTimetable(timetable[date_string], date_monday);
+        setLoading(false);
+    }
 }
 
 function getLessonTimes(lesson_number) {
@@ -235,9 +235,6 @@ function displayTimetable(weekly_timetable, date_object) {
     // Update calendar
     calendar_obj.removeAllEvents();
     calendar_obj.addEventSource(transformed_timetable);
-
-    // Update stored value
-    transformed_storage = transformed_timetable;
 }
 
 function eventClickHandler(eventClickInfo) {

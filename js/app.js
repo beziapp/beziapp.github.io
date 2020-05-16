@@ -14,17 +14,18 @@ if (navigator.serviceWorker) {
 }
 
 /**
- * Displays a user-friendly text to the user and detailed text to developer (console)
+ * Displays a user-friendly text to the user and
+ * detailed text to developer (console)
  * @param {string} usermsg User-friendly message
  * @param {string} devmsg Developer-friendly message
  */
 async function UIAlert(usermsg, devmsg) {
-  if(true) { // če bo kakšen dev switch?
-    M.toast( { html: usermsg } );
-    console.log(`[BežiApp UIAlert] ${usermsg} ${devmsg}`);
-  } else {
-    M.toast( { html: `${usermsg} ${devmsg}` } );
-  }
+    if (true) { // če bo kakšen dev switch?
+        M.toast( { html: usermsg } );
+        console.log(`[BežiApp UIAlert] ${usermsg} ${devmsg}`);
+    } else {
+        M.toast( { html: `${usermsg} ${devmsg}` } );
+    }
 }
 
 /**
@@ -32,15 +33,17 @@ async function UIAlert(usermsg, devmsg) {
  * @param {Object} err GSEC error object
  */
 function gsecErrorHandlerUI(err) {
-	console.log(`gsecErrorHanderUI: handling ${err}`);
-  if(err == GSEC_ERR_NET || err == GSEC_ERR_NET_POSTBACK_GET || err == GSEC_ERR_NET_POSTBACK_POST) {
-    UIAlert( D("gsecErrNet") );
-  } else if(err == GSEC_ERR_LOGIN) {
-    UIAlert( D("gsecErrLogin") );
-    localforage.setItem("logged_in", false).then( () => {
-      window.location.replace("/index.html");
-    });
-  } else {
-    UIAlert( D("gsecErrOther") );
-  }
+    console.log(`gsecErrorHanderUI: handling ${err}`);
+    if(err == GSEC_ERR_NET || err == GSEC_ERR_NET_POSTBACK_GET ||
+        err == GSEC_ERR_NET_POSTBACK_POST) {
+
+        UIAlert( D("gsecErrNet") );
+    } else if(err == GSEC_ERR_LOGIN) {
+        UIAlert( D("gsecErrLogin") );
+        localforage.setItem("logged_in", false).then( () => {
+        window.location.replace("/index.html");
+        });
+    } else {
+        UIAlert( D("gsecErrOther") );
+    }
 }
