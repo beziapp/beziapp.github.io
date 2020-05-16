@@ -75,12 +75,12 @@
 					<div class="row">
 						<div class="input-field">
 							<i class="material-icons prefix">account_circle</i>
-							<input oninput="validateName();" id="full-name" type="text" class="autocomplete-fullname validate">
+							<input id="full-name" type="text" class="autocomplete-fullname validate">
 							<label for="full-name"><x-su>recipient</x-su></label>
 						</div>
 					</div>
 					<div class="row">
-						<button id="chat-recipient-select-btn" onclick="setRecipient()" class="btn waves-effect">
+						<button id="chat-recipient-select-btn" class="btn waves-effect">
 							<x-su>select</x-su>
 						</button>
 					</div>
@@ -98,11 +98,11 @@
 				<div class="row">
 					<div class="input-field col s10">
 						<i class="material-icons prefix">mode_edit</i>
-						<textarea maxlength="180" disabled="disabled" oninput="updateSendButton();" id="msg-body" class="materialize-textarea"></textarea>
+						<textarea maxlength="180" disabled="disabled" id="msg-body" class="materialize-textarea"></textarea>
 						<label for="msg-body"><x-su>messageBody</x-su></label>
 					</div>
 					<div class="input-field col s2">
-						<button class="btn waves-effect waves-light" onclick="sendMessage();" id="msg-send" type="button" disabled="disabled" name="action">
+						<button class="btn waves-effect waves-light" id="msg-send" type="button" disabled="disabled" name="action">
 							<i class="material-icons">send</i>
 						</button>
 					</div>

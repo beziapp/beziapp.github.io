@@ -367,27 +367,6 @@ function getUrlParameter(sParam) {
     return found_param;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    checkLogin();
-    loadDirectory();
-    updateSendButton();
-
-    // var receivedmessages = null;
-
-    M.updateTextFields();
-
-    // Setup side menu
-    const menus = document.querySelectorAll(".side-menu");
-    M.Sidenav.init(menus, { edge: "right", draggable: true });
-    let elems = document.querySelectorAll(".modal");
-    M.Modal.init(elems, {});
-
-    // Setup side modal
-    const modals = document.querySelectorAll(".side-modal");
-    M.Sidenav.init(modals, { edge: "left", draggable: false });
-    prepareAndStartFetchingMessages(); // just opens modal, as there is no recipient selected
-});
-
 async function updateSendButton() {
     if ($("#msg-body").val().length == 0) {
         $("#msg-send").prop("disabled", true);
@@ -480,3 +459,46 @@ async function renderMessages(gsecMsgList, whom, order = 1) { // order: 1=newest
         }
     }
 }
+
+function setupEventListeners() {
+    $("#chat-recipient-select-btn").click(() => {
+        setRecipient();
+    });
+
+    $("#msg-send").click(() => {
+        sendMessage();
+    });
+
+    $("#full-name").on("input", () => {
+        validateName();
+    });
+
+    $("#msg-body").on("input", () => {
+        updateSendButton();
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    checkLogin();
+    loadDirectory();
+
+    setupEventListeners();
+
+    updateSendButton();
+
+    // var receivedmessages = null;
+
+    M.updateTextFields();
+
+    // Setup side menu
+    const menus = document.querySelectorAll(".side-menu");
+    M.Sidenav.init(menus, { edge: "right", draggable: true });
+    let elems = document.querySelectorAll(".modal");
+    M.Modal.init(elems, {});
+
+    // Setup side modal
+    const modals = document.querySelectorAll(".side-modal");
+    M.Sidenav.init(modals, { edge: "left", draggable: false });
+    prepareAndStartFetchingMessages(); // just opens modal, as there is no recipient selected
+});

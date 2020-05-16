@@ -341,9 +341,23 @@ async function setMenu(date, menu) {
     getToken(getMenus, [setMenus, choice]);
 }
 
+
+function setupEventListeners() {
+    $("#meals-login").click(() => {
+        lopolisLogin();
+    });
+
+    $("#meals-logout").click(() => {
+        lopolisLogout();
+    });
+}
+
 // Initialization code
 document.addEventListener("DOMContentLoaded", async () => {
     checkLogin();
+
+    setupEventListeners();
+
     let coll_elem = document.querySelectorAll('.collapsible');
     M.Collapsible.init(coll_elem, {});
 
