@@ -59,30 +59,35 @@ async function loadAbsences(forceRefresh = false) {
 			Object.keys(date).map((key, index) => {
 				date[key] = new Date(Date.parse(date[key].reverse().join("-")));
 			});
-			gsecInstance.fetchAbsences().then( (value) => {
-				value.sort(function(a,b){
+			gsecInstance.fetchAbsences().then( (fetchedAbsences) => {
+				fetchedAbsences.sort((a, b) => {
 					// Turn your strings into dates, and then subtract them
 					// to get a value that is either negative, positive, or zero.
 					return new Date(b.date) - new Date(a.date);
 				});
-				var fromKey = value.findIndex((processedElement, processedIndex) => {
-					if(processedElement.date.getTime() >= date.from.getTime()) {
+
+				var fromKey = fetchedAbsences.findIndex((processedElement, processedIndex) => {
+					if (processedElement.date.getTime() >= date.from.getTime()) {
 						return true;
 					}
 				});
-				var tillKey = value.reverse().findIndex((pE, pI) => {
-					if(pE.date.getTime() <= date.till.getTime()) {
+
+				var tillKey = fetchedAbsences.findIndex((processedElement, processedIndex) => {
+					if (processedElement.date.getTime() > date.till.getTime()) {
 						return true;
 					}
 				});
-				value.length = tillKey+1; // tillKey in
-				value.splice(0, fromKey); // fromKey hočemo obdržati
-                if (tillKey == 0 && fromKey == -1) {
-                    // očitno je karantena in ni nobenih izostnakov
-                    value.length = 0;
-                }
-				absences = value;
-				localforage.setItem("absences", value).then((value) => {
+
+				// Both were -1, but we increased fromKey and decreased tillKey
+				// Means no absences in the provided timeframe
+				if (fromKey === 0 && tillKey === -2) {
+					fetchedAbsences = [];
+				} else {
+					fetchedAbsences = fetchedAbsences.slice(fromKey, tillKey);
+				}
+
+				absences = fetchedAbsences;
+				localforage.setItem("absences", fetchedAbsences).then((value) => {
 					displayData();
 					setLoading(false);
 				});
