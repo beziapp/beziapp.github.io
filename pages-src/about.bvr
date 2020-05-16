@@ -119,6 +119,12 @@
                 </div>
             </div>
         </div>
+				<div class="row">
+					<p>
+						<small>
+							^HEAD <@?g latest_commit@>
+					</p>
+				</div>
     </div>
 </body>
 
