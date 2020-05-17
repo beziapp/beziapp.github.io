@@ -13,6 +13,7 @@
     --color-header-span: rgba(255, 255, 255, 1);
 
     --color-text: rgba(0, 0, 0, 1);
+    --color-label-text: rgba(158, 158, 158, 1);
     --color-table-hover: rgba(242, 242, 242, 0.5);
 
     --color-sidenav-background: rgba(255, 255, 255, 1);
@@ -22,6 +23,7 @@
 
     --color-btn-flat: rgba(52, 52, 52, 1);
     --color-btn-flat-disabled: rgba(178, 178, 178, 1);
+
 }
 
 body {
@@ -158,8 +160,11 @@ a.collection-item {
     box-shadow: 0 1px 0 0 var(--color-invalid);
 }
 
-/* icon prefix focus color */
+i.material-icons.prefix {
+    color: var(--color-label-text) !important;
+}
 
+/* icon prefix focus color */
 .input-field .prefix.active {
     color: var(--color-primary);
 }
@@ -328,6 +333,10 @@ h5.subheader {
 
 .modal-close.btn-flat:disabled {
     color: var(--color-btn-flat-disabled) !important;
+}
+
+.modal-text-header {
+    color: var(--color-text);
 }
 
 .dropdown-content {

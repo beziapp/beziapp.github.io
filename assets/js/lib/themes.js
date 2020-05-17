@@ -14,6 +14,7 @@ const THEME_COLOR_SCHEMES = {
         "color-header-span": "rgba(255, 255, 255, 1)",
 
         "color-text": "rgba(0, 0, 0, 1)",
+        "color-label-text": "rgba(158, 158, 158, 1)",
         "color-table-hover": "rgba(242, 242, 242, 0.5)",
 
         "color-sidenav-background": "rgba(255, 255, 255, 1)",
@@ -40,6 +41,7 @@ const THEME_COLOR_SCHEMES = {
         "color-header-span": "rgba(255, 255, 255, 1)",
 
         "color-text": "rgba(255, 255, 255, 1)",
+        "color-label-text": "rgba(158, 158, 158, 1)",
         "color-table-hover": "rgba(70, 70, 70, 0.5)",
 
         "color-sidenav-background": "rgba(31, 31, 31, 1)",
