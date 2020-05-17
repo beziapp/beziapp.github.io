@@ -64,6 +64,7 @@ nav {
     position: absolute;
     right: 10px;
     font-style: italic;
+    color: var(--color-text);
 }
 
 .collapsible-header-root {
@@ -117,7 +118,11 @@ a.collection-item {
 }
 
 .fc-unthemed td.fc-today {
-    background: var(--color-primary-light);
+    background: var(--color-primary);
+}
+
+.fc-icon {
+    color: var(--color-text);
 }
 
 .no-select {
@@ -130,11 +135,15 @@ a.collection-item {
     -webkit-tap-highlight-color: transparent;
 }
 
-/* label focus color */
+input.datepicker {
+    color: var(--color-text);
+}
+
 .input-field > input {
     color: var(--color-text);
 }
 
+/* label focus color */
 .input-field input[type=text]:focus+label {
     color: var(--color-text);
 }
@@ -194,6 +203,18 @@ i.material-icons.prefix {
 	background-color: var(--background-color);
 	text-align: center;
 	z-index: 60;
+}
+
+.month-prev > svg {
+    fill: var(--color-text);
+}
+
+.month-next > svg {
+    fill: var(--color-text);
+}
+
+.selects-container > div > input {
+    color: var(--color-text);
 }
 
 /* Tabs */
@@ -283,6 +304,7 @@ table.highlight > tbody > tr:hover {
 
 .collapsible-header {
     background-color: var(--background-color);
+    color: var(--color-text);
 }
 
 h2 {
@@ -335,7 +357,7 @@ h5.subheader {
     color: var(--color-btn-flat-disabled) !important;
 }
 
-.modal-text-header {
+.general-text {
     color: var(--color-text);
 }
 
