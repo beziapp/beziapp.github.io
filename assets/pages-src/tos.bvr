@@ -35,7 +35,7 @@
 <body>
     <nav class="z-depth-0" id="navigation-main">
         <div class="nav-wrapper container">
-            <b class="app-header-bold">Beži</b><span class="app-header-span">App</span> &raquo; <x-su>theTos</x-su>
+            <b class="app-header-bold">Beži</b><span class="app-header-span">App</span> &raquo; <x-su>theToS</x-su>
             <span class="right white-text">
                 <i class="material-icons" id="nav-home-button">home</i>
             </span>
@@ -54,7 +54,7 @@
             <li class="flow-text has-line-data" data-line-start="8" data-line-end="9"><x-su>termsOfUseExploit</x-su>;</li>
             <li class="flow-text has-line-data" data-line-start="9" data-line-end="11"><x-du>termsOfUseSpam</x-du></li>
         </ol>
-        <p class="flow-text"><x-du>termsOfUseModify<x-du></p>
+        <p class="flow-text"><x-du>termsOfUseModify</x-du></p>
         <h3 class="code-line" data-line-start=11 data-line-end=12><a id="Termination_of_services_11"></a><x-su>terminationOfServices</x-su></h3>
         <p class="flow-text has-line-data" data-line-start="12" data-line-end="13"><x-su>terminationOfServicesDescriptions</x-su>:</p>
         <ul>

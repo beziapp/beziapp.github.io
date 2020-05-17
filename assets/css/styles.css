@@ -342,3 +342,7 @@ h5.subheader {
 .dropdown-content {
     background: var(--background-accent-1) !important;
 }
+
+p {
+		color: var(--color-text);
+}
