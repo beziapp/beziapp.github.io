@@ -50,6 +50,17 @@
             <h3><x-su>changelog</x-su></h3>
             <ul class="collapsible">
                 <li>
+                    <div class="collapsible-header">Version 1.0.14-beta</div>
+                    <div class="collapsible-body">
+                        <ul class="collection">
+                            <li class="collection-item">Added themes (dark or light, defaulting to light)</li>
+                            <li class="collection-item">New messaging look</li>
+                            <li class="collection-item">Added videoconferencing (via video.gimb)</li>
+                            <li class="collection-item">Many bug fixes</li>
+                            <li class="collection-item">More network requests go directly to GimSISExt (with gsec.js)</li>
+                        </ul>
+                    </div>
+
                     <div class="collapsible-header">Version 1.0.13-beta</div>
                     <div class="collapsible-body">
                         <ul class="collection">
