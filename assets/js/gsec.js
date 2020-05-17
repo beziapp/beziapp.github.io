@@ -292,7 +292,7 @@ class gsec {
 
         const SUBJECT_REGEX = /^(.+?(?= \()|.+(?! \())/; // For some reason, JS doesn't support conditional regex
         const ABKURZUNG_REGEX = /\((.+)\)/;
-        const DAY_REGEX = /^(.+?), /;
+        const DAY_REGEX = /^(.+?), /m;
         const PERIOD_REGEX = /, (\d+?)\. ura/;
         const TIME_RANGE_REGEX = /\((.+?) - (.+?)\)/;
 
