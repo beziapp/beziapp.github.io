@@ -278,10 +278,8 @@ async function lopolisLogin() {
             }
         },
 
-        error: (xhr) => {
-            if (xhr.status !== 401) {
-                UIAlert( D("loginError"), "lopolisLogin(): ajax.error");
-            }
+        error: () => {
+            UIAlert( D("loginError"), "lopolisLogin(): ajax.error");
             setLoading(false);
         }
     });
