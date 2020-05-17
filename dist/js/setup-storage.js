@@ -18,7 +18,8 @@ async function setupStorage(force = false) {
         localforage.setItem("messages", { "0": [], "1": [], "2": []}), // see messages.js:129, commit 8eb9ca9caca30fbbe023243657535ab4088be377
         localforage.setItem("directory", {}), //\\ well I could remember my own code but I didn't.
         localforage.setItem("meals", {}),
-        localforage.setItem("chosenLang", "en")
+        localforage.setItem("chosenLang", "en"),
+        localforage.setItem("theme", "light")
     ];
 
     if (logged_in && force == false) { // torej, če je že bila prijava narejena, ne posodobi backwards-compatible vrednosti (username, password,...)
@@ -30,7 +31,8 @@ async function setupStorage(force = false) {
             localforage.setItem("logged_in", false),
             localforage.setItem("username", ""),
             localforage.setItem("password", ""),
-            localforage.setItem("chosenLang", "en")
+            localforage.setItem("chosenLang", "en"),
+            localforage.setItem("theme", "light")
         ];
         await localforage.clear();
         await Promise.all(promises_first_install);
