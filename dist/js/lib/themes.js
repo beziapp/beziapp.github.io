@@ -5,6 +5,7 @@ const THEME_COLOR_SCHEMES = {
         "color-accent": "rgba(0, 156, 101, 1)",
         "color-primary-light": "rgba(230, 250, 231, 1)",
         "color-invalid": "rgba(192, 0, 0, 1)",
+        "color-primary-transparent": "rgba(0, 128, 83, 0.3)",
 
         "background-color": "rgba(255, 255, 255, 1)",
         "background-accent": "rgba(0, 156, 101, 0.2)",
@@ -32,6 +33,7 @@ const THEME_COLOR_SCHEMES = {
         "color-accent": "rgba(20, 117, 83, 1)",
         "color-primary-light": "rgba(6, 137, 9, 1)", // it's not really light anymore, is it?
         "color-invalid": "rgba(192, 0, 0, 1)",
+        "color-primary-transparent": "rgba(0, 128, 83, 0.3)",
 
         "background-color": "rgba(31, 31, 31, 1)",
         "background-accent": "rgba(0, 92, 44, 0.2)",

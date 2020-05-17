@@ -4,6 +4,7 @@
     --color-accent: rgba(0, 156, 101, 1);
     --color-primary-light: rgba(230, 250, 231, 1);
     --color-invalid: rgba(192, 0, 0, 1);
+    --color-primary-transparent: rgba(0, 128, 83, 0.3);
 
     --background-color: rgba(255, 255, 255, 1);
     --background-accent: rgba(0, 156, 101, 0.2);
@@ -118,7 +119,7 @@ a.collection-item {
 }
 
 .fc-unthemed td.fc-today {
-    background: var(--color-primary);
+    background: var(--color-primary-transparent);
 }
 
 .fc-icon {
