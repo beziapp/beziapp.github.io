@@ -16,7 +16,7 @@ async function setTheme(targetTheme) {
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-    $("#select-language").on("change", () => {
+    $("#select-language").on("change", function() {
         setLanguage($(this).find(":selected").val());
     });
 
