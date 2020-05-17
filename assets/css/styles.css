@@ -308,3 +308,8 @@ h5.subheader {
 .modal-close.btn-flat:disabled {
     color: var(--color-btn-flat-disabled) !important;
 }
+
+.fc-content {
+		color: var(--color-text) !important;
+}
+
