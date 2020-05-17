@@ -314,7 +314,8 @@ class gsec {
 
                     for (const subjectString of subjectStrings) {
                         var subjectName = SUBJECT_REGEX.exec(stripHtml(subjectString))[1];
-                        var abkurzung = ABKURZUNG_REGEX.exec(stripHtml(subjectString))[1];
+                        var abkurzung = ABKURZUNG_REGEX.exec(stripHtml(subjectString));
+                        abkurzung = abkurzung == null ? subjectName : abkurzung[1];
                         subjects[abkurzung] = subjectName;
                     }
 
