@@ -366,6 +366,6 @@ h5.subheader {
     background: var(--background-accent-1) !important;
 }
 
-.p {
+p {
 		color: var(--color-text) !important;
 }
