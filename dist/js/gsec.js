@@ -274,7 +274,7 @@ class gsec {
 
                     rowSpan.remove(); // magic
                     var subject = SUBJECT_REGEX.exec(subFields[1].innerHTML)[1].trim();
-                    var desc = DESC_REGEX.exec(subFields[1])[1];
+                    var desc = DESC_REGEX.exec(subFields[1].innerHTML)[1];
 
                     gradings.push({
                         "date": dateObj,
