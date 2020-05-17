@@ -47,3 +47,10 @@ function gsecErrorHandlerUI(err) {
         UIAlert( D("gsecErrOther") );
     }
 }
+
+
+window.onerror = function (msg, url, lineNo, columnNo, error) {
+  // ... handle error ...
+	console.log("error!");
+  return false;
+}
