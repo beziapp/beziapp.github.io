@@ -359,9 +359,13 @@ h5.subheader {
 }
 
 .general-text {
-    color: var(--color-text);
+    color: var(--color-text) !important;
 }
 
 .dropdown-content {
     background: var(--background-accent-1) !important;
+}
+
+p {
+		color: var(--color-text) !important;
 }
