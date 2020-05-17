@@ -3,8 +3,8 @@
 
 
 // Change version to cause cache refresh
-const static_cache_name = "site-static-1.0.13-beta-fa94678";
-// latest commit is fa9467811859cd9c2d595f5a79819ce3aca91e26
+const static_cache_name = "site-static-1.0.13-beta-21f22ae";
+// latest commit is 21f22aec32a40cba0c085ca82808dd32f68cdaac
 // Got them with find . -not -path '*/\.*' | sed "s/.*/\"&\",/" | grep -v sw.js
 // sw.js NE SME BITI CACHAN, ker vsebuje verzijo!
 

@@ -305,6 +305,7 @@ table.highlight > tbody > tr:hover {
 .collapsible-header {
     background-color: var(--background-color);
     color: var(--color-text);
+    border-bottom-color: var(--color-divider);
 }
 
 h2 {
