@@ -290,7 +290,7 @@ class gsec {
 
     fetchTeachers() { // razrednika ne vrne kot razrednika, če le-ta uči še en predmet. razlog: razrednik je napisan dvakrat, drugič se prepiše. Ne da se mi popravljat.
 
-        const SUBJECT_REGEX = /^(.+?) \(/;
+        const SUBJECT_REGEX = /^(.+?(?= \()|.+(?! \())/; // For some reason, JS doesn't support conditional regex
         const ABKURZUNG_REGEX = /\((.+?)\)/;
         const DAY_REGEX = /^(.+?), /;
         const PERIOD_REGEX = /, (\d+?)\. ura/;
