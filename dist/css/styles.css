@@ -129,9 +129,12 @@ a.collection-item {
 }
 
 /* label focus color */
+.input-field > input {
+    color: var(--color-text);
+}
 
 .input-field input[type=text]:focus+label {
-    color: var(--color-primary);
+    color: var(--color-text);
 }
 
 /* label underline focus color */
@@ -170,6 +173,14 @@ a.collection-item {
     box-shadow: 0 1px 0 0 var(--color-primary) !important;
 }
 
+.dropdown-content li:hover {
+    background-color: var(--color-table-hover) !important;
+}
+
+.autocomplete-content li .highlight {
+    color: var(--color-text) !important;
+}
+
 .chat-sticky-input {
 	position: fixed;
 	left: 0;
@@ -199,6 +210,10 @@ a.collection-item {
 
 .tabs .indicator {
     background-color: var(--color-primary) !important;
+}
+
+.tabs {
+    background-color: var(--background-color) !important;
 }
 
 /* Floating action button */
