@@ -6,6 +6,20 @@
     --color-invalid: rgba(192, 0, 0, 1);
     --background-color: rgba(255, 255, 255, 1);
     --background-accent: rgba(0, 156, 101, 0.2);
+
+    --color-header-bold: rgba(255, 255, 255, 1);
+    --color-header-span: rgba(255, 255, 255, 1);
+
+    --color-text: rgba(0, 0, 0, 1);
+    --color-table-hover: rgba(242, 242, 242, 0.5);
+
+    --color-sidenav-background: rgba(255, 255, 255, 1);
+    --color-sidenav-text: rgba(0, 0, 0, 0.87);
+    --color-sidenav-header: rgba(0, 0, 0, 0.54);
+    --color-divider: rgba(224, 224, 224, 1);
+
+    --color-btn-flat: rgba(52, 52, 52, 1);
+    --color-btn-flat-disabled: rgba(178, 178, 178, 1);
 }
 
 body {
@@ -203,4 +217,94 @@ a.collection-item {
 
 .flag-icon {
     height: 1vw;
+}
+
+.app-header-bold {
+    color: var(--color-header-bold) !important;
+}
+
+.app-header-span {
+    color: var(--color-header-span) !important;
+}
+
+table > thead > tr > th {
+    color: var(--color-text) !important;
+}
+
+table > tbody > tr > td {
+    color: var(--color-text) !important;
+}
+
+table.highlight > tbody > tr:hover {
+    background-color: var(--color-table-hover) !important;
+}
+
+.sidenav {
+    background-color: var(--background-color) !important;
+}
+
+.sidenav li > a {
+    color: var(--color-sidenav-text) !important;
+}
+
+.sidenav-beziapp-subheader {
+    color: var(---color-sidenav-header) !important;
+}
+
+.divider {
+    background-color: var(--color-divider) !important;
+}
+
+.sidenav li>a>i.material-icons {
+    color: var(--color-sidenav-text);
+}
+
+.collapsible-header {
+    background-color: var(--background-color);
+}
+
+.collapsible-body {
+    border-bottom-color: var(--color-divider);
+}
+
+span {
+    color: var(--color-text);
+}
+
+div {
+    color: var(--color-text);
+}
+
+h5.subheader {
+    color: var(--color-text);
+}
+
+.collection-item, .collection-header {
+    background-color: var(--background-color) !important;
+    color: var(--color-text) !important;
+    border-bottom-color: var(--color-divider) !important;
+}
+
+.collection {
+    border-top-color: var(--color-divider) !important;
+    border-bottom-color: var(--color-divider) !important;
+    border-left-color: var(--color-divider) !important;
+    border-right-color: var(--color-divider) !important;
+}
+
+.modal-content {
+    background-color: var(--background-color);
+}
+
+.modal-footer {
+    background-color: var(--background-color) !important;
+    border-top-color: var(--color-divider) !important;
+}
+
+.modal-close.btn-flat {
+    color: var(--color-btn-flat) !important;
+}
+
+.modal-close.btn-flat:disabled {
+    color: var(--color-btn-flat-disabled) !important;
 }

@@ -35,7 +35,7 @@
 <body>
     <nav class="z-depth-0" id="navigation-main">
         <div class="nav-wrapper container">
-            <b>Beži</b><span>App</span> &raquo; <x-su>changelog</x-su>
+            <b class="app-header-bold">Beži</b><span class="app-header-span">App</span> &raquo; <x-su>changelog</x-su>
             <span class="right white-text" id="nav-back-button">
                 <i class="material-icons">arrow_back</i>
             </span>

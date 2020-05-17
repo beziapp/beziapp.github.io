@@ -35,7 +35,7 @@
 <body>
     <nav class="z-depth-0" id="navigation-main">
         <div class="nav-wrapper container">
-            <b>Beži</b><span>App</span> &raquo; <x-su>theTos</x-su>
+            <b class="app-header-bold">Beži</b><span class="app-header-span">App</span> &raquo; <x-su>theTos</x-su>
             <span class="right white-text">
                 <i class="material-icons" id="nav-home-button">home</i>
             </span>

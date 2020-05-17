@@ -35,8 +35,8 @@ async function loadTeachers(force_refresh = false) {
             await gsecInstance.login(username, password);
             gsecInstance.fetchTeachers().then( (value) => {
                 teachers = value;
-                localforage.setItem("teachers", value).then(() => {
-                    displayData();
+                localforage.setItem("teachers", value).then((saved_teachers) => {
+                    displayData(saved_teachers);
                     setLoading(false);
                 });
                 setLoading(false);
@@ -49,13 +49,13 @@ async function loadTeachers(force_refresh = false) {
             setLoading(false);
         }
     } else {
-        displayData();
+        displayData(teachers);
         setLoading(false);
     }
 }
 
 // Function for displaying data
-function displayData() {
+function displayData(teachers) {
     for(const teacher of Object.keys(teachers)) {
         // Create row
         let row = document.createElement("tr");
