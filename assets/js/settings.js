@@ -17,13 +17,11 @@ async function setTheme(targetTheme) {
 document.addEventListener("DOMContentLoaded", async () => {
 
     $("#select-language").on("change", () => {
-        let languageToSet = $(this).find(":selected").data("language");
-        setLanguage(languageToSet);
+        setLanguage($(this).find(":selected").val());
     });
 
-    $("#select-theme").on("change", () => {
-        let themeToSet = $(this).find(":selected").data("theme");
-        setTheme(themeToSet);
+    $("#select-theme").on("change", function() {
+        setTheme($(this).find(":selected").val());
     });
 
     localforage.getItem("chosenLang").then((value) => {
