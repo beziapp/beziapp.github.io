@@ -1,0 +1,206 @@
+:root {
+    --color-primary: rgba(0, 128, 83, 1);
+    --color-secondary: rgba(0, 77, 50, 1);
+    --color-accent: rgba(0, 156, 101, 1);
+    --color-primary-light: rgba(230, 250, 231, 1);
+    --color-invalid: rgba(192, 0, 0, 1);
+    --background-color: rgba(255, 255, 255, 1);
+    --background-accent: rgba(0, 156, 101, 0.2);
+}
+
+body {
+    background: var(--background-color);
+}
+
+.title-primary {
+    color: var(--color-primary) !important;
+}
+
+.title-secondary {
+    color: var(--color-secondary) !important;
+}
+
+.btn {
+    background-color: var(--color-secondary);
+}
+
+.btn:hover {
+    background-color: var(--color-primary);
+}
+
+nav {
+  background: var(--color-primary);
+	border-bottom: 10px solid var(--color-accent);
+	position: sticky;
+	left: 0;
+	top: 0;
+	z-index: 69; /* choose a number, any number */
+}
+
+.hidden {
+    display: none !important;
+}
+
+.collapsible-header-right {
+    float: right;
+    position: absolute;
+    right: 10px;
+    font-style: italic;
+}
+
+.collapsible-header-root {
+    position: relative;
+}
+
+.secondary-content {
+    font-weight: bold;
+    color: var(--color-secondary) !important;
+}
+
+.about-text {
+    font-size: 1.3em !important;
+}
+
+.button-theme-gimb {
+    background-color: var(--color-primary);
+}
+
+a {
+    color: var(--color-accent);
+}
+
+a.collection-item {
+    color: var(--color-primary) !important;
+}
+
+.datepicker-date-display {
+    background-color: var(--color-primary);
+}
+
+.datepicker-table td.is-today {
+    color: var(--color-primary);
+}
+
+.datepicker-table td.is-selected {
+    background-color: var(--color-primary);
+}
+
+.datepicker-table td.is-selected.is-today {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.datepicker-cancel {
+    color: var(--color-primary);
+}
+
+.datepicker-done {
+    color: var(--color-primary);
+}
+
+.fc-unthemed td.fc-today {
+    background: var(--color-primary-light);
+}
+
+.no-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* label focus color */
+
+.input-field input[type=text]:focus+label {
+    color: var(--color-primary);
+}
+
+/* label underline focus color */
+
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid var(--color-primary) !important;
+    box-shadow: 0 1px 0 0 var(--color-primary) !important;
+}
+
+/* valid color */
+
+.input-field input[type=text].valid {
+    border-bottom: 1px solid var(--color-secondary);
+    box-shadow: 0 1px 0 0 var(--color-secondary);
+}
+
+/* invalid color */
+
+.input-field input[type=text].invalid {
+    border-bottom: 1px solid var(--color-invalid);
+    box-shadow: 0 1px 0 0 var(--color-invalid);
+}
+
+/* icon prefix focus color */
+
+.input-field .prefix.active {
+    color: var(--color-primary);
+}
+
+.input-field textarea:not([readonly]):focus+label {
+    color: var(--color-primary) !important;
+}
+
+.input-field textarea:not([readonly]):focus {
+    border-bottom: 1px solid var(--color-primary) !important;
+    box-shadow: 0 1px 0 0 var(--color-primary) !important;
+}
+
+.chat-sticky-input {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	background-color: white;
+	text-align: center;
+	z-index: 60;
+}
+
+/* Tabs */
+.tab a {
+    color: var(--color-secondary) !important;
+}
+
+.tab a:hover {
+    color: var(--color-primary) !important;
+}
+
+.tab a.active {
+    color: var(--color-primary) !important;
+}
+
+.tab a:focus.active {
+    background-color: var(--background-accent) !important;
+}
+
+.tabs .indicator {
+    background-color: var(--color-primary) !important;
+}
+
+/* Floating action button */
+.fab-new-message {
+    background-color: var(--color-secondary) !important;
+}
+
+/* About right buttons */
+.about-button-box {
+    display: flex;
+    flex-direction: row;
+}
+
+.about-button-box > * {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.flag-icon {
+    height: 1vw;
+}
