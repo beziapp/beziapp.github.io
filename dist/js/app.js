@@ -51,6 +51,6 @@ function gsecErrorHandlerUI(err) {
 
 window.onerror = function (msg, url, lineNo, columnNo, error) {
   // ... handle error ...
-	alert("f u k");
+	console.log("error!");
   return false;
 }
