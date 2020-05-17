@@ -38,7 +38,7 @@ async function loadGrades(force_refresh = false) {
     ];
     await Promise.all(promises_to_run);
     // If we don't have a list of grades, fetch it
-    if (grades === null || grades === [] || force_refresh) {
+    if (grades == null || grades == [] || force_refresh) {
         try {
 
             let gsecInstance = new gsec();

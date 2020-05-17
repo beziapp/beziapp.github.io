@@ -273,7 +273,7 @@ span {
     color: var(--color-text);
 }
 
-div {
+div:not(.fc-time, .fc-title) {
     color: var(--color-text);
 }
 

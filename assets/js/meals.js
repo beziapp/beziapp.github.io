@@ -49,7 +49,7 @@ async function getToken(callback, callbackparams = []) {
         type: "POST",
 
         success: (dataauth) => {
-            if(dataauth === null || dataauth.error == true) {
+            if(dataauth == null || dataauth.error == true) {
                 UIAlert(D("authenticationError"), "getToken(): response error or null");
                 localforage.setItem("logged_in_lopolis", false).then( function(){
                     checkLogin();
@@ -97,7 +97,7 @@ async function getMenus(dataauth, callback, callbackparams = []) {
             type: "POST",
 
             success: (meals) => {
-                if(meals === null || meals.error == true) {
+                if(meals == null || meals.error == true) {
                     UIAlert( D("errorGettingMenus"), "getMenus(): response error or null");
                     setLoading(false);
                     localforage.setItem("logged_in_lopolis", false).then( () => {
