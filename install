@@ -1,6 +1,5 @@
 #!/bin/bash
 ./bin/compose-html assets/pages-src/ dist/pages/ .html
-# mkdir dist # dist itak naredi compose-html
 cp -r assets/css dist/
 cp -r assets/fonts dist/
 cp -r assets/img dist/
