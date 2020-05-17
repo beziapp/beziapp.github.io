@@ -88,7 +88,7 @@ async function loadGradings(force_refresh = false) {
         })
     ];
     await Promise.all(promises_to_run);
-    if (gradings === null || gradings === [] || gradings === -1 || force_refresh) {
+    if (gradings == null || gradings == [] || gradings == -1 || force_refresh) {
         try {
             let gsecInstance = new gsec();
             await gsecInstance.login(username, password);

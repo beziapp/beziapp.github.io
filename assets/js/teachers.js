@@ -29,7 +29,7 @@ async function loadTeachers(force_refresh = false) {
     ];
     await Promise.all(promises_to_run);
     // If we don't have a list of teachers, query it
-    if (teachers === null || teachers === [] || force_refresh) {
+    if (teachers == null || teachers == [] || force_refresh) {
         try {
             let gsecInstance = new gsec();
             await gsecInstance.login(username, password);
