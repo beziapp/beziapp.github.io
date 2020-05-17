@@ -215,7 +215,7 @@ class gsec {
         const SUBJECT_REGEX = /\((.+?)\)/;
         const ABKURZUNG_REGEX = /^(.+?) \(/;
 
-        dataToSend = datum == null ? {} : {
+        var dataToSend = datum == null ? {} : {
             "ctl00$ContentPlaceHolder1$wkgDnevnik_edtGridSelectDate": `${datum.getDate()}.${Number(datum.getMonth()+1)}.${datum.getFullYear()}`
         };
 
