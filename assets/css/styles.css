@@ -311,10 +311,6 @@ h5.subheader {
     color: var(--color-btn-flat-disabled) !important;
 }
 
-.fc-content {
-		color: var(--color-text) !important;
-}
-
 .dropdown-content {
-		background: var(--background-accent-1) !important;
+    background: var(--background-accent-1) !important;
 }
