@@ -7,6 +7,13 @@ async function setLanguage(langCode)  {
     });
 }
 
+async function setTheme(targetTheme) {
+    localforage.setItem("targetTheme", targetTheme).then((value) => {
+        console.log("Theme set: " + value);
+        UIAlert(D("themeSet"), "setTheme(): themeSet");
+    });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     $("#select-language").on("change", () => {
@@ -14,9 +21,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         setLanguage(languageToSet);
     });
 
+    $("#select-theme").on("change", () => {
+        let themeToSet = $(this).find(":selected").data("theme");
+        setTheme(themeToSet);
+    });
+
     localforage.getItem("chosenLang").then((value) => {
         let selectedLanguage = value ?? "sl";
         $(`#option-${selectedLanguage}`).attr("selected", true);
+    }).catch(() => {});
+
+    localforage.getItem("theme").then((value) => {
+        let selectedTheme = value ?? "sl";
+        $(`#option-${selectedTheme}`).attr("selected", true);
     }).catch(() => {});
 
     // Setup side menu

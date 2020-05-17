@@ -87,7 +87,7 @@ a.collection-item {
 
 .datepicker-table td.is-selected.is-today {
     background-color: var(--color-primary);
-    color: white;
+    color: var(--background-color);
 }
 
 .datepicker-cancel {
@@ -159,7 +159,7 @@ a.collection-item {
 	left: 0;
 	bottom: 0;
 	width: 100%;
-	background-color: white;
+	background-color: var(--background-color);
 	text-align: center;
 	z-index: 60;
 }

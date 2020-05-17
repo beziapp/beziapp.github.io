@@ -22,6 +22,7 @@
 
     <link rel="manifest" href="/manifest.json">
     <script src="/js/app.js"></script>
+    <script src="/js/lib/themes.js"></script>
     <script src="/js/lang/bundle.js"></script>
     <link rel="shortcut icon" type="image/png" href="/favicon.png" />
 
@@ -56,61 +57,25 @@
         <div class="row">
             <h5><x-su>language</x-su></h5>
             <div class="input-field col s12">
+                <i class="material-icons prefix">translate</i>
                 <select class="icons" id="select-language">
                     <option value="" id="option-sl" data-language="sl" data-icon="/img/flags/sl.svg" selected>Slovenščina</option>
                     <option value="" id="option-en" data-language="en" data-icon="/img/flags/en.svg">English</option>
                 </select>
                 <label><x-su>selectLanguage</x-su></label>
             </div>
-            <!-- <div class="col s12">
-                <div class="collection">
-                    <a data-language="sl" class="collection-item settings-language-selector" href="#">
-                        <div>
-                            Slovenščina
-                            <div class="secondary-content">
-                                <img class="flag-icon" src="/img/flags/sl.svg" />
-                            </div>
-                        </div>
-                    </a>
-                    <a data-language="en" class="collection-item settings-language-selector" href="#">
-                        <div>
-                            English
-                            <div class="secondary-content">
-                                <img class="flag-icon" src="/img/flags/en.svg" />
-                            </div>
-                        </div>
-                    </a>
-										<!--
-	                    <li class="collection-item waves-effect">
-	                        <span class="title about-text">Srpskohrvatski</span>
-	                    </li>
-	                    <li class="collection-item waves-effect">
-	                        <span class="title about-text">Македонски</span>
-	                    </li>
-	                    <li class="collection-item waves-effect">
-	                        <span class="title about-text">Français</span>
-	                    </li>
-	                    <li class="collection-item waves-effect">
-	                        <span class="title about-text">Deutsch</span>
-	                    </li>
-	                    <li class="collection-item waves-effect">
-	                        <span class="title about-text">Español</span>
-	                    </li>
-	                    <li class="collection-item waves-effect">
-	                        <span class="title about-text">Русский</span>
-	                    </li>
-	                    <li class="collection-item waves-effect">
-	                        <span class="title about-text">汉语</span>
-	                    </li>
-	                    <li class="collection-item waves-effect">
-	                        <span class="title about-text">日本語</span>
-	                    </li>
-	                    <li class="collection-item waves-effect">
-	                        <span class="title about-text">Lingua latīna</span>
-	                    </li>
-										-->
-                </div>
-            </div> -->
+        </div>
+
+        <div class="row">
+            <h5><x-su>theme</x-su></h5>
+            <div class="input-field col s12">
+                <i class="material-icons prefix">palette</i>
+                <select class="icons" id="select-theme">
+                    <option value="" id="option-light" data-theme="light" selected><x-su>themeLight</x-su></option>
+                    <option value="" id="option-dark" data-theme="dark"><x-su>themeDark</x-su></option>
+                </select>
+                <label><x-su>selectTheme</x-su></label>
+            </div>
         </div>
     </div>
 </body>

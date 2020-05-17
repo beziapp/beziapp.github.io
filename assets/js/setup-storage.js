@@ -17,13 +17,15 @@ async function setupStorage(force = false) {
         localforage.setItem("absences", {}),
         localforage.setItem("messages", { "0": [], "1": [], "2": []}), // see messages.js:129, commit 8eb9ca9caca30fbbe023243657535ab4088be377
         localforage.setItem("directory", {}), //\\ well I could remember my own code but I didn't.
-        localforage.setItem("meals", {})
+        localforage.setItem("meals", {}),
+        localforage.setItem("chosenLang", "en")
     ];
 
     if (logged_in && force == false) { // torej, če je že bila prijava narejena, ne posodobi backwards-compatible vrednosti (username, password,...)
         await Promise.all(promises_update);
         console.log("[setupStorage] user logged in: only updated");
     } else {
+
         let promises_first_install = [
             localforage.setItem("logged_in", false),
             localforage.setItem("username", ""),
