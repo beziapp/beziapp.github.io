@@ -415,7 +415,7 @@ var langstrings = {
         recipientNotInDirectory: "izbrane osebe ni v imeniku",
         chatExternalInfo: "dobili ste kratko sporočilo v standardu, ki ga GimSIS ne podpira. Pri odgovarjanju spremenite zadevo. Vsebina sporočila: ",
         // meals
-				loginError: "napaka pri prijavi",
+		loginError: "napaka pri prijavi",
         loginToLopolis: "prijava v Lopolis",
         loginToLopolisNote: "izgleda, da niste prijavljeni v eRestavracijo, zato se vam je prikazal prijavni obrazec. Za uporavljanje s prehrano se uporablja druga kombinacija uporabniškega imena in gesla, zato se prijavite s svojimi Lopolis prijavnimi podatki za nadaljevanje.",
         logInToLopolis: "prijava v Lopolis",

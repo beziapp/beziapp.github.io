@@ -91,9 +91,13 @@ function populateAutocomplete() {
         minLength: 0
     });
 
-    if (window.location.hash.length > 1 && !window.location.hash.substring(1).startsWith("beziapp")) {
-        $("#full-name").val(decodeURIComponent(window.location.hash.substring(1)));
-    }
+    $(document).ready(function () {
+        if (window.location.hash.length > 1 && !window.location.hash.substring(1).startsWith("beziapp")) {
+            $("#full-name").val(decodeURIComponent(window.location.hash.substring(1)));
+            $("#beziapp-new-message").modal();
+            $("#beziapp-new-message").modal("open"); 
+        }
+    });
 
     M.updateTextFields();
     validateName();
@@ -347,11 +351,12 @@ function displayData(messageType) {
                                 <i class="material-icons">delete</i>
                             </a>
                             <a onclick="
-                                $('#full_name').val('${filterXSS(element["posiljatelj"])}');
-                                $('#msg_subject').val('Re: ${filterXSS(element["zadeva"])}');
+                                $('#full-name').val('${filterXSS(element["posiljatelj"])}');
+                                $('#msg-subject').val('Re: ${filterXSS(element["zadeva"])}');
                                 M.updateTextFields();
-                                $('#navigation-main').scrollIntoView();
                                 "
+                                data-target="beziapp-new-message"
+                                class="modal-trigger"
                             >
                                 <i class="material-icons">reply</i>
                             </a>
@@ -560,6 +565,16 @@ var additionalstufftoaddtomessage = "";
 document.addEventListener("DOMContentLoaded", () => {
 
     checkLogin();
+
+    // Setup modals
+    const modal_elems = document.querySelectorAll('.modal');
+    const modal_options = {
+        onOpenStart: () => { $("#fab-new").hide() },
+        onCloseEnd: () => { $("#fab-new").show() },
+        dismissible: false
+    };
+    M.Modal.init(modal_elems, modal_options);
+
     loadDirectory();
     setupEventListeners();
 
@@ -595,15 +610,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     const fab_elem = document.querySelectorAll(".fixed-action-btn");
     M.FloatingActionButton.init(fab_elem, fab_options);
-
-    // Setup modals
-    const modal_elems = document.querySelectorAll('.modal');
-    const modal_options = {
-        onOpenStart: () => { $("#fab-new").hide() },
-        onCloseEnd: () => { $("#fab-new").show() },
-        dismissible: false
-    };
-    M.Modal.init(modal_elems, modal_options);
 
     var receivedmessages = null;
     loadMessages(true, 0);
