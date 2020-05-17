@@ -124,6 +124,7 @@
 					<p>
 						<small>
 							^HEAD <@?g latest_commit@>
+                        </small>
 					</p>
 				</div>
     </div>
