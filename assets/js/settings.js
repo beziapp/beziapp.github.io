@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }).catch(() => {});
 
     localforage.getItem("theme").then((value) => {
-        let selectedTheme = value ?? "sl";
+        let selectedTheme = value ?? "themeLight";
         $(`#option-${selectedTheme}`).attr("selected", true);
     }).catch(() => {});
 
