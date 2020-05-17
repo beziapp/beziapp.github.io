@@ -4,8 +4,10 @@
     --color-accent: rgba(0, 156, 101, 1);
     --color-primary-light: rgba(230, 250, 231, 1);
     --color-invalid: rgba(192, 0, 0, 1);
+
     --background-color: rgba(255, 255, 255, 1);
     --background-accent: rgba(0, 156, 101, 0.2);
+    --background-accent-1: rgb(192, 219, 207, 1);
 
     --color-header-bold: rgba(255, 255, 255, 1);
     --color-header-span: rgba(255, 255, 255, 1);
@@ -313,3 +315,6 @@ h5.subheader {
 		color: var(--color-text) !important;
 }
 
+.dropdown-content {
+		background: var(--background-accent-1) !important;
+}

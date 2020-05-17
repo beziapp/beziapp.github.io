@@ -8,6 +8,7 @@ const THEME_COLOR_SCHEMES = {
 
         "background-color": "rgba(255, 255, 255, 1)",
         "background-accent": "rgba(0, 156, 101, 0.2)",
+        "background-accent-1": "rgb(192, 219, 207, 1)",
 
         "color-header-bold": "rgba(255, 255, 255, 1)",
         "color-header-span": "rgba(255, 255, 255, 1)",
@@ -33,6 +34,7 @@ const THEME_COLOR_SCHEMES = {
 
         "background-color": "rgba(31, 31, 31, 1)",
         "background-accent": "rgba(0, 92, 44, 0.2)",
+        "background-accent-1": "rgb(26, 43, 32, 1)",
 
         "color-header-bold": "rgba(255, 255, 255, 1)",
         "color-header-span": "rgba(255, 255, 255, 1)",
