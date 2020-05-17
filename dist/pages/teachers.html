@@ -1,0 +1,102 @@
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google" content="notranslate">
+    <title>Teachers &laquo; BežiApp</title>
+
+    <!-- Materialize -->
+    <link type="text/css" href="/css/materialize.min.css" rel="stylesheet">
+    <link href="/css/materialicons.css" rel="stylesheet">
+    <script type="text/javascript" src="/js/lib/materialize.min.js"></script>
+
+    <script src="/js/lib/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/lib/localforage.min.js"></script>
+
+    <link type="text/css" href="/css/styles.css" rel="stylesheet">
+    <script type="text/javascript" src="/js/gsec.js"></script>
+    <script type="text/javascript" src="/js/teachers.js"></script>
+
+    <link rel="manifest" href="/manifest.json">
+    <script src="/js/app.js"></script>
+    <script src="/js/lang/bundle.js"></script>
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+
+    <!-- iOS support -->
+    <link rel="apple-touch-icon" href="/img/icons/icon_96.png">
+    <link rel="apple-touch-icon" href="/img/icons/icon_512.png">
+    <meta name="apple-mobile-web-app-status-bar" content="#004d32">
+</head>
+
+<body>
+    <nav class="z-depth-0" id="navigation-main">
+        <div class="nav-wrapper container">
+            <b>Beži</b><span>App</span> &raquo; <x-su>teachers</x-su>
+            <span class="right white-text">
+                <i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
+            </span>
+            <span class="right white-text" id="refresh-icon">
+                <a href="#"><i class="material-icons">refresh</i></a>
+            </span>
+        </div>
+        <div id="loading-bar" class="progress hidden">
+            <div class="indeterminate"></div>
+        </div>
+    </nav>
+		<ul id="side-menu" class="sidenav side-menu">
+  <li><a class="subheader"><h4><b>Beži</b>App</h4></a></li>
+  <li><a href="/pages/timetable.html" class="waves-effect"><i class="material-icons">view_module</i><x-su>timetable</x-su></a></li>
+  <li><a href="/pages/gradings.html" class="waves-effect"><i class="material-icons">event</i><x-su>gradings</x-su></a></li>
+  <li><a href="/pages/grades.html" class="waves-effect"><i class="material-icons">receipt</i><x-su>grades</x-su></a></li>
+  <li><a href="/pages/teachers.html" class="waves-effect"><i class="material-icons">supervisor_account</i><x-su>teachers</x-su></a></li>
+  <li><a href="/pages/absences.html" class="waves-effect"><i class="material-icons">query_builder</i><x-su>absences</x-su></a></li>
+  <li><a href="/pages/messaging.html" class="waves-effect"><i class="material-icons">message</i><x-su>messaging</x-su></a></li>
+	<!-- chats not done yet, expecting merge so removing from navigation panel --sijanec -->
+	<!-- <li><a href="/pages/chats.html" class="waves-effect"><i class="material-icons">chat</i><x-su>chat</x-su></a></li> -->
+	<li><a href="/pages/jitsi.html" class="waves-effect"><i class="material-icons">video_call</i><x-su>videoconferences</x-su></a></li>
+	<li><a href="/pages/meals.html" class="waves-effect"><i class="material-icons">fastfood</i><x-su>meals</x-su></a></li>
+  <li><div class="divider"></div></li>
+  <li><a href="/pages/about.html" class="waves-effect"><i class="material-icons">info</i><x-su>about</x-su></a></li>
+  <li><a href="/logout.html" class="waves-effect"><i class="material-icons">exit_to_app</i><x-su>logout</x-su></a></li>
+  <li><a href="/pages/settings.html" class="waves-effect"><i class="material-icons">settings</i><x-su>settings</x-su></a></li>
+</ul>
+
+
+    <ul id="teacher-info" class="sidenav side-modal">
+        <br>
+        <li><a class="subheader">
+                <h5 id="teacher-name"></h5>
+            </a></li>
+        <li><a class="waves-effect" id="teacher-subject"></a></li>
+        <li>
+            <div class="divider"></div>
+        </li>
+        <br>
+        <li><a class="subheader">
+                <h6><x-su>tpMeetings</x-su></h6>
+            </a></li>
+        <li><a class="waves-effect" id="teacher-office"></a></li>
+    </ul>
+
+    <br>
+    <div class="container">
+        <table class="highlight">
+            <thead>
+                <tr>
+                    <th><x-su>name</x-su></th>
+                    <th><x-su>schoolSubject</x-su></th>
+                </tr>
+            </thead>
+            <tbody id="teachers-body"></tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>
