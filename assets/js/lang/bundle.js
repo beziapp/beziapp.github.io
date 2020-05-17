@@ -283,6 +283,7 @@ var langstrings = {
         privacyEffectiveAsOf: "this policy is effective as of",
         // settings
         language: "language",
+        selectLanguage: "select desired language",
         languageSet: "language set, open another page for the changes to take effect",
         // gsec
         gsecErrNet: "GimSIS connection error",
@@ -465,6 +466,7 @@ var langstrings = {
         privacyAcceptWithUse: "your continued use of our website will be regarded as acceptance of our practices around privacy and personal information. If you have any questions about how we handle user data and personal information, feel free to contact us.",
         privacyEffectiveAsOf: "this policy is effective as of",
         language: "jezik",
+        selectLanguage: "izberi željen jezik",
         languageSet: "jezik nastavljen, odprite neko drugo stran da se pokažejo spremembe",
         // gsec
         gsecErrNet: "napaka povezave na GimSIS",

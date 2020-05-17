@@ -76,7 +76,14 @@
         </div>
         <div class="row">
             <h5><x-su>language</x-su></h5>
-            <div class="col s12">
+            <div class="input-field col s12">
+                <select class="icons" id="select-language">
+                    <option value="" id="option-sl" data-language="sl" data-icon="/img/flags/sl.svg" selected>Slovenščina</option>
+                    <option value="" id="option-en" data-language="en" data-icon="/img/flags/en.svg">English</option>
+                </select>
+                <label><x-su>selectLanguage</x-su></label>
+            </div>
+            <!-- <div class="col s12">
                 <div class="collection">
                     <a data-language="sl" class="collection-item settings-language-selector" href="#">
                         <div>
@@ -124,7 +131,7 @@
 	                    </li>
 										-->
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </body>

@@ -49,7 +49,7 @@ async function loadAbsences(forceRefresh = false) {
     ];
     await Promise.all(promisesToRun);
     // If we don't have a list of absences, query it
-    if (absences === null || forceRefresh) {
+    if (absences === null || absences === {} || forceRefresh) {
         try {
             let gsecInstance = new gsec();
             await gsecInstance.login(username, password);

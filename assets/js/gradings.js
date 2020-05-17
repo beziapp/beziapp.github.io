@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     calendar_obj.render();
     // setupPickers(); // todo (adding an event), to be stored in messages
-    loadGradings();
+    loadGradings(true);
     // Setup refresh handler
     $("#refresh-icon").click(() => {
         loadGradings(true);
