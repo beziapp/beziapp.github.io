@@ -269,7 +269,7 @@ table.highlight > tbody > tr:hover {
     border-bottom-color: var(--color-divider);
 }
 
-span {
+span:not(.fc-time > span) {
     color: var(--color-text);
 }
 
