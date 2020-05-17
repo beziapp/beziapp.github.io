@@ -1,9 +1,9 @@
 #!/bin/bash
 ./bin/compose-html assets/pages-src/ dist/pages/ .html
 # mkdir dist # dist itak naredi compose-html
-cp -r assets/css dist/css
-cp -r assets/fonts dist/fonts
-cp -r assets/img dist/img
-cp -r assets/js dist/js
-find assets/root/ \( ! -name "*.bvr" \) -exec cp "{}" dist/  \;
-find assets/root/* -exec ./bin/compose-single "{}" dist/"{}" \;
+cp -r assets/css dist/
+cp -r assets/fonts dist/
+cp -r assets/img dist/
+cp -r assets/js dist/
+find assets/root/ -type f \( ! -name "*.bvr" \) -exec cp -r "{}" dist/  \;
+find assets/root/ -name "*.bvr" -printf "%f\n" | xargs -I % bash -c "FILE='%'; FILE_DST="dist/\${FILE/.bvr/}"; ./bin/compose-single \"assets/root/\$FILE\" \"\$FILE_DST\""
