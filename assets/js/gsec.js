@@ -249,7 +249,7 @@ class gsec {
 
     fetchGradings() {
 
-        const DESC_REGEX = /\((.+?)\)/;
+        const DESC_REGEX = /\((.+?)\)/m;
         const SUBJECT_REGEX = /^(.+?) \(/m;
 
         return new Promise((resolve) => {
