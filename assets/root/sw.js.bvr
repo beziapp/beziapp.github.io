@@ -1,7 +1,7 @@
 <@?i global@>
 // Change version to cause cache refresh
 const static_cache_name = "site-static-<@?g app_version@>-<@?u 0 7 ?g latest_commit@>";
-// latest commit is <@?g latest_commit@>
+// commit before the latest is <@?g latest_commit@>
 // Got them with find . -not -path '*/\.*' | sed "s/.*/\"&\",/" | grep -v sw.js
 // sw.js NE SME BITI CACHAN, ker vsebuje verzijo!
 
