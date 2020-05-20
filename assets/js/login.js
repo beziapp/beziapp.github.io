@@ -23,12 +23,13 @@ function setupEventListeners() {
 function login() {
     let username = $("#username").val();
     let password = $("#password").val();
+		var gsecInstance;
 		try {
-    	var gsecInstance = new gsec();
+    	gsecInstance = new gsec();
 		} catch (error) {
 			$.getScript("/js/gsec.js");
 			try {
-	    	var gsecInstance = new gsec();
+	    	gsecInstance = new gsec();
 			} catch (error) {
 				alert(D("browserNotSupported"));
 			}
