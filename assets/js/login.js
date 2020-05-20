@@ -27,7 +27,11 @@ function login() {
 		try {
     	gsecInstance = new gsec();
 		} catch (error) {
-			$.getScript("/js/gsec.js");
+			$.ajax({
+				url: 'js/gsec.js?ajaxload',
+				async: false,
+				dataType: "script",
+			});
 			try {
 	    	gsecInstance = new gsec();
 			} catch (error) {

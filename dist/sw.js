@@ -3,8 +3,8 @@
 
 
 // Change version to cause cache refresh
-const static_cache_name = "site-static-1.0.13-beta-0a04505";
-// latest commit is 0a045055fbfa8a5228f1deeca9d85a4b6a7b0fca
+const static_cache_name = "site-static-1.0.13-beta-3b61e86";
+// latest commit is 3b61e8681d5db498e76fa1c843062a0a7a403c64
 // Got them with find . -not -path '*/\.*' | sed "s/.*/\"&\",/" | grep -v sw.js
 // sw.js NE SME BITI CACHAN, ker vsebuje verzijo!
 
@@ -87,7 +87,10 @@ const assets = [
 	"/js/jitsi.js",
 	"/pages/chats.html",
 	"/js/chats.js",
-	"/css/bubbles.css"
+	"/css/bubbles.css",
+
+	"/js/gsec.js",
+	"/js/gsec.js?ajaxload"
 ];
 
 importScripts("/js/lib/localforage.min.js");

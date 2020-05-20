@@ -84,7 +84,10 @@ const assets = [
 	"/js/jitsi.js",
 	"/pages/chats.html",
 	"/js/chats.js",
-	"/css/bubbles.css"
+	"/css/bubbles.css",
+
+	"/js/gsec.js",
+	"/js/gsec.js?ajaxload"
 ];
 
 importScripts("/js/lib/localforage.min.js");
