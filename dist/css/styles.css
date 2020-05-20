@@ -132,7 +132,7 @@ a.collection-item {
 	color: var(--color-text);
 }
 
-tr {
+.fc-slats > table > tbody > tr {
 	border-bottom-color: var(--color-divider) !important;
 }
 
@@ -284,6 +284,7 @@ i.material-icons.prefix {
 .flag-icon {
 	height: 1vw;
 }
+
 .app-header-bold {
 	color: var(--color-header-bold) !important;
 }
