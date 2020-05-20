@@ -47,6 +47,10 @@ body {
 	background-color: var(--color-primary);
 }
 
+.color-card {
+	color: var(--color-primary-light);
+}
+
 nav {
   background: var(--color-primary);
 	border-bottom: 10px solid var(--color-accent);
@@ -95,6 +99,10 @@ a {
 	color: var(--color-accent);
 }
 
+.card-action > a {
+	color: var(--color-accent) !important;
+}
+
 a.collection-item {
 	color: var(--color-primary) !important;
 }
@@ -109,11 +117,12 @@ a.collection-item {
 
 .datepicker-table td.is-selected {
 	background-color: var(--color-primary);
+	color: var(--background-color) !important;
 }
 
 .datepicker-table td.is-selected.is-today {
 	background-color: var(--color-primary);
-	color: var(--background-color);
+	color: var(--background-color) !important;
 }
 
 .datepicker-cancel {
@@ -145,6 +154,10 @@ a.collection-item {
 }
 
 .indeterminate {
+	background-color: var(--color-primary) !important;
+}
+
+.determinate {
 	background-color: var(--color-primary) !important;
 }
 
