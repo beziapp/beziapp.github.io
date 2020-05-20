@@ -47,6 +47,8 @@ function setUIAdditionalOptions(state) {
             $("#option-" + item).remove();
         });
     }
+    var elems = document.querySelectorAll('#select-theme');
+    M.FormSelect.init(elems, {});
 }
 
 async function setAdditionalOptions(state) {
