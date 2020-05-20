@@ -3,7 +3,7 @@
 
 
 const app_version = "1.0.14-beta";
-const previous_commit = "1652387e87215d6d4d6b677d982865eb27b44ba3";
+const previous_commit = "c40b1bd1b0c465663eef509464e3807019727caf";
 
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/sw.js")
@@ -57,7 +57,7 @@ function gsecErrorHandlerUI(err) {
 
 
 var error_report_function = async function (msg, url, lineNo, columnNo, error) {
-	localforage.getItem("errorReporting").then((value) => {
+	localforage.getItem("errorReporting").then(async function(value) {
 		let selectedE = value;
 		if(value == null || value.length < 1) {
 			selectedE = "on";
