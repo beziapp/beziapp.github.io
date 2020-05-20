@@ -375,15 +375,18 @@ function displayData(messageType) {
 
 // -1 = cumulative
 function getNumMessages(messageType = -1) {
-    if (messageType === -1) {
-        let sum = 0;
-        for (const [messageType, messageList] of Object.entries(messages)) {
-            sum += messageList.length;
-        }
-        return sum;
-    } else {
-        return (messages[messageType].length ?? 0);
-    }
+	if (messageType === -1) {
+		let sum = 0;
+		for (const [messageType, messageList] of Object.entries(messages)) {
+			sum += messageList.length;
+		}
+		return sum;
+	} else {
+		var what_to_return = messages[messageType].length;
+		if(what_to_return == null)
+			return 0
+		return what_to_return;
+	}
 }
 
 async function sendMessage(recipient_number, subject, body) {
