@@ -92,7 +92,7 @@ nav {
 }
 
 a {
-	color: var(--color-accent);
+	color: var(--color-accent) !important;
 }
 
 a.collection-item {
@@ -145,6 +145,10 @@ a.collection-item {
 }
 
 .indeterminate {
+	background-color: var(--color-primary) !important;
+}
+
+.determinate {
 	background-color: var(--color-primary) !important;
 }
 

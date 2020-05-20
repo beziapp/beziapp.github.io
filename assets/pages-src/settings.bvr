@@ -103,7 +103,7 @@
 				<h5 class="general-text"><x-su>additionalOptions</x-su></h5>
 			</div>
 			<div class="col s12">
-				<p class="flow-text general-text"><x-du>triggerWarning</x-du></p>
+				<p class="general-text"><x-du>triggerWarning</x-du></p>
 			</div>
 			<div class="valign-wrapper col s12 m12">
 				<label>

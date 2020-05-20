@@ -114,8 +114,8 @@ const THEME_COLOR_SCHEMES = {
     },
     right: {
         "color-primary": "rgba(7, 0, 105, 1)",
-        "color-secondary": "rgba(206, 217, 0, 1)",
-        "color-accent": "rgba(0, 94, 156, 1)",
+        "color-secondary": "rgba(0, 94, 156, 1)",
+        "color-accent": "rgba(160, 168, 50, 1)",
         "color-primary-light": "rgba(195, 191, 255, 1)",
         "color-invalid": "rgba(192, 0, 0, 1)",
         "color-primary-transparent": "rgba(7, 0, 105, 0.3)",
