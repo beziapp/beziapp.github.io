@@ -132,8 +132,12 @@ a.collection-item {
 	color: var(--color-text);
 }
 
-.fc-view > table > * > tr {
+.fc-slats > table > tbody > tr {
 	border-bottom-color: var(--color-divider) !important;
+}
+
+.fc-row.fc-week.fc-widget-content {
+	border-color: var(--color-divider) !important;
 }
 
 .progress {
