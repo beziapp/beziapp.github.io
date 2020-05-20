@@ -38,40 +38,62 @@ function htmlDecode(value) {
 // ---------------------------------
 
 // Try to fetch name:id directory
-function loadDirectory() {
-    $.ajax({
-        url: DIRECTORY_URL,
-        crossDomain: true,
-
-        dataType: "json",
-        cache: false,
-        type: "GET",
-
-        success: (data) => {
-            // If we were able to retrieve it, update the saved directory
-            localforage.setItem("directory", data);
-            directory = data;
-            // Populate autocomplete
-            populateAutocomplete();
-        },
-
-        error: () => {
-            // Otherwise, try to retrieve stored directory
-            localforage.getItem("directory").then((stored_directory) => {
-                if (stored_directory === null) {
-                    // If unable, set directory to null (so other functions know that we don't have it)
-                    UIAlert( D("nameDirectoryNotSet"), "loadDirectory(): stored_directory === null" );
-                    directory = null;
-                    // Disable send button
-                    document.getElementById("msg-send").disabled = true;
-                } else {
-                    directory = stored_directory;
-                    // Populate autocomplete
-                    populateAutocomplete();
-                }
-            });
-        }
-    });
+async function loadDirectory() {
+	$.ajax({
+		url: DIRECTORY_URL,
+		crossDomain: true,
+		dataType: "json",
+		cache: false,
+		type: "GET",
+		success: async function (data) {
+			// If we were able to retrieve it, update the saved directory
+			let promises_to_run = [
+				localforage.getItem("username").then((value) => {
+					username = value;
+				}),
+				localforage.getItem("password").then((value) => {
+					password = value;
+				}),
+				localforage.getItem("grades").then((value) => {
+						grades = value;
+				})
+			];
+			await Promise.all(promises_to_run);
+			var gsecdata;
+			try {
+				let gsecInstance = new gsec();
+				await gsecInstance.login(username, password);
+				gsecdata = await gsecInstance.fetchTeachersDirectory().catch( (err) => {
+					gsecErrorHandlerUI(err);
+					setLoading(false);
+				});
+			} catch (err) {
+				gsecErrorHandlerUI(err);
+				setLoading(false);
+			}
+			directory = {...gsecdata, ...data };
+			console.log(directory);
+			localforage.setItem("directory", directory);
+			// Populate autocomplete
+			populateAutocomplete();
+		},
+		error: () => {
+			// Otherwise, try to retrieve stored directory
+			localforage.getItem("directory").then((stored_directory) => {
+				if (stored_directory === null) {
+					// If unable, set directory to null (so other functions know that we don't have it)
+					UIAlert( D("nameDirectoryNotSet"), "loadDirectory(): stored_directory === null" );
+					directory = null;
+					// Disable send button
+					document.getElementById("msg-send").disabled = true;
+				} else {
+					directory = stored_directory;
+					// Populate autocomplete
+					populateAutocomplete();
+				}
+			});
+		}
+	});
 }
 
 function populateAutocomplete() {
