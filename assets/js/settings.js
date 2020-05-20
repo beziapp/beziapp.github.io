@@ -25,12 +25,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     localforage.getItem("chosenLang").then((value) => {
-        let selectedLanguage = value ?? "sl";
+        let selectedLanguage = value;
+				if(value == null || value.length < 1) {
+ 					selectedLanguage = "sl";
+				}
         $(`#option-${selectedLanguage}`).attr("selected", true);
     }).catch(() => {});
 
     localforage.getItem("theme").then((value) => {
-        let selectedTheme = value ?? "themeLight";
+        let selectedTheme = value;
+				if(value == null || value.length < 1) {
+					selectedTheme = "themeLight";
+				}
         $(`#option-${selectedTheme}`).attr("selected", true);
     }).catch(() => {});
 
