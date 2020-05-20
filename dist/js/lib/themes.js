@@ -56,7 +56,7 @@ const THEME_COLOR_SCHEMES = {
         "color-btn-flat": "rgba(178, 178, 178, 1)",
         "color-btn-flat-disabled": "rgba(52, 52, 52, 1)"
     },
-    black: {
+    night: {
         "color-primary": "rgba(0, 79, 51, 1)",
         "color-secondary": "rgba(0, 94, 61, 1)",
         "color-accent": "rgba(28, 107, 79, 1)",
