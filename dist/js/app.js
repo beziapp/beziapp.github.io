@@ -2,8 +2,8 @@
 
 
 
-const app_version = "1.0.13-beta";
-const previous_commit = "29b013b7591c0ee674bb8c2cf8cc660f67cdd9f7";
+const app_version = "1.0.14-beta";
+const previous_commit = "9957e1be89076c2a7612d2055b776f2c8354909a";
 
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/sw.js")
