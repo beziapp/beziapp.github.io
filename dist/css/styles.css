@@ -133,7 +133,7 @@ a.collection-item {
 }
 
 .fc-view > table > * > tr {
-	color: var(--color-divider) !important;
+	border-bottom-color: var(--color-divider) !important;
 }
 
 .progress {
