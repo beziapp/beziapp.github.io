@@ -71,14 +71,14 @@ const THEME_COLOR_SCHEMES = {
         "color-header-bold": "rgba(255, 255, 255, 1)",
         "color-header-span": "rgba(255, 255, 255, 1)",
 
-        "color-text": "rgba(189, 189, 189, 1)",
-        "color-text-light": "rgba(160, 160, 160, 1)",
+        "color-text": "rgba(255, 255, 255, 1)",
+        "color-text-light": "rgba(200, 200, 200, 1)",
         "color-label-text": "rgba(158, 158, 158, 1)",
         "color-table-hover": "rgba(43, 43, 43, 0.5)",
 
         "color-sidenav-background": "rgba(0, 0, 0, 1)",
-        "color-sidenav-text": "rgba(189, 189, 189, 1)",
-        "color-sidenav-header": "rgba(189, 189, 189, 0.54)",
+        "color-sidenav-text": "rgba(255, 255, 255, 1)",
+        "color-sidenav-header": "rgba(255, 255, 255, 0.54)",
         "color-divider": "rgba(50, 50, 50, 1)",
 
         "color-btn-flat": "rgba(178, 178, 178, 1)",
