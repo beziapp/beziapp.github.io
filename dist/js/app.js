@@ -3,7 +3,7 @@
 
 
 const app_version = "1.0.13-beta";
-const previous_commit = "c2bbdeb81de79f182847348da988f8cc6ca63e04";
+const previous_commit = "1ad50c13b9d4e52f9b83763b2df3f93e8287d20b";
 
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/sw.js")
@@ -56,7 +56,7 @@ function gsecErrorHandlerUI(err) {
 }
 
 
-var error_report_function = function (msg, url, lineNo, columnNo, error) {
+var error_report_function = async function (msg, url, lineNo, columnNo, error) {
 	var data = {};
 	data.error = {"msg": msg, "url": url, "line": lineNo, "column": columnNo, "obj": error};
 	data.client = {"ua": navigator.userAgent, "app_version": app_version, "previous_commit": previous_commit};
