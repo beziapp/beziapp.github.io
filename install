@@ -1,0 +1,13 @@
+#!/bin/bash
+./bin/compose-html assets/pages-src/ dist/pages/ .html
+cp -r assets/css dist/
+cp -r assets/fonts dist/
+cp -r assets/img dist/
+find assets/root/ -type f \( ! -name "*.bvr" \) -exec cp -r "{}" dist/  \;
+find assets/root/ -name "*.bvr" -printf "%f\n" | xargs -I % bash -c "FILE='%'; FILE_DST="dist/\${FILE/.bvr/}"; ./bin/compose-single \"assets/root/\$FILE\" \"\$FILE_DST\""
+
+# js bvr fajli
+mkdir -p dist/js
+# js ne znam te magije
+find assets/js/ -name "*.bvr" -printf "%f\n" | xargs -I % bash -c "FILE='%'; FILE_DST="dist/js/\${FILE/.bvr/}"; ./bin/compose-single \"assets/js/\$FILE\" \"\$FILE_DST\""
+find assets/js/ -name "*.js" -printf "%P\n" | xargs -I % bash -c "FILE='%'; FILE_DST="dist/js/\${FILE/.bvr/}"; ./bin/jsmin assets/js/\"\$FILE\" \"\$FILE_DST\""

@@ -1,0 +1,20 @@
+[
+{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target" : { "namespace": "android_app", "package_name": "tk.gimb.app",
+               "sha256_cert_fingerprints": ["78:51:6D:C4:40:49:83:A0:AA:38:09:EF:CF:83:37:F4:5D:F0:88:18:89:DE:C2:84:DD:14:D4:8C:09:FF:46:A8"] }
+},
+{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target" : { "namespace": "android_app", "package_name": "tk.gimb.devapp",
+               "sha256_cert_fingerprints": ["78:51:6D:C4:40:49:83:A0:AA:38:09:EF:CF:83:37:F4:5D:F0:88:18:89:DE:C2:84:DD:14:D4:8C:09:FF:46:A8"] }
+},
+{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target" : { "namespace": "android_app", "package_name": "tk.gimb.dev",
+               "sha256_cert_fingerprints": ["78:51:6D:C4:40:49:83:A0:AA:38:09:EF:CF:83:37:F4:5D:F0:88:18:89:DE:C2:84:DD:14:D4:8C:09:FF:46:A8"] }
+}
+
+]
+
+

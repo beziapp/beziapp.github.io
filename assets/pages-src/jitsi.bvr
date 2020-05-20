@@ -1,0 +1,61 @@
+<@?i global@>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta name="google" content="notranslate">
+		<title>GimB Meet &laquo; BežiApp</title>
+
+		<!-- Materialize -->
+		<link type="text/css" href="/css/materialize.min.css" rel="stylesheet">
+		<link href="/css/materialicons.css" rel="stylesheet">
+		<link href="/css/fontawesome.min.css" rel="stylesheet">
+		<script type="text/javascript" src="/js/lib/materialize.min.js"></script>
+
+		<script src="/js/lib/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/lib/localforage.min.js"></script>
+
+		<link type="text/css" href="/css/styles.css" rel="stylesheet">
+		<link rel="manifest" href="/manifest.json">
+
+		<script src="/js/app.js"></script>
+		<script src="/js/lib/themes.js"></script>
+		<script src="/js/lang/bundle.js"></script>
+		<script src="/js/jitsi.js"></script>
+
+		<link rel="shortcut icon" type="image/png" href="/favicon.png" />
+
+		<!-- iOS support -->
+		<link rel="apple-touch-icon" href="/img/icons/icon_96.png">
+		<link rel="apple-touch-icon" href="/img/icons/icon_512.png">
+		<meta name="apple-mobile-web-app-status-bar" content="#004d32">
+	</head>
+	<body>
+		<nav class="z-depth-0" id="navigation-main">
+			<div class="nav-wrapper container">
+				<b class="app-header-bold">Beži</b><span class="app-header-span">App</span> &raquo; <x-su>videoconferences</x-su>
+					<span class="right white-text">
+						<i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
+					</span>
+			</div>
+			<div id="loading-bar" class="progress hidden">
+				<div class="indeterminate"></div>
+			</div>
+		</nav>
+		<@?i navigation@>
+		<!-- Maybe in the future? https://github.com/jitsi/jitsi-meet/blob/master/doc/api.md -->
+		<div class="container" style="height: calc(100vh - 70px); width: 100%">
+			<iframe allow="geolocation; microphone; camera" src="https://video.gimb.tk" frameBorder="0" style="width: 100%; height: 100%">
+				Your browser does not support iframes, you have no Internet connection or the GimB videoconference server is down or does
+				not allow iframes. Probably we <s>fucked</s> messed something up, so drop us a message.
+				<hr>
+				Vaš brskalnik ne podpira iframov, nimate povezave v medmrežje ali pa so se GimB videokonferenčni strežniki odločili ne
+				dovoliti iframov ali pa so sploh nedostopni. Kakorkoli že, verjetno smo mi kaj <s>zajebali</s> zamočili, zato nam napiši sporočilo!
+				<hr>
+				Danke schön. Gracias.
+			</iframe>
+		</div>
+	</body>
+</html>

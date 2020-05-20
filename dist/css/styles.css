@@ -1,0 +1,419 @@
+:root {
+	--color-primary: rgba(0, 128, 83, 1);
+	--color-secondary: rgba(0, 77, 50, 1);
+	--color-accent: rgba(0, 156, 101, 1);
+	--color-primary-light: rgba(230, 250, 231, 1);
+	--color-invalid: rgba(192, 0, 0, 1);
+	--color-primary-transparent: rgba(0, 128, 83, 0.3);
+
+	--background-color: rgba(255, 255, 255, 1);
+	--background-accent: rgba(0, 156, 101, 0.2);
+	--background-accent-1: rgb(192, 219, 207, 1);
+
+	--color-header-bold: rgba(255, 255, 255, 1);
+	--color-header-span: rgba(255, 255, 255, 1);
+
+	--color-text: rgba(0, 0, 0, 1);
+	--color-text-light: rgba(97, 97, 97, 1);
+	--color-label-text: rgba(158, 158, 158, 1);
+	--color-table-hover: rgba(242, 242, 242, 0.5);
+
+	--color-sidenav-background: rgba(255, 255, 255, 1);
+	--color-sidenav-text: rgba(0, 0, 0, 0.87);
+	--color-sidenav-header: rgba(0, 0, 0, 0.54);
+	--color-divider: rgba(224, 224, 224, 1);
+
+	--color-btn-flat: rgba(52, 52, 52, 1);
+	--color-btn-flat-disabled: rgba(178, 178, 178, 1);
+}
+
+body {
+	background: var(--background-color);
+}
+
+.title-primary {
+	color: var(--color-primary) !important;
+}
+
+.title-secondary {
+	color: var(--color-secondary) !important;
+}
+
+.btn {
+	background-color: var(--color-secondary);
+}
+
+.btn:hover {
+	background-color: var(--color-primary);
+}
+
+.color-card {
+	color: var(--color-primary-light);
+}
+
+nav {
+  background: var(--color-primary);
+	border-bottom: 10px solid var(--color-accent);
+	position: sticky;
+	left: 0;
+	top: 0;
+	z-index: 69; /* choose a number, any number */
+}
+
+.hidden {
+	display: none !important;
+}
+
+.collapsible-header-right {
+	float: right;
+	position: absolute;
+	right: 10px;
+	font-style: italic;
+	color: var(--color-text);
+}
+
+.collapsible-header-root {
+	position: relative;
+}
+
+.collapsible {
+	border-top-color: var(--color-divider);
+	border-right-color: var(--color-divider);
+	border-left-color: var(--color-divider);
+}
+
+.secondary-content {
+	font-weight: bold;
+	color: var(--color-secondary) !important;
+}
+
+.about-text {
+	font-size: 1.3em !important;
+}
+
+.button-theme-gimb {
+	background-color: var(--color-primary);
+}
+
+a {
+	color: var(--color-accent);
+}
+
+.card-action > a {
+	color: var(--color-accent) !important;
+}
+
+a.collection-item {
+	color: var(--color-primary) !important;
+}
+
+.datepicker-date-display {
+	background-color: var(--color-primary);
+}
+
+.datepicker-table td.is-today {
+	color: var(--color-primary);
+}
+
+.datepicker-table td.is-selected {
+	background-color: var(--color-primary);
+	color: var(--background-color) !important;
+}
+
+.datepicker-table td.is-selected.is-today {
+	background-color: var(--color-primary);
+	color: var(--background-color) !important;
+}
+
+.datepicker-cancel {
+	color: var(--color-primary);
+}
+
+.datepicker-done {
+	color: var(--color-primary);
+}
+
+.fc-unthemed td.fc-today {
+	background: var(--color-primary-transparent);
+}
+
+.fc-icon {
+	color: var(--color-text);
+}
+
+.fc-slats > table > tbody > tr {
+	border-bottom-color: var(--color-divider) !important;
+}
+
+.fc-row.fc-week.fc-widget-content {
+	border-color: var(--color-divider) !important;
+}
+
+.progress {
+	background-color: var(--color-primary-light) !important;
+}
+
+.indeterminate {
+	background-color: var(--color-primary) !important;
+}
+
+.determinate {
+	background-color: var(--color-primary) !important;
+}
+
+.no-select {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+input.datepicker {
+	color: var(--color-text);
+}
+
+.input-field > input {
+	color: var(--color-text);
+}
+
+/* label focus color */
+.input-field input[type=text]:focus+label {
+	color: var(--color-text);
+}
+
+/* label underline focus color */
+
+.input-field input[type=text]:focus {
+	border-bottom: 1px solid var(--color-primary) !important;
+	box-shadow: 0 1px 0 0 var(--color-primary) !important;
+}
+
+/* valid color */
+
+.input-field input[type=text].valid {
+	border-bottom: 1px solid var(--color-secondary);
+	box-shadow: 0 1px 0 0 var(--color-secondary);
+}
+
+/* invalid color */
+
+.input-field input[type=text].invalid {
+	border-bottom: 1px solid var(--color-invalid);
+	box-shadow: 0 1px 0 0 var(--color-invalid);
+}
+
+i.material-icons.prefix {
+	color: var(--color-label-text) !important;
+}
+
+/* icon prefix focus color */
+.input-field .prefix.active {
+	color: var(--color-primary);
+}
+
+.input-field textarea:not([readonly]):focus+label {
+	color: var(--color-primary) !important;
+}
+
+.input-field textarea:not([readonly]):focus {
+	border-bottom: 1px solid var(--color-primary) !important;
+	box-shadow: 0 1px 0 0 var(--color-primary) !important;
+}
+
+.dropdown-content li:hover {
+	background-color: var(--color-table-hover) !important;
+}
+
+.autocomplete-content li .highlight {
+	color: var(--color-text) !important;
+}
+
+.chat-sticky-input {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	background-color: var(--background-color);
+	text-align: center;
+	z-index: 60;
+}
+
+.month-prev > svg {
+	fill: var(--color-text);
+}
+
+.month-next > svg {
+	fill: var(--color-text);
+}
+
+.selects-container > div > input {
+	color: var(--color-text);
+}
+
+/* Tabs */
+.tab a {
+	color: var(--color-secondary) !important;
+}
+
+.tab a:hover {
+	color: var(--color-primary) !important;
+}
+
+.tab a.active {
+	color: var(--color-primary) !important;
+}
+
+.tab a:focus.active {
+	background-color: var(--background-accent) !important;
+}
+
+.tabs .indicator {
+	background-color: var(--color-primary) !important;
+}
+
+.tabs {
+	background-color: var(--background-color) !important;
+}
+
+/* Floating action button */
+.fab-new-message {
+	background-color: var(--color-secondary) !important;
+}
+
+/* About right buttons */
+.about-button-box {
+	display: flex;
+	flex-direction: row;
+}
+
+.about-button-box > * {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.flag-icon {
+	height: 1vw;
+}
+
+.app-header-bold {
+	color: var(--color-header-bold) !important;
+}
+
+.app-header-span {
+	color: var(--color-header-span) !important;
+}
+
+table > thead > tr > th {
+	color: var(--color-text) !important;
+}
+
+table > tbody > tr > td {
+	color: var(--color-text) !important;
+}
+
+table.highlight > tbody > tr:hover {
+	background-color: var(--color-table-hover) !important;
+}
+
+.sidenav {
+	background-color: var(--background-color) !important;
+}
+
+.sidenav li > a {
+	color: var(--color-sidenav-text) !important;
+}
+
+.sidenav-beziapp-subheader {
+	color: var(---color-sidenav-header) !important;
+}
+
+.divider {
+	background-color: var(--color-divider) !important;
+}
+
+.sidenav li>a>i.material-icons {
+	color: var(--color-sidenav-text);
+}
+
+.collapsible-header {
+	background-color: var(--background-color);
+	color: var(--color-text);
+	border-bottom-color: var(--color-divider);
+}
+
+h2 {
+	color: var(--color-text);
+}
+
+.collapsible-body {
+	border-bottom-color: var(--color-divider);
+}
+
+span:not(.fc-time > span) {
+	color: var(--color-text);
+}
+
+div:not(.fc-time, .fc-title) {
+	color: var(--color-text);
+}
+
+h5.subheader {
+	color: var(--color-text);
+}
+
+.collection-item, .collection-header {
+	background-color: var(--background-color) !important;
+	color: var(--color-text) !important;
+	border-bottom-color: var(--color-divider) !important;
+}
+
+.collection {
+	border-top-color: var(--color-divider) !important;
+	border-bottom-color: var(--color-divider) !important;
+	border-left-color: var(--color-divider) !important;
+	border-right-color: var(--color-divider) !important;
+}
+
+.modal-content {
+	background-color: var(--background-color);
+}
+
+.modal-footer {
+	background-color: var(--background-color) !important;
+	border-top-color: var(--color-divider) !important;
+}
+
+.modal-close.btn-flat {
+	color: var(--color-btn-flat) !important;
+}
+
+.modal-close.btn-flat[disabled] {
+	color: var(--color-btn-flat-disabled) !important;
+}
+
+.general-text {
+	color: var(--color-text) !important;
+}
+
+.light-text {
+	color: var(--color-text-light) !important;
+}
+
+.dropdown-content {
+	background: var(--background-accent-1) !important;
+}
+
+p {
+	color: var(--color-text) !important;
+}
+
+.select-dropdown {
+	color: var(--color-text) !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: var(--color-text) !important;
+}

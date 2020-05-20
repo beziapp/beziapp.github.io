@@ -1,0 +1,70 @@
+<@?i global@>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google" content="notranslate">
+    <title>Terms and Conditions &laquo; BežiApp</title>
+
+    <!-- Materialize -->
+    <link type="text/css" href="/css/materialize.min.css" rel="stylesheet">
+    <link href="/css/materialicons.css" rel="stylesheet">
+    <link href="/css/fontawesome.min.css" rel="stylesheet">
+    <script type="text/javascript" src="/js/lib/materialize.min.js"></script>
+
+    <script src="/js/lib/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/lib/localforage.min.js"></script>
+
+    <link type="text/css" href="/css/styles.css" rel="stylesheet">
+    <script type="text/javascript" src="/js/tos.js"></script>
+
+    <link rel="manifest" href="/manifest.json">
+    <script src="/js/app.js"></script>
+    <script src="/js/lib/themes.js"></script>
+    <script src="/js/lang/bundle.js"></script>
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+
+    <!-- iOS support -->
+    <link rel="apple-touch-icon" href="/img/icons/icon_96.png">
+    <link rel="apple-touch-icon" href="/img/icons/icon_512.png">
+    <meta name="apple-mobile-web-app-status-bar" content="#004d32">
+</head>
+
+<body>
+    <nav class="z-depth-0" id="navigation-main">
+        <div class="nav-wrapper container">
+            <b class="app-header-bold">Beži</b><span class="app-header-span">App</span> &raquo; <x-su>theToS</x-su>
+            <span class="right white-text">
+                <i class="material-icons" id="nav-home-button">home</i>
+            </span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 class="code-line" data-line-start=0 data-line-end=1><a id="Terms_and_conditions_0"></a><x-su>theToS</x-su></h2>
+        <h3 class="code-line" data-line-start=2 data-line-end=3><a id="Terms_of_use_2"></a><x-su>termsOfUse</x-su></h3>
+        <p class="has-line-data flow-text" data-line-start="3" data-line-end="4"><x-su>termsOfUseDescription</x-su>:</p>
+        <ol>
+            <li class="flow-text has-line-data" data-line-start="4" data-line-end="5"><x-su>termsOfUseHarass</x-su>;</li>
+            <li class="flow-text has-line-data" data-line-start="5" data-line-end="6"><x-su>termsOfUsePost</x-su>;</li>
+            <li class="flow-text has-line-data" data-line-start="6" data-line-end="7"><x-su>termsOfUseCommunicate</x-su>;</li>
+            <li class="flow-text has-line-data" data-line-start="7" data-line-end="8"><x-su>termsOfUsePurpose</x-su>;</li>
+            <li class="flow-text has-line-data" data-line-start="8" data-line-end="9"><x-su>termsOfUseExploit</x-su>;</li>
+            <li class="flow-text has-line-data" data-line-start="9" data-line-end="11"><x-du>termsOfUseSpam</x-du></li>
+        </ol>
+        <p class="flow-text"><x-du>termsOfUseModify</x-du></p>
+        <h3 class="code-line" data-line-start=11 data-line-end=12><a id="Termination_of_services_11"></a><x-su>terminationOfServices</x-su></h3>
+        <p class="flow-text has-line-data" data-line-start="12" data-line-end="13"><x-su>terminationOfServicesDescriptions</x-su>:</p>
+        <ul>
+            <li class="flow-text has-line-data" data-line-start="13" data-line-end="14"><x-su>terminationOfServicesBreaching</x-su>;</li>
+            <li class="flow-text has-line-data" data-line-start="14" data-line-end="16"><x-du>terminationOfServicesRequest</x-du></li>
+        </ul>
+        <h3 class="code-line" data-line-start=16 data-line-end=17><a id="Limitation_of_Liability_16"></a><x-su>limitationOfLiability</x-su></h3>
+        <p class="flow-text has-line-data" data-line-start="17" data-line-end="18"><x-du>limitationOfLiabilityContent</x-du></p>
+        <hr>
+        <p class="flow-text"><x-su>tosAreEffectiveAsOf</x-su> 29 January, 2020.</p>
+    </div>
+</body>
+</html>
