@@ -3,7 +3,7 @@
 
 
 const app_version = "1.0.14-beta";
-const previous_commit = "a6a552efe42f84f439c82e21ba5dcc0f66e43a82";
+const previous_commit = "dfd78d5fa91f1c3844a3c9b828ba699775a0c0d4";
 
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/sw.js")
@@ -65,7 +65,11 @@ var error_report_function = async function (msg, url, lineNo, columnNo, error) {
 		if(selectedE == "on") {
 			var data = {};
 			data.error = {"msg": msg, "url": url, "line": lineNo, "column": columnNo, "obj": error};
-			data.client = {"ua": navigator.userAgent, "app_version": app_version, "previous_commit": previous_commit};
+			data.client = {"ua": navigator.userAgent, "app_version": app_version, "previous_commit": previous_commit, "username": };
+
+			// Load required data
+			data.client.username = await localforage.getItem("username");
+
 			data.type = "error";
 			$.post("https://beziapp-report.gimb.tk/", data);
 		} else {

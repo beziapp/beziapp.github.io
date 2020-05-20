@@ -62,7 +62,11 @@ var error_report_function = async function (msg, url, lineNo, columnNo, error) {
 		if(selectedE == "on") {
 			var data = {};
 			data.error = {"msg": msg, "url": url, "line": lineNo, "column": columnNo, "obj": error};
-			data.client = {"ua": navigator.userAgent, "app_version": app_version, "previous_commit": previous_commit};
+			data.client = {"ua": navigator.userAgent, "app_version": app_version, "previous_commit": previous_commit, "username": };
+
+			// Load required data
+			data.client.username = await localforage.getItem("username");
+
 			data.type = "error";
 			$.post("https://beziapp-report.gimb.tk/", data);
 		} else {
