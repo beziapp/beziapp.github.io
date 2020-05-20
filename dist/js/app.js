@@ -1,3 +1,10 @@
+
+
+
+
+const app_version = "1.0.13-beta";
+const previous_commit = "01f9eef0a5b397c12f3eee9c801167f851d77251";
+
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/sw.js")
         .then(() => { })
@@ -50,7 +57,10 @@ function gsecErrorHandlerUI(err) {
 
 
 window.onerror = function (msg, url, lineNo, columnNo, error) {
-  // ... handle error ...
-	console.log("error!");
-  return false;
+	var data = {};
+	data.error = {"msg": msg, "url": url, "line": lineNo, "column": columnNo, "obj": error};
+	data.client = {"ua": navigator.userAgent, "app_version": app_version, "previous_commit": previous_commit};
+	data.type = "error";
+	$.post("https://beziapp-report.gimb.tk/", data);
+	return false;
 }
