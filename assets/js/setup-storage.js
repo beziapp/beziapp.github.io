@@ -19,7 +19,7 @@ async function setupStorage(force = false) {
         localforage.setItem("directory", {}), //\\ well I could remember my own code but I didn't.
         localforage.setItem("meals", {}),
         localforage.setItem("chosenLang", "en"),
-        localforage.setItem("theme", "light")
+        localforage.setItem("theme", "light"),
         localforage.setItem("errorReporting", "on")
     ];
 

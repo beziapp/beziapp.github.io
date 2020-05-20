@@ -296,6 +296,7 @@ var langstrings = {
 				errorReporting: "error reporting",
 				on: "on",
 				off: "off",
+				selectErrorReporting: "should error reports be submitted to the developers?",
         // gsec
         gsecErrNet: "GimSIS connection error",
         gsecErrLogin: "GimSIS login error (bad password?), try logging out",
@@ -491,6 +492,7 @@ var langstrings = {
 				errorReporting: "pošiljanje napak",
 				on: "vklopljeno",
 				off: "izklopljeno",
+				selectErrorReporting: "ali naj so napake v aplikaciji posredovane razvijalcem?",
         // gsec
         gsecErrNet: "napaka povezave na GimSIS",
         gsecErrLogin: "prijava v GimSIS ni uspela (napačno geslo?), poskusite se odjaviti",

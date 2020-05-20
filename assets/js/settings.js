@@ -66,6 +66,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     var elems = document.querySelectorAll(".theme-select");
     M.FormSelect.init(elems, {});
     
+    var elems = document.querySelectorAll(".errorreporting-select");
+    M.FormSelect.init(elems, {});
+    
     // Setup language select dropdown
     var elems = document.querySelectorAll(".lang-select");
     M.FormSelect.init(elems, {});
