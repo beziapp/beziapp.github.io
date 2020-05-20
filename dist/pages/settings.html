@@ -5,48 +5,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="google" content="notranslate">
-    <title>Settings &laquo; BežiApp</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="google" content="notranslate">
+	<title>Settings &laquo; BežiApp</title>
 
-    <!-- Materialize -->
-    <link type="text/css" href="/css/materialize.min.css" rel="stylesheet">
-    <link href="/css/materialicons.css" rel="stylesheet">
-    <link href="/css/fontawesome.min.css" rel="stylesheet">
-    <script type="text/javascript" src="/js/lib/materialize.min.js"></script>
+	<!-- Materialize -->
+	<link type="text/css" href="/css/materialize.min.css" rel="stylesheet">
+	<link href="/css/materialicons.css" rel="stylesheet">
+	<link href="/css/fontawesome.min.css" rel="stylesheet">
+	<script type="text/javascript" src="/js/lib/materialize.min.js"></script>
 
-    <script src="/js/lib/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/lib/localforage.min.js"></script>
+	<script src="/js/lib/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/lib/localforage.min.js"></script>
 
-    <link type="text/css" href="/css/styles.css" rel="stylesheet">
+	<link type="text/css" href="/css/styles.css" rel="stylesheet">
 
-    <link rel="manifest" href="/manifest.json">
-    <script src="/js/app.js"></script>
-    <script src="/js/lib/themes.js"></script>
-    <script src="/js/lang/bundle.js"></script>
-    <script type="text/javascript" src="/js/settings.js"></script>
-    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+	<link rel="manifest" href="/manifest.json">
+	<script src="/js/app.js"></script>
+	<script src="/js/lib/themes.js"></script>
+	<script src="/js/lang/bundle.js"></script>
+	<script type="text/javascript" src="/js/settings.js"></script>
+	<link rel="shortcut icon" type="image/png" href="/favicon.png" />
 
-    <!-- iOS support -->
-    <link rel="apple-touch-icon" href="/img/icons/icon_96.png">
-    <link rel="apple-touch-icon" href="/img/icons/icon_512.png">
-    <meta name="apple-mobile-web-app-status-bar" content="#004d32">
+	<!-- iOS support -->
+	<link rel="apple-touch-icon" href="/img/icons/icon_96.png">
+	<link rel="apple-touch-icon" href="/img/icons/icon_512.png">
+	<meta name="apple-mobile-web-app-status-bar" content="#004d32">
 </head>
 
 <body>
-    <nav class="z-depth-0" id="navigation-main">
-        <div class="nav-wrapper container">
-            <b class="app-header-bold">Beži</b><span class="app-header-span">App</span> &raquo; <x-su>settings</x-su>
-            <span class="right white-text">
-                <i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
-            </span>
-        </div>
-        <div id="loading-bar" class="progress hidden">
-            <div class="indeterminate"></div>
-        </div>
-    </nav>
+	<nav class="z-depth-0" id="navigation-main">
+		<div class="nav-wrapper container">
+			<b class="app-header-bold">Beži</b><span class="app-header-span">App</span> &raquo; <x-su>settings</x-su>
+			<span class="right white-text">
+				<i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
+			</span>
+		</div>
+		<div id="loading-bar" class="progress hidden">
+			<div class="indeterminate"></div>
+		</div>
+	</nav>
 		<ul id="side-menu" class="sidenav side-menu">
   <li><a class="subheader"><h4 class="sidenav-beziapp-subheader"><b>Beži</b>App</h4></a></li>
   <li><a href="/pages/timetable.html" class="waves-effect"><i class="material-icons">view_module</i><x-su>timetable</x-su></a></li>
@@ -66,58 +66,59 @@
 </ul>
 
 
-    <div class="container">
-        <div class="row">
-            <div class="col s12">
-                <h3><b class="title-secondary">Beži</b><span class="title-primary">App</span>
-                </h3>
-                <h4 class="subheader general-text"><x-su>settings</x-su></h4>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s12">
-                <h5 class="general-text"><x-su>language</x-su></h5>
-            </div>
-            <div class="input-field col s12">
-                <i class="material-icons prefix">translate</i>
-                <select class="lang-select icons input-select" id="select-language">
-                    <option value="sl" id="option-sl" data-icon="/img/flags/sl.svg" selected>Slovenščina</option>
-                    <option value="en" id="option-en" data-icon="/img/flags/en.svg">English</option>
-                </select>
-                <label><x-su>selectLanguage</x-su></label>
-            </div>
-        </div>
+	<div class="container">
+		<div class="row">
+			<div class="col s12">
+				<h3><b class="title-secondary">Beži</b><span class="title-primary">App</span>
+				</h3>
+				<h4 class="subheader general-text"><x-su>settings</x-su></h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col s12">
+				<h5 class="general-text"><x-su>language</x-su></h5>
+			</div>
+			<div class="input-field col s12">
+				<i class="material-icons prefix">translate</i>
+				<select class="lang-select icons input-select" id="select-language">
+					<option value="sl" id="option-sl" data-icon="/img/flags/sl.svg" selected>Slovenščina</option>
+					<option value="en" id="option-en" data-icon="/img/flags/en.svg">English</option>
+				</select>
+				<label><x-su>selectLanguage</x-su></label>
+			</div>
+		</div>
 
-        <div class="row">
-            <div class="col s12">
-                <h5 class="general-text"><x-su>theme</x-su></h5>
-            </div>
-            <div class="input-field col s12">
-                <i class="material-icons prefix">palette</i>
-                <select class="theme-select input-select" id="select-theme">
-                    <option value="light" id="option-light" data-theme="light" selected><x-su>themeLight</x-su></option>
-                    <option value="dark" id="option-dark" data-theme="dark"><x-su>themeDark</x-su></option>
-                </select>
-                <label><x-su>selectTheme</x-su></label>
-            </div>
-        </div>
+		<div class="row">
+			<div class="col s12">
+				<h5 class="general-text"><x-su>theme</x-su></h5>
+			</div>
+			<div class="input-field col s12">
+				<i class="material-icons prefix">palette</i>
+				<select class="theme-select input-select" id="select-theme">
+					<option value="light" id="option-light" data-theme="light" selected><x-su>themeLight</x-su></option>
+					<option value="dark" id="option-dark" data-theme="dark"><x-su>themeDark</x-su></option>
+					<option value="night" id="option-night" data-theme="night"><x-su>themeNight</x-su></option>
+				</select>
+				<label><x-su>selectTheme</x-su></label>
+			</div>
+		</div>
 
 
-        <div class="row">
-            <div class="col s12">
-                <h5 class="general-text"><x-su>errorReporting</x-su></h5>
-            </div>
-            <div class="input-field col s12">
-                <i class="material-icons prefix">report_problem</i>
-                <select class="errorreporting-select input-select" id="select-errorreporting">
-                    <option value="on" id="option-on" data-errorreporting="on" selected><x-su>on</x-su></option>
-                   <option value="off" id="option-off" data-errorreporting="off"><x-su>off</x-su></option>
-                </select>
-                <label><x-su>selectErrorReporting</x-su></label>
-            </div>
-        </div>
+		<div class="row">
+			<div class="col s12">
+				<h5 class="general-text"><x-su>errorReporting</x-su></h5>
+			</div>
+			<div class="input-field col s12">
+				<i class="material-icons prefix">report_problem</i>
+				<select class="errorreporting-select input-select" id="select-errorreporting">
+					<option value="on" id="option-on" data-errorreporting="on" selected><x-su>on</x-su></option>
+				   <option value="off" id="option-off" data-errorreporting="off"><x-su>off</x-su></option>
+				</select>
+				<label><x-su>selectErrorReporting</x-su></label>
+			</div>
+		</div>
 
-    </div>
+	</div>
 </body>
 
 </html>
