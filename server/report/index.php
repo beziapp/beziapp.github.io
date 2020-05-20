@@ -26,6 +26,20 @@
 		http_response_code(500);
 		die("database connection failed. ".$warning); // . $conn->connect_error);
 	}
+
+	$query = "CREATE TABLE IF NOT EXISTS error_reports (
+		msg							VARCHAR(420)		,
+		url							VARCHAR(420)		,
+		line						INT							,
+		column					INT							,
+		obj							VARCHAR(420)		,
+		ua							VARCHAR(420)		,
+		app_version			VARCHAR(420)		,
+		previous_commit	VARCHAR(69)			,
+		ip							VARCHAR(69)			,
+	)";
+	$result = mysqli_query($dbConnection, $conn);
+
 	$stmt = $conn->prepare("INSERT INTO error_reports (msg, url, line, column, obj, ua, app_version, previous_commit, ip) VALUES".
 		"(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 	$stmt->bind_param("ssiisssss", $_REQUEST["error"]["msg"], $_REQUEST["error"]["url"], $_REQUEST["error"]["line"],
