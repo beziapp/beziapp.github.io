@@ -77,7 +77,7 @@
                 <select class="theme-select input-select" id="select-theme">
                     <option value="light" id="option-light" data-theme="light" selected>Light / svetla</option>
 					<option value="dark" id="option-dark" data-theme="dark">Dark / temna</option>
-					<option value="night" id="option-night" data-theme="night">Night / nočna</x-su></option>
+					<option value="night" id="option-night" data-theme="night">Night / nočna</option>
                 </select>
                 <label><x-su>selectTheme</x-su></label>
             </div>
@@ -92,10 +92,25 @@
                 <i class="material-icons prefix">report_problem</i>
                 <select class="errorreporting-select input-select" id="select-errorreporting">
                     <option value="on" id="option-on" data-errorreporting="on" selected>On / Vklopljeno</option>
-                   <option value="off" id="option-off" data-errorreporting="off">Off / Izklopljeno</option>
+                   	<option value="off" id="option-off" data-errorreporting="off">Off / Izklopljeno</option>
                 </select>
                 <label><x-su>selectErrorReporting</x-su></label>
             </div>
+		</div>
+		
+		<div class="row">
+			<div class="col s12">
+				<h5 class="general-text"><x-su>additionalOptions</x-su></h5>
+			</div>
+			<div class="col s12">
+				<p class="flow-text general-text"><x-du>triggerWarning</x-du></p>
+			</div>
+			<div class="valign-wrapper col s12 m12">
+				<label>
+					<input type="checkbox" id="triggered-checkbox" />
+					<span><x-su>triggerAgreement</x-su></span>
+				</label>
+			</div>
         </div>
     </div>
 </body>

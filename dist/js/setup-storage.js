@@ -2,7 +2,7 @@ async function setupStorage(force = false) {
     let logged_in;
     promises_check_if_already_installed = [
         localforage.getItem("logged_in").then( function(val) {
-            console.log("[setupStorage] logged in status: "+val);
+            console.log("[setupStorage] logged in status: " + val);
             logged_in = val;
         })
     ];
@@ -20,7 +20,8 @@ async function setupStorage(force = false) {
         localforage.setItem("meals", {}),
         localforage.setItem("chosenLang", "en"),
         localforage.setItem("theme", "light"),
-        localforage.setItem("errorReporting", "on")
+        localforage.setItem("errorReporting", "on"),
+        localforage.setItem("triggerWarningAccepted", false)
     ];
 
     if (logged_in && force == false) { // torej, če je že bila prijava narejena, ne posodobi backwards-compatible vrednosti (username, password,...)
@@ -33,7 +34,8 @@ async function setupStorage(force = false) {
             localforage.setItem("username", ""),
             localforage.setItem("password", ""),
             localforage.setItem("chosenLang", "en"),
-            localforage.setItem("theme", "light")
+            localforage.setItem("theme", "light"),
+            localforage.setItem("triggerWarningAccepted", false)
         ];
         await localforage.clear();
         await Promise.all(promises_first_install);
