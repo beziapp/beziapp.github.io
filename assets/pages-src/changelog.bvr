@@ -53,11 +53,13 @@
                     <div class="collapsible-header">Version 1.0.14-beta</div>
                     <div class="collapsible-body">
                         <ul class="collection">
-                            <li class="collection-item">Added themes (dark or light, defaulting to light)</li>
+                            <li class="collection-item">Added themes (dark, light, night, defaulting to light)</li>
+                            <li class="collection-item">"Additional options" (before anyone gets triggered, their order <i>is</i> random)</li>
                             <li class="collection-item">New messaging look</li>
+                            <li class="collection-item">Messaging has been overhauled, now better then ever. Powered by GimSIS™</li>
                             <li class="collection-item">Added videoconferencing (via video.gimb)</li>
-                            <li class="collection-item">Many bug fixes</li>
                             <li class="collection-item">More network requests go directly to GimSISExt (with gsec.js)</li>
+                            <li class="collection-item">Many bug fixes</li>
                         </ul>
                     </div>
 
@@ -71,12 +73,12 @@
                     <div class="collapsible-header">Version 1.0.12-beta</div>
                     <div class="collapsible-body">
                         <ul class="collection">
-                            <li class="collection-item">1.0.12.28-beta: Now update does not clear whole database => you stay logged in</li>
+                            <li class="collection-item">Now update does not clear whole database => you stay logged in</li>
                             <li class="collection-item">Added multilanguage support</li>
                         </ul>
                     </div>
 
-                    <div class="collapsible-header">Version 1.0.11-beta</div> <!-- i think -->
+                    <div class="collapsible-header">Version 1.0.11-beta</div>
                     <div class="collapsible-body">
                         <ul class="collection">
                             <li class="collection-item">Added end-to-end encrypton support to messaging</li>
