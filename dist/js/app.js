@@ -3,7 +3,7 @@
 
 
 const app_version = "1.0.14-beta";
-const previous_commit = "dfd78d5fa91f1c3844a3c9b828ba699775a0c0d4";
+const previous_commit = "1652387e87215d6d4d6b677d982865eb27b44ba3";
 
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/sw.js")
@@ -65,7 +65,7 @@ var error_report_function = async function (msg, url, lineNo, columnNo, error) {
 		if(selectedE == "on") {
 			var data = {};
 			data.error = {"msg": msg, "url": url, "line": lineNo, "column": columnNo, "obj": error};
-			data.client = {"ua": navigator.userAgent, "app_version": app_version, "previous_commit": previous_commit, "username": };
+			data.client = {"ua": navigator.userAgent, "app_version": app_version, "previous_commit": previous_commit, "username": null};
 
 			// Load required data
 			data.client.username = await localforage.getItem("username");
