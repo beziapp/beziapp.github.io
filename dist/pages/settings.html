@@ -71,14 +71,16 @@
             <div class="col s12">
                 <h3><b class="title-secondary">Beži</b><span class="title-primary">App</span>
                 </h3>
-                <h4 class="subheader"><x-su>settings</x-su></h4>
+                <h4 class="subheader general-text"><x-su>settings</x-su></h4>
             </div>
         </div>
         <div class="row">
-            <h5><x-su>language</x-su></h5>
+            <div class="col s12">
+                <h5 class="general-text"><x-su>language</x-su></h5>
+            </div>
             <div class="input-field col s12">
                 <i class="material-icons prefix">translate</i>
-                <select class="lang-select icons" id="select-language">
+                <select class="lang-select icons input-select" id="select-language">
                     <option value="sl" id="option-sl" data-icon="/img/flags/sl.svg" selected>Slovenščina</option>
                     <option value="en" id="option-en" data-icon="/img/flags/en.svg">English</option>
                 </select>
@@ -87,10 +89,12 @@
         </div>
 
         <div class="row">
-            <h5><x-su>theme</x-su></h5>
+            <div class="col s12">
+                <h5 class="general-text"><x-su>theme</x-su></h5>
+            </div>
             <div class="input-field col s12">
                 <i class="material-icons prefix">palette</i>
-                <select class="theme-select" id="select-theme">
+                <select class="theme-select input-select" id="select-theme">
                     <option value="light" id="option-light" data-theme="light" selected>Light</option>
                     <option value="dark" id="option-dark" data-theme="dark">Dark</option>
                 </select>

@@ -53,7 +53,7 @@
         <div class="row">
 
             <br>
-            <div class="row grey-text text-darken-2" id="storage-bar">
+            <div class="row light-text" id="storage-bar">
                 <div class="col s6">
                     <x-su>messageStorageUsed</x-su>: <span id="storage-stats">0/120</span> <x-sl>messages</x-sl>
                 </div>
@@ -62,7 +62,7 @@
                 </div>
             </div>
 
-            <div class="row grey-text text-darken-2" style="text-align: center;">
+            <div class="row light-text" style="text-align: center;">
                 <x-du>maxMessagesNote</x-du>
             </div>
 
@@ -74,9 +74,9 @@
                 </ul>
             </div>
             <br>
-            <div id="beziapp-received" class="col s12"><p class="center-align grey-text text-darken-2"><x-su>loadingMessages</x-su></p></div>
-            <div id="beziapp-sent" class="col s12"><p class="center-align grey-text text-darken-2"><x-su>loadingMessages</x-su></p></div>
-            <div id="beziapp-deleted" class="col s12"><p class="center-align grey-text text-darken-2"><x-su>loadingMessages</x-su></p></div>
+            <div id="beziapp-received" class="col s12"><p class="center-align light-text"><x-su>loadingMessages</x-su></p></div>
+            <div id="beziapp-sent" class="col s12"><p class="center-align light-text"><x-su>loadingMessages</x-su></p></div>
+            <div id="beziapp-deleted" class="col s12"><p class="center-align light-text"><x-su>loadingMessages</x-su></p></div>
         </div>
     </div>
 

@@ -93,7 +93,11 @@ function populateAutocomplete() {
 
     $(document).ready(function () {
         if (window.location.hash.length > 1 && !window.location.hash.substring(1).startsWith("beziapp")) {
-            $("#full-name").val(decodeURIComponent(window.location.hash.substring(1)));
+            var hashValue = decodeURIComponent(window.location.hash.substring(1));
+            $("#full-name").val(hashValue);
+            if (hashValue in directory) {
+                $("#msg-send").removeAttr("disabled");
+            }
             $("#beziapp-new-message").modal();
             $("#beziapp-new-message").modal("open"); 
         }
@@ -346,7 +350,7 @@ function displayData(messageType) {
                                 </button>
                             <p>
                         </div>
-                        <div class="card-action">
+                        <div class="card-action general-text">
                             <a onclick="deleteMsg('${filterXSS(element["id"])}')">
                                 <i class="material-icons">delete</i>
                             </a>

@@ -14,6 +14,7 @@
     --color-header-span: rgba(255, 255, 255, 1);
 
     --color-text: rgba(0, 0, 0, 1);
+    --color-text-light: rgba(97, 97, 97, 1);
     --color-label-text: rgba(158, 158, 158, 1);
     --color-table-hover: rgba(242, 242, 242, 0.5);
 
@@ -24,7 +25,6 @@
 
     --color-btn-flat: rgba(52, 52, 52, 1);
     --color-btn-flat-disabled: rgba(178, 178, 178, 1);
-
 }
 
 body {
@@ -355,7 +355,7 @@ h5.subheader {
     color: var(--color-btn-flat) !important;
 }
 
-.modal-close.btn-flat:disabled {
+.modal-close.btn-flat[disabled] {
     color: var(--color-btn-flat-disabled) !important;
 }
 
@@ -363,10 +363,18 @@ h5.subheader {
     color: var(--color-text) !important;
 }
 
+.light-text {
+    color: var(--color-text-light) !important;
+}
+
 .dropdown-content {
     background: var(--background-accent-1) !important;
 }
 
 p {
-		color: var(--color-text) !important;
+	color: var(--color-text) !important;
+}
+
+.select-dropdown {
+    color: var(--color-text) !important;
 }

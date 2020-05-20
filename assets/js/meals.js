@@ -4,10 +4,10 @@ async function checkLogin() {
     localforage.getItem("logged_in_lopolis").then((value) => {
         if (value != true) {
             $("#meals-container").hide();
-            $("#meals-login").show();
+            $("#meals-login-container").show();
         } else {
             $("#meals-container").show();
-            $("#meals-login").hide();
+            $("#meals-login-container").hide();
             loadMeals();
         }
     }).catch((err) => {
@@ -240,8 +240,8 @@ function lopolisLogout() {
 
 async function lopolisLogin() {
     setLoading(true);
-    var usernameEl = $("#meals_username");
-    var passwordEl = $("#meals_password");
+    var usernameEl = $("#meals-username");
+    var passwordEl = $("#meals-password");
     $.ajax({
         url: API_ENDPOINT+"gettoken",
         crossDomain: true,

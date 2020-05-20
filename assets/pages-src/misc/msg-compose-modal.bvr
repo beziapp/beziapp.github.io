@@ -13,8 +13,6 @@
 
             <div class="row" >
 
-# sorry, ampak display: flex še nisem pogruntu 100%
-
                 <div class="col s9 m10">
                     <div class="input-field">
                         <i class="material-icons prefix">subject</i>
