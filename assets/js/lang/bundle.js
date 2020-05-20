@@ -143,6 +143,7 @@ var langstrings = {
         and: "and",
         thePrivacyPolicy: "the privacy policy",
         loginFailed: "login failed",
+				browserNotSupported: "bežiapp won't work on your device, unless you update your Internet browser",
         // index
         timetable: "timetable",
         gradings: "gradings",
@@ -333,6 +334,7 @@ var langstrings = {
         and: "in",
         thePrivacyPolicy: "politika zasebnosti (v angleščini)",
         loginFailed: "prijava je spodletela",
+				browserNotSupported: "BežiApp ne bo deloval na vaši napravi, če ne posodobite vašega Internetnega brskalnika",
         // timetable
         noPeriods: "ni ur v izbranem tednu",
         // index

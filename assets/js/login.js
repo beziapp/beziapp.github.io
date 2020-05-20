@@ -23,7 +23,11 @@ function setupEventListeners() {
 function login() {
     let username = $("#username").val();
     let password = $("#password").val();
-    var gsecInstance = new gsec();
+		try {
+    	var gsecInstance = new gsec();
+		} catch (error) {
+			alert(D("browserNotSupported"));
+		}
     gsecInstance.login(username, password).then( (value) => {
         if (typeof value == "string") {
             let promises_to_run = [
