@@ -47,6 +47,7 @@ function setUIAdditionalOptions(state) {
             $("#option-" + item).remove();
         });
     }
+    $("#select-theme").formSelect();
 }
 
 async function setAdditionalOptions(state) {
