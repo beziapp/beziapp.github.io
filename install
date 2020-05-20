@@ -8,8 +8,6 @@ find assets/root/ -name "*.bvr" -printf "%f\n" | xargs -I % bash -c "FILE='%'; F
 
 # js bvr fajli
 mkdir -p dist/js
-cd assets/js
 # js ne znam te magije
-find . -type f \( ! -name "*.bvr" \) | cpio -pdm ../../dist/js
-cd ../../
 find assets/js/ -name "*.bvr" -printf "%f\n" | xargs -I % bash -c "FILE='%'; FILE_DST="dist/js/\${FILE/.bvr/}"; ./bin/compose-single \"assets/js/\$FILE\" \"\$FILE_DST\""
+find assets/js/ -name "*.js" -printf "%P\n" | xargs -I % bash -c "FILE='%'; FILE_DST="dist/js/\${FILE/.bvr/}"; ./bin/jsmin assets/js/\"\$FILE\" \"\$FILE_DST\""
