@@ -33,7 +33,8 @@ function shuffleArray(array) {
 function setUIAdditionalOptions(state) {
 	var SENSITIVE_THEMES = {
 		"left": "Left / leva",
-		"right": "Right / desna"
+		"right": "Right / desna",
+		"piratska": "Pirate / piratska"
 	};
 	if (state === true) {
 		var theme_keys = Object.keys(SENSITIVE_THEMES);

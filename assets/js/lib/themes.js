@@ -139,6 +139,34 @@ const THEME_COLOR_SCHEMES = {
 
         "color-btn-flat": "rgba(52, 52, 52, 1)",
         "color-btn-flat-disabled": "rgba(178, 178, 178, 1)"
+    },
+    piratska: {
+        "color-primary": "rgba(246, 143, 53, 1)",
+        "color-secondary": "rgba(250, 165, 61, 1)",
+        "color-accent": "rgba(0, 0, 0, 1)",
+        "color-primary-light": "rgba(195, 191, 255, 1)",
+        "color-invalid": "rgba(192, 0, 0, 1)",
+        "color-primary-transparent": "rgba(252, 195, 126, 0.3)",
+
+        "background-color": "rgba(255, 255, 255, 1)",
+        "background-accent": "rgba(158, 119, 0, 0.2)",
+        "background-accent-1": "rgb(215, 219, 192, 1)",
+
+        "color-header-bold": "rgba(255, 255, 255, 1)",
+        "color-header-span": "rgba(255, 255, 255, 1)",
+
+        "color-text": "rgba(0, 0, 0, 1)",
+        "color-text-light": "rgba(97, 97, 97, 1)",
+        "color-label-text": "rgba(158, 158, 158, 1)",
+        "color-table-hover": "rgba(242, 242, 242, 0.5)",
+
+        "color-sidenav-background": "rgba(255, 255, 255, 1)",
+        "color-sidenav-text": "rgba(0, 0, 0, 0.87)",
+        "color-sidenav-header": "rgba(0, 0, 0, 0.54)",
+        "color-divider": "rgba(224, 224, 224, 1)",
+
+        "color-btn-flat": "rgba(52, 52, 52, 1)",
+        "color-btn-flat-disabled": "rgba(178, 178, 178, 1)"
     }
 }
 
