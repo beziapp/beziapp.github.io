@@ -14,6 +14,13 @@ async function setTheme(targetTheme) {
     });
 }
 
+async function setErrorReporting(targetE) {
+    localforage.setItem("errorReporting", targetE).then((value) => {
+        console.log("ErrorReporing set: " + value);
+        UIAlert(D("errorReportingSet"), "setErrorReporting(): errorReportingSet");
+    });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     $("#select-language").on("change", function() {
@@ -22,6 +29,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     $("#select-theme").on("change", function() {
         setTheme($(this).find(":selected").val());
+    });
+
+    $("#select-errorreporting").on("change", function() {
+        setErrorReporting($(this).find(":selected").val());
     });
 
     localforage.getItem("chosenLang").then((value) => {
@@ -38,6 +49,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 					selectedTheme = "themeLight";
 				}
         $(`#option-${selectedTheme}`).attr("selected", true);
+    }).catch(() => {});
+
+    localforage.getItem("errorReporting").then((value) => {
+        let selectedE = value;
+				if(value == null || value.length < 1) {
+					selectedE = "on";
+				}
+        $(`#option-${selectedE}`).attr("selected", true);
     }).catch(() => {});
 
     // Setup side menu

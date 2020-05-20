@@ -95,12 +95,28 @@
             <div class="input-field col s12">
                 <i class="material-icons prefix">palette</i>
                 <select class="theme-select input-select" id="select-theme">
-                    <option value="light" id="option-light" data-theme="light" selected>Light</option>
-                    <option value="dark" id="option-dark" data-theme="dark">Dark</option>
+                    <option value="light" id="option-light" data-theme="light" selected><x-su>themeLight</x-su></option>
+                    <option value="dark" id="option-dark" data-theme="dark"><x-su>themeDark</x-su></option>
                 </select>
                 <label><x-su>selectTheme</x-su></label>
             </div>
         </div>
+
+
+        <div class="row">
+            <div class="col s12">
+                <h5 class="general-text"><x-su>errorReporting</x-su></h5>
+            </div>
+            <div class="input-field col s12">
+                <i class="material-icons prefix">report_problem</i>
+                <select class="errorreporting-select input-select" id="select-errorreporting">
+                    <option value="on" id="option-on" data-errorreporting="on" selected><x-su>on</x-su></option>
+                   <option value="off" id="option-off" data-errorreporting="off"><x-su>off</x-su></option>
+                </select>
+                <label><x-su>selectErrorReporting</x-su></label>
+            </div>
+        </div>
+
     </div>
 </body>
 

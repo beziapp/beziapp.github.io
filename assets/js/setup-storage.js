@@ -20,6 +20,7 @@ async function setupStorage(force = false) {
         localforage.setItem("meals", {}),
         localforage.setItem("chosenLang", "en"),
         localforage.setItem("theme", "light")
+        localforage.setItem("errorReporting", "on")
     ];
 
     if (logged_in && force == false) { // torej, če je že bila prijava narejena, ne posodobi backwards-compatible vrednosti (username, password,...)

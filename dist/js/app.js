@@ -3,7 +3,7 @@
 
 
 const app_version = "1.0.13-beta";
-const previous_commit = "5de19af5e33c527e4b47091b5eba010f002b73eb";
+const previous_commit = "bf35c28cb1089df86bdd57134f475f3abe9fb539";
 
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/sw.js")
@@ -57,11 +57,21 @@ function gsecErrorHandlerUI(err) {
 
 
 var error_report_function = async function (msg, url, lineNo, columnNo, error) {
-	var data = {};
-	data.error = {"msg": msg, "url": url, "line": lineNo, "column": columnNo, "obj": error};
-	data.client = {"ua": navigator.userAgent, "app_version": app_version, "previous_commit": previous_commit};
-	data.type = "error";
-	$.post("https://beziapp-report.gimb.tk/", data);
+	localforage.getItem("errorReporting").then((value) => {
+		let selectedE = value;
+		if(value == null || value.length < 1) {
+			selectedE = "on";
+		}
+		if(selectedE == "on") {
+			var data = {};
+			data.error = {"msg": msg, "url": url, "line": lineNo, "column": columnNo, "obj": error};
+			data.client = {"ua": navigator.userAgent, "app_version": app_version, "previous_commit": previous_commit};
+			data.type = "error";
+			$.post("https://beziapp-report.gimb.tk/", data);
+		} else {
+			console.log("error not reported as reporting is disabled!");
+		}
+	}).catch(() => {});
 	return false;
 }
 
