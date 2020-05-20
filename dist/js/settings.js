@@ -21,7 +21,53 @@ async function setErrorReporting(targetE) {
     });
 }
 
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
+
+function setUIAdditionalOptions(state) {
+    var SENSITIVE_THEMES = {
+        "left": "Left / leva",
+        "right": "Right / desna"
+    };
+    if (state === true) {
+        var theme_keys = Object.keys(SENSITIVE_THEMES);
+        shuffleArray(theme_keys);
+        theme_keys.forEach((item) => {
+            var option_element = $(`<option value="${item}" id="option-${item}" data-theme="${item}">${SENSITIVE_THEMES[item]}</option>`);
+            $("#select-theme").append(option_element);
+        });
+    } else {
+        Object.keys(SENSITIVE_THEMES).forEach((item) => {
+            $("#option-" + item).remove();
+        });
+    }
+    $("#select-theme").formSelect();
+}
+
+async function setAdditionalOptions(state) {
+    localforage.setItem("triggerWarningAccepted", state).then((value) => {
+        console.log("TriggerWarning set: " + value);
+        UIAlert(D("triggerWarningSet"), "setAdditionalOptions(): triggerWarningSet");
+        setUIAdditionalOptions(value);
+    });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
+
+    // Setup checkbox handler
+	$("#triggered-checkbox").change(function() {
+		if (this.checked) {
+			setAdditionalOptions(true);
+		} else {
+			setAdditionalOptions(false);
+		}
+	});
 
     $("#select-language").on("change", function() {
         setLanguage($(this).find(":selected").val());
