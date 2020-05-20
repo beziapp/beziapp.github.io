@@ -356,8 +356,8 @@ function displayData(messageType) {
 
 			msg_list.append(`
 				<div class="col s12 m12" id="msg_box-${filterXSS(element["id"])}">
-					<div class="card blue-grey darken-1">
-						<div class="card-content white-text">
+					<div class="card color-card">
+						<div class="card-content general-text">
 							<span class="card-title">
 								${filterXSS(element["zadeva"])}
 							</span>
