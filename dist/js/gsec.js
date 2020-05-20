@@ -601,8 +601,9 @@ class gsec {
                     }
 
                     var tume = messageElement.getElementsByClassName("msgSubDate")[0].innerHTML.split(" ")[1];
-                    tume = tume ?? messageElement.getElementsByClassName("msgSubDate")[0].innerHTML;
-
+										if(tume == null || tume.length < 1) {
+	                    tume = messageElement.getElementsByClassName("msgSubDate")[0].innerHTML;
+										}
                     var dateStringToParse = `${date[2]}-${date[1]}-${date[0]} ${tume}`;
                     var dateObj = new Date(Date.parse(dateStringToParse)); // "tume"!
                     var person = messageElement.getElementsByClassName("msgDir")[0].innerHTML;
