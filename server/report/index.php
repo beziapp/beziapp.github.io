@@ -38,7 +38,7 @@
 		previous_commit	VARCHAR(69)			,
 		ip							VARCHAR(69)			,
 	)";
-	$result = mysqli_query($dbConnection, $conn);
+	$result = mysqli_query($conn, $query);
 
 	$stmt = $conn->prepare("INSERT INTO error_reports (msg, url, line, colno, obj, ua, app_version, previous_commit, ip) VALUES".
 		"(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
