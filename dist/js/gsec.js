@@ -319,15 +319,26 @@ class gsec {
                         subjects[abkurzung] = subjectName;
                     }
 
-                    var TP = {};
-                    TP.day = slDayToInt(DAY_REGEX.exec(subFields[3].innerHTML)[1]);
-                    TP.period = Number(PERIOD_REGEX.exec(subFields[3].innerHTML)[1]);
-                    var time_range_matches = TIME_RANGE_REGEX.exec(subFields[3].innerHTML);
-                    TP.from = time_range_matches[1];
-                    TP.till = time_range_matches[2];
-                    if (TP.day < 0) { // indexOf vrne -1, če v arrayu ne najde dneva (&nbsp;)
-                        TP = false;
-                    }
+										try {
+											var TP = {};
+											TP.day = slDayToInt(DAY_REGEX.exec(subFields[3].innerHTML)[1]);
+											TP.period = Number(PERIOD_REGEX.exec(subFields[3].innerHTML)[1]);
+											var time_range_matches = TIME_RANGE_REGEX.exec(subFields[3].innerHTML);
+											TP.from = time_range_matches[1];
+											TP.till = time_range_matches[2];
+											if (TP.day < 0) { // indexOf vrne -1, če v arrayu ne najde dneva (&nbsp;)
+												TP = false;
+											}
+										} catch (error) {
+											var TP = {};
+											TP.day = slDayToInt(subFields[3].innerHTML.split(", ")[0]);
+											TP.period = Number( subFields[3].innerHTML.split(", ").pop().split(". ura")[0] );
+											TP.from = subFields[3].innerHTML.split("(").pop().split(")")[0].split(" - ")[0];
+											TP.till = subFields[3].innerHTML.split("(").pop().split(")")[0].split(" - ")[1];
+											if (TP.day < 0) { // indexOf vrne -1, če v arrayu ne najde dneva (&nbsp;)
+												TP = false;
+											}
+										}
 
                     Teachers[name] = { "subjects" : subjects , "tpMeetings" : TP };
                 }

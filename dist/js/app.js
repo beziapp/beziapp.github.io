@@ -3,7 +3,7 @@
 
 
 const app_version = "1.0.13-beta";
-const previous_commit = "ab5b03d25a201269482acf51e9b856aa62ce2a84";
+const previous_commit = "2acc46724db65edf60a7316086fe098cc7b3f5b3";
 
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/sw.js")
