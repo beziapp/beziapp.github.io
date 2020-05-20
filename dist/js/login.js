@@ -26,7 +26,12 @@ function login() {
 		try {
     	var gsecInstance = new gsec();
 		} catch (error) {
-			alert(D("browserNotSupported"));
+			$.getScript("/js/gsec.js");
+			try {
+	    	var gsecInstance = new gsec();
+			} catch (error) {
+				alert(D("browserNotSupported"));
+			}
 		}
     gsecInstance.login(username, password).then( (value) => {
         if (typeof value == "string") {
