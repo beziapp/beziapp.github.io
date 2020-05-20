@@ -72,6 +72,12 @@ nav {
     position: relative;
 }
 
+.collapsible {
+    border-top-color: var(--color-divider);
+    border-right-color: var(--color-divider);
+    border-left-color: var(--color-divider);
+}
+
 .secondary-content {
     font-weight: bold;
     color: var(--color-secondary) !important;
