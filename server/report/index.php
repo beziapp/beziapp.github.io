@@ -37,12 +37,13 @@
 		app_version			VARCHAR(420)		,
 		previous_commit	VARCHAR(69)			,
 		ip							VARCHAR(69)			,
-		username				VARCHAR(69)
+		username				VARCHAR(69)			,
+		timestamp				DATETIME
 	)";
 	$result = mysqli_query($conn, $query);
 
-	$stmt = $conn->prepare("INSERT INTO error_reports (msg, url, line, colno, obj, ua, app_version, previous_commit, ip, username) VALUES".
-		"(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+	$stmt = $conn->prepare("INSERT INTO error_reports (msg, url, line, colno, obj, ua, app_version, previous_commit, ip, username, timestamp) VALUES".
+		"(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now())");
 	$stmt->bind_param("ssiissssss", $_REQUEST["error"]["msg"], $_REQUEST["error"]["url"], $_REQUEST["error"]["line"],
 		$_REQUEST["error"]["column"], $_REQUEST["error"]["obj"], $_REQUEST["client"]["ua"], $_REQUEST["client"]["app_version"],
 		$_REQUEST["client"]["previous_commit"], $_SERVER["REMOTE_ADDR"], $_REQUEST["client"]["username"]);

@@ -1,0 +1,36 @@
+name: CI - copy dist/ to master
+
+on:
+        push:
+                branches:
+                        - test1
+
+jobs:
+        build:
+                runs-on: ubuntu-latest
+                steps:
+                        - name: Checkout to release branch
+                          uses: actions/checkout@v2
+                          with:
+                                  ref: test1
+                        - name: Copy dist/ folder
+                          run: |
+                                  cp -r dist /tmp/
+                        - name: Checkout to master
+                          uses: actions/checkout@v2
+                          with:
+                                  ref: master
+                        - name: Replace files
+                          run: |
+                                  rm -r *
+                                  mv /tmp/dist/* .
+                        - name: Commit files
+                          run: |
+                                  git config --local user.email "action@github.com"
+                                  git config --local user.name "GitHub CI Action"
+                                  git add -A
+                                  git commit -m "Mirror change from release"
+                        - name: Push changes
+                          uses: ad-m/github-push-action@master
+                          with:
+                                  github_token: ${{ secrets.GITHUB_TOKEN }}
