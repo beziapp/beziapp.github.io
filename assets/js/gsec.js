@@ -273,8 +273,13 @@ class gsec {
 					}
 
 					rowSpan.remove(); // magic
-					var subject = SUBJECT_REGEX.exec(subFields[1].innerHTML)
-					subject = subject == null ? "" : subject[1].trim();
+					
+					var subject = SUBJECT_REGEX.exec(subFields[1].innerHTML);
+					if (subject == null) {
+						continue;
+					}
+					subject = subject[1].trim();
+
 					var desc = DESC_REGEX.exec(subFields[1].innerHTML);
 					desc = desc == null ? "" : desc[1];
 
@@ -614,9 +619,9 @@ class gsec {
 					}
 
 					var tume = messageElement.getElementsByClassName("msgSubDate")[0].innerHTML.split(" ")[1];
-										if(tume == null || tume.length < 1) {
+					if (tume == null || tume.length === 0) {
 						tume = messageElement.getElementsByClassName("msgSubDate")[0].innerHTML;
-										}
+					}
 					var dateStringToParse = `${date[2]}-${date[1]}-${date[0]} ${tume}`;
 					var dateObj = new Date(Date.parse(dateStringToParse)); // "tume"!
 					var person = messageElement.getElementsByClassName("msgDir")[0].innerHTML;
