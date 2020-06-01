@@ -131,6 +131,18 @@ function displayData() {
     calendar_obj.addEventSource(transformed_gradings);
 }
 
+async function validateInputs() {
+    if ($("#input-grading-name").val() != null && $("#input-grading-name").val().length > 0) {
+        $("#btn-add-grading").removeAttr("disabled");
+        $("#input-grading-name").addClass("valid");
+        $("#input-grading-name").removeClass("invalid");
+    } else {
+        $("#btn-add-grading").attr("disabled", "disabled");
+        $("#input-grading-name").addClass("invalid");
+        $("#input-grading-name").removeClass("valid");
+    }
+}
+
 function gradingClickHandler(eventClickInfo) {
     let grading_id = parseInt(eventClickInfo.event.id);
     let grading_subject = gradings[grading_id]["subject"];
@@ -144,19 +156,19 @@ function gradingClickHandler(eventClickInfo) {
     M.Sidenav.getInstance(modal).open();
 }
 
-    function setupPickers() {
-        // Setup pickers, todo (adding an event), to be stored in messages
-        var date_object = new Date();
-        let elems = document.querySelectorAll('#datepicker-add');
-        let options = {
-            autoClose: true,
-            format: "dd.mm.yyyy",
-            defaultDate: date_object,
-            setDefaultDate: true,
-            firstDay: 1
-        }
-        instances = M.Datepicker.init(elems, options);
+function setupPickers() {
+    // Setup pickers, todo (adding an event), to be stored in messages
+    var date_object = new Date();
+    let elems = document.querySelectorAll('#datepicker-add');
+    let options = {
+        autoClose: true,
+        format: "dd.mm.yyyy",
+        defaultDate: date_object,
+        setDefaultDate: true,
+        firstDay: 1
     }
+    instances = M.Datepicker.init(elems, options);
+}
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -176,14 +188,16 @@ document.addEventListener("DOMContentLoaded", () => {
     calendar_obj.render();
 
     // Modal for adding gradings
-    setupPickers(); // todo (adding an event), to be stored in messages
+    setupPickers(); // TODO: Hook up submit logic
     // Setup modals
 	const modal_elems = document.querySelectorAll('.modal');
 	const modal_options = {
 		onOpenStart: () => { $("#fab-new").hide() },
 		onCloseEnd: () => { $("#fab-new").show() },
 		dismissible: false
-	};
+    };
+    $("#input-grading-name").on("blur", validateInputs);
+    $("#input-grading-description").on("blur", validateInputs);
 	M.Modal.init(modal_elems, modal_options);
 
     loadGradings(true);

@@ -10,7 +10,7 @@ var dateString = {
 		return mesecileta[mesl];
 	},
 	longFormatted: (dateObject) => {
-		return dateString.day(dateObject.getDay())+", "+(dateObject.getDate())+". "+dateString.month(dateObject.getMonth())+" "+dateObject.getFullYear();
+		return `${dateString.day(dateObject.getDay())}, ${(dateObject.getDate())}. ${dateString.month(dateObject.getMonth())} ${dateObject.getFullYear()}`;
 	}
 };
 async function refreshLangDOM() {
@@ -143,7 +143,7 @@ var langstrings = {
 		and: "and",
 		thePrivacyPolicy: "the privacy policy",
 		loginFailed: "login failed",
-				browserNotSupported: "bežiapp won't work on your device, unless you update your Internet browser",
+		browserNotSupported: "bežiapp won't work on your device, unless you update your Internet browser",
 		// index
 		timetable: "timetable",
 		gradings: "gradings",
@@ -158,6 +158,9 @@ var langstrings = {
 		// timetable
 		noPeriods: "no periods in selected week",
 		// gradings
+		date: "date",
+		description: "description",
+		add: "add",
 		requestFailed: "request failed",
 		addGrading: "add grading",
 		noInternetConnection: "no internet connection",
@@ -187,6 +190,7 @@ var langstrings = {
 		// messaging
 		loadingMessages: "Loading messages...",
 		sendAMessage: "send a message",
+		send: "send",
 		recipient: "recipient",
 		messageSubject: "subject",
 		messageBody: "message body",
@@ -227,7 +231,7 @@ var langstrings = {
 		recipientNotInDirectory: "recipient is not in directory.",
 		chatExternalInfo: "you have just received a chat. Chats are not supported by GimSIS, so you must reply by changing the subject to something else. Chat body: ",
 		// meals
-				loginError: "login error",
+		loginError: "login error",
 		loginToLopolis: "login to Lopolis",
 		loginToLopolisNote: "it seems like you're not currently logged in to eRestavracija, so this form has been presented to you. You have a different username and password combination used for applying and opting out of of menus. In order to use this feature, you have to log in with your Lopolis account.",
 		logInToLopolis: "log in to Lopolis",
@@ -360,6 +364,9 @@ var langstrings = {
 		logout: "odjava",
 		settings: "nastavitve",
 		// gradings
+		date: "datum",
+		description: "opis",
+		add: "dodaj",
 		requestFailed: "zahteva spodletela",
 		addGrading: "dodaj ocenjevanje",
 		noInternetConnection: "ni povezave s spletom",
@@ -378,7 +385,7 @@ var langstrings = {
 		// absences
 		from: "od",
 		to: "do",
-		cancel: "preklic",
+		cancel: "prekliči",
 		ok: "v redu",
 		noAbsences: "ni izostankov v izbranem časovnem obdobju",
 		lesson: "ura",
@@ -389,6 +396,7 @@ var langstrings = {
 		// messaging
 		loadingMessages: "Nalagam sporočila...",
 		sendAMessage: "pošlji sporočilo",
+		send: "pošlji",
 		recipient: "prejemnik",
 		messageSubject: "zadeva",
 		messageBody: "telo",

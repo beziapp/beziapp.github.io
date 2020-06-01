@@ -6,25 +6,20 @@
             <h4 class="general-text"><x-su>addGrading</x-su></h4>
 
             <div class="row">
-                <div class="input-field col s5">
+                <div class="input-field col s6">
                     <input required="required" type="text" class="datepicker" id="datepicker-add">
-                    <label for="datepicker-add">Date</label>
+                    <label for="datepicker-add"><x-su>date</x-su></label>
 			    </div>
-                <div class="input-field col s5">
-                    <input required="required" id="event_name" type="text" class="validate">
-                    <label for="event_name">Name</label>
-                </div>
-                <div class="input-field col s2">
-	                <button id="event_btn" class="btn waves-effect waves-light" type="text" class="validate">
-    				    <i class="material-icons">event_available</i>
-	    			</button>
+                <div class="input-field col s6">
+                    <input required="required" id="input-grading-name" type="text" class="validate">
+                    <label for="event_name"><x-su>name</x-su></label>
                 </div>
             </div>
             
             <div class="row">
                 <div class="input-field col s12">
-                    <textarea required="required" id="event_description" class="materialize-textarea"></textarea>
-                    <label for="event_description">Description</label>
+                    <textarea required="required" id="input-grading-description" class="materialize-textarea"></textarea>
+                    <label for="event_description"><x-su>description</x-su></label>
                 </div>
             </div>
         
@@ -32,8 +27,8 @@
 
         <div class="modal-footer">
             <div id="modal-footer-right">    
-                <a href="#" class="modal-close waves-effect waves-green btn-flat">Cancel <i class="material-icons right">close</i></a>
-                <a href="#" id="msg-send" class="modal-close waves-effect waves-green btn-flat" disabled>Add <i class="material-icons right">add</i></a>
+                <a href="#" class="modal-close waves-effect waves-green btn-flat"><x-su>cancel</x-su> <i class="material-icons right">close</i></a>
+                <a href="#" id="btn-add-grading" class="modal-close waves-effect waves-green btn-flat" disabled><x-su>add</x-su> <i class="material-icons right">add</i></a>
             </div>
         </div>
     </div>
