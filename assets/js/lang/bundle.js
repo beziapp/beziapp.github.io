@@ -159,6 +159,7 @@ var langstrings = {
 		noPeriods: "no periods in selected week",
 		// gradings
 		requestFailed: "request failed",
+		addGrading: "add grading",
 		noInternetConnection: "no internet connection",
 		// grades
 		temporary: "temporary",
@@ -360,6 +361,7 @@ var langstrings = {
 		settings: "nastavitve",
 		// gradings
 		requestFailed: "zahteva spodletela",
+		addGrading: "dodaj ocenjevanje",
 		noInternetConnection: "ni povezave s spletom",
 		// grades
 		temporary: "začasno",
