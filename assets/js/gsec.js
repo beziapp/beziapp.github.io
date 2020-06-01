@@ -273,8 +273,10 @@ class gsec {
 					}
 
 					rowSpan.remove(); // magic
-					var subject = SUBJECT_REGEX.exec(subFields[1].innerHTML)[1].trim();
-					var desc = DESC_REGEX.exec(subFields[1].innerHTML)[1];
+					var subject = SUBJECT_REGEX.exec(subFields[1].innerHTML)
+					subject = subject == null ? "" : subject[1].trim();
+					var desc = DESC_REGEX.exec(subFields[1].innerHTML);
+					desc = desc == null ? "" : desc[1];
 
 					gradings.push({
 						"date": dateObj,
@@ -529,7 +531,7 @@ class gsec {
 				"__EVENTARGUMENT": "Select$" + selectId
 			};
 
-			this.postback(GSE_URL+"Page_Gim/Uporabnik/Sporocila.aspx", dataToBeSent, null, true).then((response) => {
+			this.postback(GSE_URL + "Page_Gim/Uporabnik/Sporocila.aspx", dataToBeSent, null, true).then((response) => {
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
 				let subject = parsed.getElementsByClassName("msgSubjectS")[0].innerHTML.trim();
