@@ -24,6 +24,7 @@ jobs:
                           run: |
                                   rm -r *
                                   mv /tmp/dist/.[!.]* .
+                                  mv /tmp/dist/* .
                         - name: Commit files
                           run: |
                                   git config --global user.email "action@github.com"
