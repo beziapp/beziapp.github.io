@@ -143,7 +143,7 @@ function gradingClickHandler(eventClickInfo) {
     const modal = document.querySelectorAll(".side-modal")[0];
     M.Sidenav.getInstance(modal).open();
 }
-/*
+
     function setupPickers() {
         // Setup pickers, todo (adding an event), to be stored in messages
         var date_object = new Date();
@@ -155,10 +155,9 @@ function gradingClickHandler(eventClickInfo) {
             setDefaultDate: true,
             firstDay: 1
         }
-        let instances = M.Datepicker.init(elems, options);
         instances = M.Datepicker.init(elems, options);
     }
-*/
+
 
 document.addEventListener("DOMContentLoaded", () => {
     checkLogin();
@@ -175,7 +174,18 @@ document.addEventListener("DOMContentLoaded", () => {
         height: "parent"
     });
     calendar_obj.render();
+
+    // Modal for adding gradings
     // setupPickers(); // todo (adding an event), to be stored in messages
+    // // Setup modals
+	// const modal_elems = document.querySelectorAll('.modal');
+	// const modal_options = {
+	// 	onOpenStart: () => { $("#fab-new").hide() },
+	// 	onCloseEnd: () => { $("#fab-new").show() },
+	// 	dismissible: false
+	// };
+	// M.Modal.init(modal_elems, modal_options);
+
     loadGradings(true);
     // Setup refresh handler
     $("#refresh-icon").click(() => {
