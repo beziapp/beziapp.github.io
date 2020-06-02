@@ -22,7 +22,7 @@ jobs:
                                   ref: master
                         - name: Replace files
                           run: |
-                                  rm -r *
+                                  rm -r * || true
                                   mv /tmp/dist/.[!.]* .
                                   mv /tmp/dist/* .
                         - name: Commit files
