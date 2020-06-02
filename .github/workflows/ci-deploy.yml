@@ -22,12 +22,12 @@ jobs:
                                   ref: master
                         - name: Replace files
                           run: |
-                                  rm -r .[!.]*
+                                  rm -r *
                                   mv /tmp/dist/.[!.]* .
                         - name: Commit files
                           run: |
-                                  git config --local user.email "action@github.com"
-                                  git config --local user.name "GitHub CI Action"
+                                  git config --global user.email "action@github.com"
+                                  git config --global user.name "GitHub CI Action"
                                   git add -A
                                   git commit -m "Mirror change from release"
                         - name: Push changes
