@@ -22,8 +22,8 @@ jobs:
                                   ref: master
                         - name: Replace files
                           run: |
-                                  rm -r *
-                                  mv /tmp/dist/* .
+                                  rm -r .[!.]*
+                                  mv /tmp/dist/.[!.]* .
                         - name: Commit files
                           run: |
                                   git config --local user.email "action@github.com"
