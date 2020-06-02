@@ -23,7 +23,7 @@ jobs:
                         - name: Replace files
                           run: |
                                   rm -r * || true
-                                  find . ! -name '.git' -type d -exec rm -rf {} +
+                                  find . -not -name '.git' -a -not -name '.' -type d -exec rm -rf {} +
                                   mv /tmp/dist/.[!.]* .
                                   mv /tmp/dist/* .
                         - name: Commit files
