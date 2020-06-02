@@ -16,7 +16,6 @@ jobs:
                         - name: Copy dist/ folder
                           run: |
                                   cp -r dist /tmp/
-																	cp -r dist/.well-known tmp/dist/
                         - name: Checkout to master
                           uses: actions/checkout@v2
                           with:
