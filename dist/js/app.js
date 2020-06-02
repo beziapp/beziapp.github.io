@@ -3,11 +3,7 @@
 
 
 const app_version = "1.0.14-beta";
-<<<<<<< HEAD
-const previous_commit = "aebac8bcd0e946f1e7283d8e280e301d52b8d64b";
-=======
-const previous_commit = "35b595f806f99ca18365d511ab820ab818da348d";
->>>>>>> f06c121... Github actions fix
+const previous_commit = "f06c1210549f0e6c81b72c6f51b811304e8cd7c4";
 
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/sw.js")
