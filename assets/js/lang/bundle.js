@@ -509,7 +509,7 @@ var langstrings = {
 		on: "vklopljeno",
 		off: "izklopljeno",
 		selectErrorReporting: "ali naj so napake v aplikaciji posredovane razvijalcem?",
-		triggerWarning: "spodnji gumb omogoči dodatne možnosti, ki lahko razburijo/vznevoljijo nekatere uporabnike. Če omogočite stikalo se strinjate, da avtorjev in/ali njihovih osebnih prepričanj ne boste povezovali s katerokoli od dodatnih omogočenih možnosti.",
+		triggerWarning: "spodnji gumb omogoči dodatne možnosti, ki lahko razburijo/vznevoljijo nekatere uporabnike. Če omogočite stikalo, se strinjate, da avtorjev in/ali njihovih osebnih prepričanj ne boste povezovali s katerokoli od dodatnih omogočenih možnosti",
 		triggerAgreement: "strinjam se z zgoraj navedenimi pogoji",
 		triggerWarningSet: "spremenili ste stanje dodatnih nastavitev",
 		additionalOptions: "dodatne nastavitve",
