@@ -156,6 +156,7 @@ function gradingClickHandler(eventClickInfo) {
     M.Sidenav.getInstance(modal).open();
 }
 
+
 function setupPickers() {
     // Setup pickers, todo (adding an event), to be stored in messages
     var date_object = new Date();
@@ -169,6 +170,7 @@ function setupPickers() {
     }
     instances = M.Datepicker.init(elems, options);
 }
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -188,17 +190,17 @@ document.addEventListener("DOMContentLoaded", () => {
     calendar_obj.render();
 
     // Modal for adding gradings
-    setupPickers(); // TODO: Hook up submit logic
-    // Setup modals
-	const modal_elems = document.querySelectorAll('.modal');
-	const modal_options = {
-		onOpenStart: () => { $("#fab-new").hide() },
-		onCloseEnd: () => { $("#fab-new").show() },
-		dismissible: false
-    };
-    $("#input-grading-name").on("blur", validateInputs);
-    $("#input-grading-description").on("blur", validateInputs);
-	M.Modal.init(modal_elems, modal_options);
+
+    // setupPickers(); // todo (adding an event), to be stored in messages
+    // // Setup modals
+	// const modal_elems = document.querySelectorAll('.modal');
+	// const modal_options = {
+	// 	onOpenStart: () => { $("#fab-new").hide() },
+	// 	onCloseEnd: () => { $("#fab-new").show() },
+	// 	dismissible: false
+	// };
+	// M.Modal.init(modal_elems, modal_options);
+
 
     loadGradings(true);
     // Setup refresh handler
