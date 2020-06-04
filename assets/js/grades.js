@@ -241,4 +241,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	clearGrades();
 	await loadGrades();
+
 });
