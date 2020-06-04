@@ -587,7 +587,7 @@ function setupEventListeners() {
 function getUrlParameter(sParam) {
 	const url_params = new URLSearchParams(window.location.search);
 	const found_param = url_params.get(sParam);
-	return found_param
+	return found_param;
 }
 
 var additionalstufftoaddtomessage = "";

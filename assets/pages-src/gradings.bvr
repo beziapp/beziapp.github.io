@@ -77,11 +77,11 @@
    </div>
 
    <!-- FAB -->
-	<div class="fixed-action-btn" id="fab-new">
+	<!-- <div class="fixed-action-btn" id="fab-new">
 		<a class="btn-floating btn-large fab-new-message modal-trigger" href="#beziapp-add-grading">
 		  <i class="large material-icons">add</i>
 		</a>
-	</div>
+	</div> -->
    <@?i grading-add-modal@>
 
 </body>
