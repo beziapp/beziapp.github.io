@@ -40,7 +40,7 @@ pogruntaj sam!
 
 ## gimb.tk strežniki
 
-dijaki GimB, ki so člani gimb-dev skupine postavljajo strežnike v dobro Gimnazije. Te strežniki so javno dostopni na domeni
+dijaki GimB, ki so člani gimb-dev skupine, postavljajo strežnike v dobro Gimnazije. Te strežniki so javno dostopni na domeni
 gimb.tk in kdorkoli se lahko poslužuje njihovih storitev, povsem brezplačno.
 
 med drugim te strežniki gostujejo:
