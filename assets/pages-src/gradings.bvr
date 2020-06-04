@@ -75,37 +75,15 @@
         <br>
         <div id="calendar"></div>
    </div>
-<!--
-   <div class="container">
-        <div class="row">
-		<div class="col s12">
-	                <h4>Add a personal event</h4>
-	                <div class="row">
-	                        <div class="input-field col s5">
-	                                <input required="required" type="text" class="datepicker" id="datepicker-add">
-	                                <label for="datepicker-add">Date</label>
-				</div>
-	                        <div class="input-field col s5">
-	                                <input required="required" id="event_name" type="text" class="validate">
-	                                <label for="event_name">Name</label>
-	                        </div>
-	                        <div class="input-field col s2">
-	                                <button id="event_btn" class="btn waves-effect waves-light" type="text" class="validate">
-						<i class="material-icons">event_available</i>
-					</button>
-	                        </div>
-	                </div>
-	                <div class="row">
-	                        <div class="input-field col s12">
-	                                  <textarea required="required" id="event_description" class="materialize-textarea"></textarea>
-	                                  <label for="event_description">Description</label>
-	                        </div>
-	                </div>
-		</div>
-        </div>
 
-    </div>
--->
+   <!-- FAB -->
+	<!-- <div class="fixed-action-btn" id="fab-new">
+		<a class="btn-floating btn-large fab-new-message modal-trigger" href="#beziapp-add-grading">
+		  <i class="large material-icons">add</i>
+		</a>
+	</div> -->
+   <@?i grading-add-modal@>
+
 </body>
 
 </html>

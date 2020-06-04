@@ -1,0 +1,35 @@
+    <!-- Modal Structure -->
+    <div id="beziapp-add-grading" class="modal modal-fixed-footer">
+
+        <div class="modal-content">
+
+            <h4 class="general-text"><x-su>addGrading</x-su></h4>
+
+            <div class="row">
+                <div class="input-field col s6">
+                    <input required="required" type="text" class="datepicker" id="datepicker-add">
+                    <label for="datepicker-add"><x-su>date</x-su></label>
+			    </div>
+                <div class="input-field col s6">
+                    <input required="required" id="input-grading-name" type="text" class="validate">
+                    <label for="event_name"><x-su>name</x-su></label>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea required="required" id="input-grading-description" class="materialize-textarea"></textarea>
+                    <label for="event_description"><x-su>description</x-su></label>
+                </div>
+            </div>
+        
+        </div>
+
+        <div class="modal-footer">
+            <div id="modal-footer-right">    
+                <a href="#" class="modal-close waves-effect waves-green btn-flat"><x-su>cancel</x-su> <i class="material-icons right">close</i></a>
+                <a href="#" id="btn-add-grading" class="modal-close waves-effect waves-green btn-flat" disabled><x-su>add</x-su> <i class="material-icons right">add</i></a>
+            </div>
+        </div>
+    </div>
+
