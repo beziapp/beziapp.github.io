@@ -33,7 +33,7 @@ function login() {
 				dataType: "script",
 			});
 			try {
-	    	gsecInstance = new gsec();
+	    	    gsecInstance = new gsec();
 			} catch (error) {
 				alert(D("browserNotSupported"));
 			}
@@ -45,6 +45,7 @@ function login() {
                 localforage.setItem("username", username),
                 localforage.setItem("password", password)
             ];
+            read_val(0);
             Promise.all(promises_to_run).then(function () {
                 window.location.replace("/pages/timetable.html");
             });
