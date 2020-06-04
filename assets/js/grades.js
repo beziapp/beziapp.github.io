@@ -68,8 +68,13 @@ async function loadGrades(force_refresh = false) {
 }
 
 function displayGrades() {
-    let grades_by_subject = {};
+		let grades_by_subject = {};
+		let zakljucne_grades_by_subject = {};
     grades.forEach((grade, index) => {
+				if(grade["gradeType"] != GSEC_NORMAL_GRADE) {
+					zakljucne_grades_by_subject[grade["subject"]] = grade["grade"];
+					break; // gfuck
+				}
         if (!(grade["subject"] in grades_by_subject)) {
             grades_by_subject[grade["subject"]] = [];
         }
@@ -149,8 +154,13 @@ function displayGrades() {
         });
         let grade_average = (grade_tot === 0) ? "N/A" : (Math.round(((grade_sum / grade_tot) + Number.EPSILON) * 100) / 100);
         let subject_header_average = document.createElement("div");
-        subject_header_average.className = "collapsible-header-right";
-        subject_header_average.innerText = grade_average.toString();
+				subject_header_average.className = "collapsible-header-right";
+				if(subject in zakljucne_grades_by_subject) {
+					subject_header_average.innerText = zakljucne_grades_by_subject[subject];
+					subject_header_average.classList.add = "zakljucna-grade";
+				} else {
+					subject_header_average.innerText = grade_average.toString();
+				}
         subject_header.appendChild(subject_header_text);
         subject_header.appendChild(subject_header_average);
         subject_body.append(subject_body_root);

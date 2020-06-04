@@ -28,6 +28,8 @@ const GSEC_MSGTYPE_DELETED = 2;
 const GSEC_ERR_LOGIN = "GSEC LOGIN ERROR";
 const GSEC_NO_ABSENCES = "noAbsences";
 const GSEC_MSGTYPES = ["msgReceived", "msgSent", "msgDeleted"];
+const GSEC_NORMAL_GRADE = "GSEC NORMAL GRADE";
+const GSEC_ZAKLJUCNA_GRADE = "GSEC ZAKLJUCNA GRADE";
 
 class gsec {
 
@@ -480,39 +482,49 @@ class gsec {
 					let gradeSpans = parsed.getElementsByClassName("txtVOcObd");
 					for (const grade of gradeSpans) {
 						var ist = grade.getElementsByTagName("span")[0].getAttribute("title").split("\n");
-						var date = ist[0].split(": ")[1].trim().split(".");
-						var dateObj = new Date(Date.parse(`${date[2]}-${date[1]}-${date[0]}`));
-						var teacher = ist[1].split(": ")[1].trim();
-						var subject = ist[2].split(": ")[1].trim();
-						var name = [];
-
-						name.push(ist[3].split(": ")[1].trim())
-						name.push(ist[4].split(": ")[1].trim())
-						name.push(ist[5].split(": ")[1].trim())
-
-						var gradeNumber = Number(grade.getElementsByTagName("span")[0].innerHTML);
-						var temporary = grade.getElementsByTagName("span")[0].classList.contains("ocVmesna");
-
-						var gradeToAdd = {
-							"date": dateObj,
-							"teacher": teacher,
-							"subject": subject,
-							"name": name,
-							"temporary": temporary,
-							"grade": gradeNumber
-						};
-
-						if (grade.getElementsByTagName("span").length > 1) {
-							if(grade.getElementsByTagName("span")[1].classList.contains("ocVmesna")) {
-								gradeToAdd["temporary"] = true;
-							} else {
-								gradeToAdd["temporary"] = false;
+						if (ist.length == 1) { // that means the txtVOcObd defines a zaključno oceno // gimsis is just utter crap
+							var gradeToAdd = {
+								"gradeType": GSEC_ZAKLJUCNA_GRADE,
+								"grade": Number(grade.getElementsByTagName("span")[0].innerHTML),
+								"subject": grade.parentElement.parentElement.parentElement.parentElement.
+									getElementsByTagName("th")[0].innerText // I fucking hope this works
 							}
-							gradeToAdd["grade"] = Number(grade.getElementsByTagName("span")[1].innerHTML);
-							gradeToAdd["oldgrade"] = Number(grade.getElementsByTagName("span")[0].innerHTML);
-						}
-						grades.push(gradeToAdd);
+							grades.push(gradeToAdd);
+						} else {
+							var date = ist[0].split(": ")[1].trim().split(".");
+							var dateObj = new Date(Date.parse(`${date[2]}-${date[1]}-${date[0]}`));
+							var teacher = ist[1].split(": ")[1].trim();
+							var subject = ist[2].split(": ")[1].trim();
+							var name = [];
 
+							name.push(ist[3].split(": ")[1].trim())
+							name.push(ist[4].split(": ")[1].trim())
+							name.push(ist[5].split(": ")[1].trim())
+
+							var gradeNumber = Number(grade.getElementsByTagName("span")[0].innerHTML);
+							var temporary = grade.getElementsByTagName("span")[0].classList.contains("ocVmesna");
+
+							var gradeToAdd = {
+								"gradeType": GSEC_NORMAL_GRADE, // well said I must say
+								"date": dateObj,
+								"teacher": teacher,
+								"subject": subject,
+								"name": name,
+								"temporary": temporary,
+								"grade": gradeNumber
+							};
+
+							if (grade.getElementsByTagName("span").length > 1) {
+								if(grade.getElementsByTagName("span")[1].classList.contains("ocVmesna")) {
+									gradeToAdd["temporary"] = true;
+								} else {
+									gradeToAdd["temporary"] = false;
+								}
+								gradeToAdd["grade"] = Number(grade.getElementsByTagName("span")[1].innerHTML);
+								gradeToAdd["oldgrade"] = Number(grade.getElementsByTagName("span")[0].innerHTML);
+							}
+							grades.push(gradeToAdd);
+						}
 					}
 					resolve(grades);
 				},
