@@ -172,6 +172,7 @@ var langstrings = {
 		type: "type",
 		term: "term",
 		teacher: "teacher",
+		zakljucneGradess: "grades in red are final grades that appear on your end-of-year certificate and are decided by your teacher. They are not averages like grades in black. Should you have any questions or complaints about them, contact your teacher",
 		// teachers
 		name: "name",
 		schoolSubject: "subject",
@@ -378,6 +379,7 @@ var langstrings = {
 		type: "tip",
 		term: "rok",
 		teacher: "profesor",
+		zakljucneGradess: "zaključne ocene, ki bodo na spričevalu, so označene z rdečo, povprečja ocen pa so v črni barvi. V kolikor imate kakršnekoli pritožbe ali vprašanja glede zaključnih ocen, povprašajte profesorja",
 		// teachers
 		name: "ime",
 		schoolSubject: "predmet",

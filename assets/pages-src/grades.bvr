@@ -91,7 +91,8 @@
 						</span>
 					</label>
 				</p>
-        <ul class="collapsible" id="grades-collapsible"></ul>
+				<ul class="collapsible" id="grades-collapsible"></ul>
+				<p><x-du>zakljucneGradess</x-du></p>
     </div>
 
 </body>

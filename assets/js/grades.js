@@ -156,7 +156,7 @@ function displayGrades() {
 		subject_header_average.className = "collapsible-header-right";
 		if (subject in zakljucne_grades_by_subject) {
 			subject_header_average.innerText = zakljucne_grades_by_subject[subject];
-			subject_header_average.classList.add = "zakljucna-grade";
+			subject_header_average.classList.add("zakljucna-grade");
 		} else {
 			subject_header_average.innerText = grade_average.toString();
 		}
