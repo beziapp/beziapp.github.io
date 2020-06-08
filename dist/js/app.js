@@ -3,8 +3,9 @@
 
 
 const app_version = "1.0.14.3-beta";
-const previous_commit = "134d89078f864250abf340713edc1d23d90ede24";
+const previous_commit = "571c27a64e8452a58a05d85bf40e1d7885d2dd1b";
 const BEZIAPP_UPDATE_INTERVAL = 300; // update vsakih 300 sekund
+
 if ("serviceWorker" in navigator) {
 	navigator.serviceWorker.register("/sw.js")
 		.then(() => { })
@@ -62,7 +63,11 @@ var update_app_function = async function () {
 			action: "checkversion",
 			valid_cache_name: cache_name
 		}
-		navigator.serviceWorker.controller.postMessage(JSON.stringify(data_to_send));
+		try {
+			navigator.serviceWorker.controller.postMessage(JSON.stringify(data_to_send));
+		} catch (e) {
+			console.log("update requested but sw is not available in app.js");
+		}
 	});
 }
 
@@ -99,10 +104,12 @@ window.onunhandledrejection = error_report_function;
 
 
 document.addEventListener("DOMContentLoaded", () => {
-	localforage.getItem("lastUpdate").then((data) => {
-		if(Math.floor(Date.now() / 1000) > data + BEZIAPP_UPDATE_INTERVAL) {
-			// trigger an update
-			update_app_function();
-		}
-	});
+	var update_interval = setInterval( () => { // ok, it's value is never read, so what?!
+		localforage.getItem("lastUpdate").then((data) => {
+			if(Math.floor(Date.now() / 1000) > data + BEZIAPP_UPDATE_INTERVAL) {
+				// trigger an update
+				update_app_function();
+			}
+		});
+	}, 1000*BEZIAPP_UPDATE_INTERVAL);
 })
