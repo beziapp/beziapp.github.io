@@ -3,7 +3,7 @@
 
 
 const app_version = "1.0.14.3-beta";
-const previous_commit = "0d4d63927cb2b608c65641859bfe43ba6b17b204";
+const previous_commit = "5f22473be3faa9cd2a50444f8bea4af46725c030";
 const BEZIAPP_UPDATE_INTERVAL = 300; // update vsakih 300 sekund
 
 if ("serviceWorker" in navigator) {
@@ -58,7 +58,7 @@ function gsecErrorHandlerUI(err) {
 
 var update_app_function = async function () {
 	try {
-		$.get("/cache_name.txt", (data, status) => {
+		$.get("/cache_name.txt?cache_kill="+Date.now(), (data, status) => {
 			var cache_name = data.split("///")[1].split("|||")[0];
 			var data_to_send = {
 				action: "checkversion",

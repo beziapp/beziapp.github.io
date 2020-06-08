@@ -55,7 +55,7 @@ function gsecErrorHandlerUI(err) {
 
 var update_app_function = async function () {
 	try {
-		$.get("/cache_name.txt", (data, status) => {
+		$.get("/cache_name.txt?cache_kill="+Date.now(), (data, status) => {
 			var cache_name = data.split("///")[1].split("|||")[0];
 			var data_to_send = {
 				action: "checkversion",
