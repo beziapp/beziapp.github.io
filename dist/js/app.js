@@ -3,7 +3,7 @@
 
 
 const app_version = "1.0.14.3-beta";
-const previous_commit = "f1e3feaf44adb79aec054fce431b0a235a929466";
+const previous_commit = "0d4d63927cb2b608c65641859bfe43ba6b17b204";
 const BEZIAPP_UPDATE_INTERVAL = 300; // update vsakih 300 sekund
 
 if ("serviceWorker" in navigator) {
@@ -57,18 +57,22 @@ function gsecErrorHandlerUI(err) {
 }
 
 var update_app_function = async function () {
-	$.get("/cache_name.txt", (data, status) => {
-		var cache_name = data.split("///")[1].split("|||")[0];
-		var data_to_send = {
-			action: "checkversion",
-			valid_cache_name: cache_name
-		}
-		try {
-			navigator.serviceWorker.controller.postMessage(JSON.stringify(data_to_send));
-		} catch (e) {
-			console.log("update requested but sw is not available in app.js");
-		}
-	});
+	try {
+		$.get("/cache_name.txt", (data, status) => {
+			var cache_name = data.split("///")[1].split("|||")[0];
+			var data_to_send = {
+				action: "checkversion",
+				valid_cache_name: cache_name
+			}
+			try {
+				navigator.serviceWorker.controller.postMessage(JSON.stringify(data_to_send));
+			} catch (e) {
+				console.log("update requested but sw is not available in app.js");
+			}
+		});
+	} catch (e) {
+		console.log("update requested but failed because of network error probably in update_app_function in app.js");
+	}
 }
 
 var error_report_function = async function (msg, url, lineNo, columnNo, error) {
@@ -104,12 +108,12 @@ window.onunhandledrejection = error_report_function;
 
 
 document.addEventListener("DOMContentLoaded", () => {
-	var update_interval = setInterval( () => { // ok, it's value is never read, so what?!
+	var update_interval = setInterval(() => { // ok, it's value is never read, so what?!
 		localforage.getItem("lastUpdate").then((data) => {
-			if(Math.floor(Date.now() / 1000) > data + BEZIAPP_UPDATE_INTERVAL) {
+			if (Math.floor(Date.now() / 1000) > data + BEZIAPP_UPDATE_INTERVAL) {
 				// trigger an update
 				update_app_function();
 			}
 		});
-	}, 1000*BEZIAPP_UPDATE_INTERVAL);
+	}, 1000 * BEZIAPP_UPDATE_INTERVAL);
 })
