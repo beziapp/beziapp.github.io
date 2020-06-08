@@ -3,8 +3,8 @@
 
 
 // Change version to cause cache refresh
-const static_cache_name = "site-static-1.0.14.3-beta-571c27a";
-// commit before the latest is 571c27a64e8452a58a05d85bf40e1d7885d2dd1b
+const static_cache_name = "site-static-1.0.14.3-beta-f1e3fea";
+// commit before the latest is f1e3feaf44adb79aec054fce431b0a235a929466
 // Got them with find . -not -path '*/\.*' | sed "s/.*/\"&\",/" | grep -v sw.js
 // sw.js NE SME BITI CACHAN, ker vsebuje verzijo!
 
@@ -121,6 +121,30 @@ self.addEventListener("activate", evt => {
 	);
 });
 
+async function sw_asynclycheckversion (data) {
+	try {
+		var names = await caches.keys();
+		console.log("[sw.js] checkversion: ***** checkversion v0 for BežiApp ***** hello, world!");
+		if(!(data.valid_cache_name == undefined || data.valid_cache_name == null || data.valid_cache_name == "")) {
+			var valid_cache_name = data.valid_cache_name;
+			console.log("[sw.js] checkversion: requested version (cachename) " + valid_cache_name);
+		} else {
+			var valid_cache_name = static_cache_name;
+			console.log("[sw.js] checkversion: no version to keep specified, using current "+valid_cache_name+", but that makes no sense to me.");
+		}
+		console.log("[sw.js] checkversion: deleting caches that don't match that cache name ...");
+		for (let name of names) {
+			if(valid_cache_name != name) {
+				caches.delete(name);
+				console.log("[sw.js] checkversion: done requesting delete of cache " + name);
+			}
+		}
+		console.log("[sw.js] checkversion: done, exiting!");
+	} catch (e) {
+		console.log("[sw.js] checkversion: !!! ERRORS! (caught)");
+	}
+}
+
 self.addEventListener("message", event => {
 
 	if (event.data) {
@@ -144,27 +168,7 @@ self.addEventListener("message", event => {
 				}
 			});
 		} else if (data.action.startsWith("checkversion")) {
-			try {
-				var names = await caches.keys();
-				console.log("[sw.js] checkversion: ***** checkversion v0 for BežiApp ***** hello, world!");
-				if(!(data.valid_cache_name == undefined || data.valid_cache_name == null || data.valid_cache_name == "")) {
-					var valid_cache_name = data.valid_cache_name;
-					console.log("[sw.js] checkversion: requested version (cachename) " + valid_cache_name);
-				} else {
-					var valid_cache_name = static_cache_name;
-					console.log("[sw.js] checkversion: no version to keep specified, using current "+valid_cache_name+", but that makes no sense to me.");
-				}
-				console.log("[sw.js] checkversion: deleting caches that don't match that cache name ...");
-				for (let name of names) {
-					if(valid_cache_name != name) {
-						caches.delete(name);
-						console.log("[sw.js] checkversion: done requesting delete of cache " + name);
-					}
-				}
-				console.log("[sw.js] checkversion: done, exiting!");
-			} catch (e) {
-				console.log("[sw.js] checkversion: !!! ERRORS! (caught)");
-			}
+			sw_asynclycheckversion(data);
 		}
 	}
 });
