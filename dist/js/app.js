@@ -3,7 +3,7 @@
 
 
 const app_version = "1.0.14.3-beta";
-const previous_commit = "5f22473be3faa9cd2a50444f8bea4af46725c030";
+const previous_commit = "cdf17dfd5d57b5461831868feb2497073a9b19d6";
 const BEZIAPP_UPDATE_INTERVAL = 300; // update vsakih 300 sekund
 
 if ("serviceWorker" in navigator) {
@@ -110,9 +110,11 @@ window.onunhandledrejection = error_report_function;
 document.addEventListener("DOMContentLoaded", () => {
 	var update_interval = setInterval(() => { // ok, it's value is never read, so what?!
 		localforage.getItem("lastUpdate").then((data) => {
-			if (Math.floor(Date.now() / 1000) > data + BEZIAPP_UPDATE_INTERVAL) {
+			if (Math.floor(Date.now() / 1000) > Number(data) + BEZIAPP_UPDATE_INTERVAL) {
 				// trigger an update
-				update_app_function();
+				localforage.setItem("lastUpdate", Math.floor(Date.now() / 1000)) .then(()=>{
+					update_app_function();
+				});
 			}
 		});
 	}, 1000 * BEZIAPP_UPDATE_INTERVAL);
