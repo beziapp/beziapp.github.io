@@ -45,7 +45,7 @@ function login() {
                 localforage.setItem("username", username),
                 localforage.setItem("password", password)
             ];
-            read_val(0);
+            // read_val(0);
             Promise.all(promises_to_run).then(function () {
                 window.location.replace("/pages/timetable.html");
             });

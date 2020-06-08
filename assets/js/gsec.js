@@ -481,7 +481,8 @@ class gsec {
 
 					let gradeSpans = parsed.getElementsByClassName("txtVOcObd");
 					for (const grade of gradeSpans) {
-						var ist = grade.getElementsByTagName("span")[0].getAttribute("title").split("\n");
+						var whatever_ist_meant_in_my_head_back_then_but_as_a_string = grade.getElementsByTagName("span")[0].getAttribute("title");
+						var ist = whatever_ist_meant_in_my_head_back_then_but_as_a_string.split("\n");
 						if (ist.length == 1) { // that means the txtVOcObd defines a zaključno oceno // gimsis is just utter crap
 							var gradeToAdd = {
 								"gradeType": GSEC_ZAKLJUCNA_GRADE,
@@ -496,11 +497,12 @@ class gsec {
 							var teacher = ist[1].split(": ")[1].trim();
 							var subject = ist[2].split(": ")[1].trim();
 							var name = [];
-
-							name.push(ist[3].split(": ")[1].trim())
-							name.push(ist[4].split(": ")[1].trim())
-							name.push(ist[5].split(": ")[1].trim())
-
+							
+							name.push(whatever_ist_meant_in_my_head_back_then_but_as_a_string.split("Ocenjevanje: ")[1].split("\nVrsta: ")[0].trim());
+							name.push(whatever_ist_meant_in_my_head_back_then_but_as_a_string.split("Vrsta: ")[1].split("\nRok: ")[0].trim())
+							name.push(whatever_ist_meant_in_my_head_back_then_but_as_a_string.split("Rok: ")[1].trim())
+							// prov predstavljam si enga profesorja, ke bo v polje Ocenjevanje vnesel "Vrsta: " in spet BREAKAL
+							// FKING algoritem.
 							var gradeNumber = Number(grade.getElementsByTagName("span")[0].innerHTML);
 							var temporary = grade.getElementsByTagName("span")[0].classList.contains("ocVmesna");
 
