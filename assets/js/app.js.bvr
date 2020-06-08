@@ -107,9 +107,11 @@ window.onunhandledrejection = error_report_function;
 document.addEventListener("DOMContentLoaded", () => {
 	var update_interval = setInterval(() => { // ok, it's value is never read, so what?!
 		localforage.getItem("lastUpdate").then((data) => {
-			if (Math.floor(Date.now() / 1000) > data + BEZIAPP_UPDATE_INTERVAL) {
+			if (Math.floor(Date.now() / 1000) > Number(data) + BEZIAPP_UPDATE_INTERVAL) {
 				// trigger an update
-				update_app_function();
+				localforage.setItem("lastUpdate", Math.floor(Date.now() / 1000)) .then(()=>{
+					update_app_function();
+				});
 			}
 		});
 	}, 1000 * BEZIAPP_UPDATE_INTERVAL);
