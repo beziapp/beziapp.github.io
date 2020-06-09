@@ -1,4 +1,7 @@
 #!/bin/bash
+echo "	I think that install and configure should be deprecated."
+echo "	use sudo make prepare and make install instead and fix any of yours git-pre-add hooks or whatever."
+echo "		--sijanec"
 ./bin/compose-html assets/pages-src/ dist/pages/ .html
 cp -r assets/css dist/
 cp -r assets/fonts dist/
