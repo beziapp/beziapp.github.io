@@ -2,7 +2,7 @@ default:
 	@echo "*** BežiApp Makefile ***"
 	@echo "targets:"
 	@echo "	make prepare	installs dependencies, cleans after itself, requires sudo permissions and debian/ubuntu for apt"
-	@echo "	make install	installs BežiApp to dist/"
+	@echo "	make generate	installs BežiApp to dist/"
 	@echo "no target specified, exiting ..."
 
 prepare:

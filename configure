@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "	I think that install and configure should be deprecated."
-echo "	use sudo make prepare and make install instead and fix any of yours git-pre-add hooks or whatever."
+echo "	use sudo make prepare and make generate instead and fix any of yours git-pre-add hooks or whatever."
 echo "		--sijanec"
 mkdir tmp
 cd tmp
