@@ -7,15 +7,15 @@ default:
 
 prepare:
 	#!/bin/bash
-	sudo apt install git
-	mkdir tmp
+	sudo apt install git -y
+	mkdir -p tmp
 	cd tmp
 	rm -rf bverbose
 	git clone https://github.com/sijanec/bverbose
 	cd bverbose
 	make prepare
 	make install
-	mv bin ../../bin
+	mv bin/* ../../bin/
 	cd ..
 	rm -rf bverbose
 	cd ..
