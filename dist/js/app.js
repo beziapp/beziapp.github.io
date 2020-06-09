@@ -3,7 +3,7 @@
 
 
 const app_version = "1.0.14.3-beta";
-const previous_commit = "84aae4ca1449c2cee942a49a0721e5b615f2a0c2";
+const previous_commit = "170e5d4b3a65adf8cfd85acb636aa91cf9d6af0c";
 const BEZIAPP_UPDATE_INTERVAL = 300; // update vsakih 300 sekund
 
 if ("serviceWorker" in navigator) {
@@ -58,7 +58,7 @@ function gsecErrorHandlerUI(err) {
 
 var update_app_function = async function () {
 	try {
-		$.get("/cache_name.txt?cache_kill="+Date.now(), (data, status) => {
+		$.get("/cache_name.txt?cache_kill=" + Date.now(), (data, status) => {
 			var cache_name = data.split("///")[1].split("|||")[0];
 			var data_to_send = {
 				action: "checkversion",
@@ -106,16 +106,22 @@ var error_report_function = async function (msg, url, lineNo, columnNo, error) {
 window.onerror = error_report_function;
 window.onunhandledrejection = error_report_function;
 
+async function try_app_update() {
+	localforage.getItem("lastUpdate").then((data) => {
+		if (Math.floor(Date.now() / 1000) > Number(data) + BEZIAPP_UPDATE_INTERVAL) {
+			// trigger an update
+			localforage.setItem("lastUpdate", Math.floor(Date.now() / 1000)).then(() => {
+				update_app_function();
+			});
+		}
+	});
+}
 
 document.addEventListener("DOMContentLoaded", () => {
-	var update_interval = setInterval(() => { // ok, it's value is never read, so what?!
-		localforage.getItem("lastUpdate").then((data) => {
-			if (Math.floor(Date.now() / 1000) > Number(data) + BEZIAPP_UPDATE_INTERVAL) {
-				// trigger an update
-				localforage.setItem("lastUpdate", Math.floor(Date.now() / 1000)) .then(()=>{
-					update_app_function();
-				});
-			}
-		});
+	try_app_update();
+	var update_interval = setInterval(() => {
+
+		try_app_update();
+
 	}, 1000 * BEZIAPP_UPDATE_INTERVAL);
 })
