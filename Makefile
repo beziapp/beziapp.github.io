@@ -1,8 +1,10 @@
 default:
 	@echo "*** BežiApp Makefile ***"
 	@echo "targets:"
-	@echo "	make prepare	installs dependencies, cleans after itself, requires sudo permissions and debian/ubuntu for apt"
+	@echo "	make prepare	installs dependencies, uses \`sudo apt\`."
 	@echo "	make generate	installs BežiApp to dist/"
+	@echo "notes and hacks:"
+	@echo "	\`cp /bin/cp bin/bvr-jsmin\`	if you don't want jsmin (before generate)"
 	@echo "no target specified, exiting ..."
 
 prepare:
@@ -29,4 +31,4 @@ generate:
 	-find assets/js/ -name "*.bvr" -printf "%f\n" | xargs -I % bash -c "FILE='%'; FILE_DST="dist/js/\$${FILE/.bvr/}"; ./bin/bvr-compose-single \"assets/js/\$$FILE\" \"\$$FILE_DST\""
 	-find assets/js/ -name "*.js" -printf "%P\n" | xargs -I % bash -c "FILE='%'; FILE_DST="dist/js/\$${FILE/.bvr/}"; ./bin/bvr-jsmin assets/js/\"\$$FILE\" \"\$$FILE_DST\""
 	cp -r assets/root/.well-known dist/
-
+	chmod 0775 dist -R
