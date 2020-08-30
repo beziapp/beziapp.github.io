@@ -447,7 +447,7 @@ var langstrings = {
 		readOnly: "samo za branje",
 		usage: "uporaba",
 		mealsUsageNote: "kliknite na datum za prikaz menijev, nato pa si enega izberite s klikom na ime menija. Po nastavitvi menijev ponovno naložite menije in se prepričajte o pravilnih nastavitvah.",
-		lunchesNote: "aplikacija ni testirana za naročanje na koslila, zato verjetno to ne deluje. Če ste naročeni na kosila lahko naročanje na menije sploh ne deluje ali pa deluje narobe.",
+		lunchesNote: "aplikacija ni testirana za naročanje na kosila, zato verjetno to ne deluje. Če ste naročeni na kosila lahko naročanje na menije sploh ne deluje ali pa deluje narobe.",
 		mealNotShownNote: "če nek dan manjka med meniji, to verjetno pomeni, da ni več spremenljiv in zanj niste ročno spremenili menija",
 		mealsContributeNote: "vabimo vas k urejanju LopolisAPI programa za upravljanje z meniji.",
 		authenticationError: "napaka avtentikacije",
