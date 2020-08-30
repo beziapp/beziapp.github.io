@@ -1,7 +1,24 @@
 // const API_ENDPOINT = "https://gimb.tk/test.php"; // deprecated
 document.addEventListener("DOMContentLoaded", () => {
-    setupEventListeners();
-})
+	setupEventListeners();
+	try {
+		load_server_message_at_login();
+	} catch (e) {
+		console.log("login.js: load_server-message-at-login: silently failed.");
+	}
+});
+
+function load_server_message_at_login() {
+	$.ajax({
+		url: "/server-message-at-login.html",
+		success: (data) => {
+			$("#server-message-at-login").html(data);
+		},
+		error: () => {
+			$("#server-message-at-login").html("");
+		}
+	});
+}
 
 function setupEventListeners() {
     // Setup login button listener

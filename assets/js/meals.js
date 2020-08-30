@@ -209,8 +209,9 @@ function displayMeals(meals) {
             meal_node.appendChild(meal_node_div);
             subject_body_root.appendChild(meal_node);
         }
-
-        subject_header.appendChild(subject_header_text);
+				var subject_header_text_span = document.createElement("span");
+				subject_header_text_span.innerText = subject_header_text;
+				subject_header.appendChild(subject_header_text_span);
         subject_body.append(subject_body_root);
         subject_entry.append(subject_header);
         subject_entry.append(subject_body);
