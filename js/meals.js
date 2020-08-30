@@ -12,7 +12,7 @@ subject_header_text=`${dateString.day(datum.getDay())}, ${datum.getDate()}. ${da
 meal_node.classList.add("meal-node");meal_node.dataset["index"]=dindex;if(!readonly){meal_node.onclick=()=>{setMenu(date,dmil.value);}}
 let meal_node_div=document.createElement("div");let meal_lefttext=document.createElement("span");let meal_righttext=document.createElement("div");meal_righttext.className="secondary-content";if(dmil.selected){meal_lefttext.innerHTML=`<i>${dmil.text}</i>`;meal_righttext.innerText=S("selected");}else{meal_lefttext.innerText=dmil.text;meal_righttext.innerText="";}
 meal_node_div.appendChild(meal_lefttext);meal_node_div.appendChild(meal_righttext);meal_node.appendChild(meal_node_div);subject_body_root.appendChild(meal_node);}
-subject_header.appendChild(subject_header_text);subject_body.append(subject_body_root);subject_entry.append(subject_header);subject_entry.append(subject_body);root_element.append(subject_entry);}
+var subject_header_text_span=document.createElement("span");subject_header_text_span.innerText=subject_header_text;subject_header.appendChild(subject_header_text_span);subject_body.append(subject_body_root);subject_entry.append(subject_header);subject_entry.append(subject_body);root_element.append(subject_entry);}
 $("#meals-collapsible").append(root_element);}
 function clearMeals(){const table=document.getElementById("meals-collapsible");while(table.firstChild){table.removeChild(table.firstChild);}}
 function refreshMeals(){clearMeals();loadMeals();}
