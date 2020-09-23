@@ -429,3 +429,15 @@ h1, h2, h3, h4, h5, h6 {
 ol {
 	color: var(--color-text) !important;
 }
+
+/* meals: */
+
+.selected-meal {
+	color: green !important;
+	font-weight: bold !important;
+}
+
+.to-be-selected-meal {
+	color: brown !important;
+	font-weight: italic !important;
+}

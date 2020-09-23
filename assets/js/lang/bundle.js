@@ -241,7 +241,7 @@ var langstrings = {
 		usage: "usage",
 		mealsUsageNote: "click on a date to open the collapsible menu with choices and click on a specific meal to select it. Reload the meals when you're done and check the entries.",
 		lunchesNote: "app was not tested with lunches in mind. Meals probably won't work with lunches and having a lunch subscription may even break its functionality.",
-		mealNotShownNote: "if a meal is not present in the meals collapsible field, this does not necessarily mean it does not exist. Meals that haven't been altered by you and are unchangable (read-only) are not shown for clarity.",
+		mealNotShownNote: "editable meals are highlighted in gold, read-only meals are highlighted in grey and cannot be changed. Meals that provide no options for menus are not shown for clarity, same applies for days where there are no meals",
 		mealsContributeNote: "you are welcome to contribute to the LopolisAPI project and add features, such as checkouts.",
 		authenticationError: "authentication error",
 		lopolisAPIConnectionError: "LopolisAPI server connection error",
@@ -252,6 +252,7 @@ var langstrings = {
 		errorSettingMeals: "error setting meals",
 		mealSet: "meal set! Reload meals to be sure",
 		selected: "selected",
+		meal: "meal",
 		// about
 		version: "version",
 		authors: "authors",
@@ -439,7 +440,7 @@ var langstrings = {
 		recipientNotInDirectory: "izbrane osebe ni v imeniku",
 		chatExternalInfo: "dobili ste kratko sporočilo v standardu, ki ga GimSIS ne podpira. Pri odgovarjanju spremenite zadevo. Vsebina sporočila: ",
 		// meals
-				loginError: "napaka pri prijavi",
+		loginError: "napaka pri prijavi",
 		loginToLopolis: "prijava v Lopolis",
 		loginToLopolisNote: "izgleda, da niste prijavljeni v eRestavracijo, zato se vam je prikazal prijavni obrazec. Za uporavljanje s prehrano se uporablja druga kombinacija uporabniškega imena in gesla, zato se prijavite s svojimi Lopolis prijavnimi podatki za nadaljevanje.",
 		logInToLopolis: "prijava v Lopolis",
@@ -448,7 +449,7 @@ var langstrings = {
 		usage: "uporaba",
 		mealsUsageNote: "kliknite na datum za prikaz menijev, nato pa si enega izberite s klikom na ime menija. Po nastavitvi menijev ponovno naložite menije in se prepričajte o pravilnih nastavitvah.",
 		lunchesNote: "aplikacija ni testirana za naročanje na kosila, zato verjetno to ne deluje. Če ste naročeni na kosila lahko naročanje na menije sploh ne deluje ali pa deluje narobe.",
-		mealNotShownNote: "če nek dan manjka med meniji, to verjetno pomeni, da ni več spremenljiv in zanj niste ročno spremenili menija",
+		mealNotShownNote: "obroki, označeni z zlato so nastavljivi, tisti, označeni s sivo, niso, če pa pri kakšnem dnevu obroka ni, pa pomeni, da ga ni moč nastaviti ali pa da ne obrok ne obstaja",
 		mealsContributeNote: "vabimo vas k urejanju LopolisAPI programa za upravljanje z meniji.",
 		authenticationError: "napaka avtentikacije",
 		lopolisAPIConnectionError: "napaka povezave na LopolisAPI strežnik",
@@ -459,6 +460,7 @@ var langstrings = {
 		errorSettingMeals: "napaka pri nastavljanju menijev",
 		mealSet: "obrok nastavljen! osvežite obroke in se prepričajte sami",
 		selected: "izbrano",
+		meal: "obrok",
 		// about
 		version: "različica",
 		authors: "avtorji",
