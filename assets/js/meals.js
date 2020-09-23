@@ -327,15 +327,16 @@ var mealClickHandler = (eventClickInfo) => {
 		let menu_option_a_el = document.createElement("button");
 		menu_option_a_el.innerText = option_object.text;
 		// console.log(JSON.stringify(meal_object)); // debug
+		let classlist = "";
 		if (option_object.selected != null) {
 			if(option_object.selected) {
 				// console.log("selected"); // debug
 				//
-				menu_option_a_el.className = "selected-meal";
+				classlist = "color: green; font-weight: bold";
 			}
 		}
 		menu_option_a_el.classList = "waves-effect waves-light btn-large";
-		menu_option_a_el.style = "color: var(--color-text); background-color: rgba(0,0,0,0); line-height: 1.2; height:auto !important;";
+		menu_option_a_el.style = "color: var(--color-text); background-color: rgba(0,0,0,0); line-height: 1.2; height:auto; "+classlist+" !important";
 		menu_option_a_el.id = "menu_index_"+option_index;
 		if(!(meal_object.readonly)) {
 			menu_option_a_el.onclick = () => { 
