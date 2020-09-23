@@ -2,61 +2,62 @@
 
 
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="google" content="notranslate">
-    <title>Gradings &laquo; BežiApp</title>
+	<!DOCTYPE html>
+	<html>
 
-    <!-- Materialize -->
-    <link type="text/css" href="/css/materialize.min.css" rel="stylesheet">
-    <link href="/css/materialicons.css" rel="stylesheet">
-    <script type="text/javascript" src="/js/lib/materialize.min.js"></script>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta name="google" content="notranslate">
+		<title>Gradings &laquo; BežiApp</title>
 
-    <script src="/js/lib/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/lib/localforage.min.js"></script>
+		<!-- Materialize -->
+		<link type="text/css" href="/css/materialize.min.css" rel="stylesheet">
+		<link href="/css/materialicons.css" rel="stylesheet">
+		<script type="text/javascript" src="/js/lib/materialize.min.js"></script>
 
-    <!-- FullCalendar -->
-    <link href="/css/fullcalendar/core/main.min.css" rel="stylesheet" />
-    <link href="/css/fullcalendar/daygrid/main.min.css" rel="stylesheet" />
-    <link href="/css/fullcalendar/custom.css" rel="stylesheet" />
-    <script src="/js/lib/fullcalendar/core/main.min.js"></script>
-    <script src="/js/lib/fullcalendar/daygrid/main.min.js"></script>
+		<script src="/js/lib/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/lib/localforage.min.js"></script>
 
-    <link type="text/css" href="/css/styles.css" rel="stylesheet">
-    <script type="text/javascript" src="/js/gsec.js"></script> <!-- gimsisextclient -->
-    <script type="text/javascript" src="/js/gradings.js"></script>
+		<!-- FullCalendar -->
+		<link href="/css/fullcalendar/core/main.min.css" rel="stylesheet" />
+		<link href="/css/fullcalendar/daygrid/main.min.css" rel="stylesheet" />
+		<link href="/css/fullcalendar/custom.css" rel="stylesheet" />
+		<script src="/js/lib/fullcalendar/core/main.min.js"></script>
+		<script src="/js/lib/fullcalendar/daygrid/main.min.js"></script>
 
-    <link rel="manifest" href="/manifest.json">
-    <script src="/js/app.js"></script>
-    <script src="/js/lib/themes.js"></script>
-    <script src="/js/lang/bundle.js"></script>
-    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+		<link type="text/css" href="/css/styles.css" rel="stylesheet">
+		<script type="text/javascript" src="/js/gsec.js"></script> <!-- gimsisextclient -->
+		<script type="text/javascript" src="/js/gradings.js"></script>
 
-    <!-- iOS support -->
-    <link rel="apple-touch-icon" href="/img/icons/icon_96.png">
-    <link rel="apple-touch-icon" href="/img/icons/icon_512.png">
-    <meta name="apple-mobile-web-app-status-bar" content="#004d32">
-</head>
+		<link rel="manifest" href="/manifest.json">
+		<script src="/js/app.js"></script>
+		<script src="/js/lib/themes.js"></script>
+		<script src="/js/lang/bundle.js"></script>
+		<link rel="shortcut icon" type="image/png" href="/favicon.png" />
 
-<body>
-    <nav class="z-depth-0" id="navigation-main">
-        <div class="nav-wrapper container">
-            <b class="app-header-bold">Beži</b><span class="app-header-span">App</span> &raquo; <x-su>gradings</x-su>
-            <span class="right white-text">
-                <i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
-            </span>
-            <span class="right white-text" id="refresh-icon">
-                <a href="#"><i class="material-icons">refresh</i></a>
-            </span>
-        </div>
-        <div id="loading-bar" class="progress hidden">
-            <div class="indeterminate"></div>
-        </div>
-    </nav>
+		<!-- iOS support -->
+		<link rel="apple-touch-icon" href="/img/icons/icon_96.png">
+		<link rel="apple-touch-icon" href="/img/icons/icon_512.png">
+		<meta name="apple-mobile-web-app-status-bar" content="#004d32">
+	</head>
+
+	<body>
+		<nav class="z-depth-0" id="navigation-main">
+			<div class="nav-wrapper container">
+				<b class="app-header-bold">Beži</b><span class="app-header-span">App</span> &raquo; <x-su>gradings</x-su>
+				<span class="right white-text">
+					<i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
+				</span>
+				<span class="right white-text" id="refresh-icon">
+					<a href="#"><i class="material-icons">refresh</i></a>
+				</span>
+			</div>
+			<div id="loading-bar" class="progress hidden">
+				<div class="indeterminate"></div>
+			</div>
+		</nav>
 		<ul id="side-menu" class="sidenav side-menu">
   <li><a class="subheader"><h4 class="sidenav-beziapp-subheader"><b>Beži</b>App</h4></a></li>
   <li><a href="/pages/timetable.html" class="waves-effect"><i class="material-icons">view_module</i><x-su>timetable</x-su></a></li>
@@ -75,34 +76,34 @@
   <li><a href="/pages/settings.html" class="waves-effect"><i class="material-icons">settings</i><x-su>settings</x-su></a></li>
 </ul>
 
-    <ul id="grading-info" class="sidenav side-modal">
-        <br>
-        <li><a class="header">
-                <h5 id="grading-subject"></h5>
-            </a></li>
-        <li>
-            <a class="subheader">
-                <h6 id="grading-date"></h6>
-            </a>
-        </li>
-        <div class="divider"></div>
-        </li>
-        <li><a class="waves-effect" id="grading-description"></a></li>
-    </ul>
+			<ul id="grading-info" class="sidenav side-modal">
+				<br>
+				<li><a class="header">
+						<h5 id="grading-subject"></h5>
+					</a></li>
+				<li>
+					<a class="subheader">
+						<h6 id="grading-date"></h6>
+					</a>
+				</li>
+				<div class="divider"></div>
+				</li>
+				<li><a class="waves-effect" id="grading-description"></a></li>
+			</ul>
 
 
-    <div class="container">
-        <br>
-        <div id="calendar"></div>
-   </div>
+			<div class="container">
+				<br>
+				<div id="calendar"></div>
+			</div>
 
-   <!-- FAB -->
-	<!-- <div class="fixed-action-btn" id="fab-new">
+			<!-- FAB -->
+			<!-- <div class="fixed-action-btn" id="fab-new">
 		<a class="btn-floating btn-large fab-new-message modal-trigger" href="#beziapp-add-grading">
 		  <i class="large material-icons">add</i>
 		</a>
 	</div> -->
-       <!-- Modal Structure -->
+			    <!-- Modal Structure -->
     <div id="beziapp-add-grading" class="modal modal-fixed-footer">
 
         <div class="modal-content">
@@ -139,6 +140,6 @@
 
 
 
-</body>
+	</body>
 
-</html>
+	</html
