@@ -324,7 +324,7 @@ var mealClickHandler = (eventClickInfo) => {
 	document.getElementById("meal-options").innerHTML = "";
 	for(const [option_index, option_object] of Object.entries(meal_object.menu_options)) {
 		let menu_option_li_el = document.createElement("li");
-		let menu_option_a_el = document.createElement("a");
+		let menu_option_a_el = document.createElement("button");
 		menu_option_a_el.innerText = option_object.text;
 		// console.log(JSON.stringify(meal_object)); // debug
 		if (option_object.selected != null) {
@@ -334,7 +334,8 @@ var mealClickHandler = (eventClickInfo) => {
 				menu_option_a_el.className = "selected-meal";
 			}
 		}
-		menu_option_a_el.style = "waves-effect";
+		menu_option_a_el.classList = "waves-effect waves-light btn-large";
+		menu_option_a_el.style = "color: var(--color-text); background-color: rgba(0,0,0,0); line-height: 1.2; height:auto !important;";
 		menu_option_a_el.id = "menu_index_"+option_index;
 		if(!(meal_object.readonly)) {
 			menu_option_a_el.onclick = () => { 
