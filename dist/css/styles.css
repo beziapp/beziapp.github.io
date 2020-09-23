@@ -134,9 +134,8 @@ a.collection-item {
 }
 
 .fc-unthemed td.fc-today {
-	background: var(--color-primary-transparent);
+	background: var(--color-primary-transparent) !important;
 }
-
 .fc-icon {
 	color: var(--color-text);
 }

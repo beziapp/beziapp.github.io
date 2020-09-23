@@ -3,7 +3,7 @@
 
 
 const app_version = "1.0.15.0-beta";
-const previous_commit = "616c225661687b05ab82160f5b7d6dcb4d39b8e6";
+const previous_commit = "557803555ed7a4ae4c620c0a50405db049b627df";
 const BEZIAPP_UPDATE_INTERVAL = 300; // update vsakih 300 sekund
 
 if ("serviceWorker" in navigator) {

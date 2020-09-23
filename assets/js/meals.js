@@ -391,7 +391,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 		edge: 'left',
 		draggable: false
 	});
-
+	document.getElementsByClassName("fc-today-button")[0].style = "display:none !important"; // počasi bomo rabili nestane important stavke
 	// ne vem, kaj je to spodaj ˇˇˇ
 	var elemsx = document.querySelectorAll('select');
 	M.FormSelect.init(elemsx);
