@@ -66,6 +66,7 @@ var _paq = window._paq = window._paq || [];
 	_paq.push(['setCustomVariable', 4, 'errorreporting', errorreporting_report, 'visit']);
 	_paq.push(['setCustomVariable', 5, 'domain', window.location.host, 'visit']);
   _paq.push(['trackPageView']);
+	_paq.push(['trackAllContentImpressions']);
   _paq.push(['enableLinkTracking']);
   (function() {
     var u="//matomo.gimb.tk/";

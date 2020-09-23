@@ -3,7 +3,7 @@
 
 
 const app_version = "1.0.15.0-beta";
-const previous_commit = "9f73d145b6aadb506143b0a3ec1b1d3697f24a04";
+const previous_commit = "a0a53bec5f61439dece140798235114a0164e26d";
 const BEZIAPP_UPDATE_INTERVAL = 300; // update vsakih 300 sekund
 
 if ("serviceWorker" in navigator) {
@@ -194,6 +194,7 @@ var _paq = window._paq = window._paq || [];
 	_paq.push(['setCustomVariable', 4, 'errorreporting', errorreporting_report, 'visit']);
 	_paq.push(['setCustomVariable', 5, 'domain', window.location.host, 'visit']);
   _paq.push(['trackPageView']);
+	_paq.push(['trackAllContentImpressions']);
   _paq.push(['enableLinkTracking']);
   (function() {
     var u="//matomo.gimb.tk/";
