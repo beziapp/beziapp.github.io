@@ -3,7 +3,7 @@
 
 
 const app_version = "1.0.15.0-beta";
-const previous_commit = "47c8dd3a9874dcaf505abcea61cd550a2e87c816";
+const previous_commit = "9887173427b46fc860438440c7f0139e1f68419f";
 const BEZIAPP_UPDATE_INTERVAL = 300; // update vsakih 300 sekund
 
 if ("serviceWorker" in navigator) {
@@ -124,4 +124,19 @@ document.addEventListener("DOMContentLoaded", () => {
 		try_app_update();
 
 	}, 1000 * BEZIAPP_UPDATE_INTERVAL);
-})
+});
+
+var _paq = window._paq = window._paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+  _paq.push(["setDoNotTrack", true]);
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//matomo.gimb.tk/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+

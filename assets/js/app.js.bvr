@@ -122,3 +122,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	}, 1000 * BEZIAPP_UPDATE_INTERVAL);
 });
+
+<@?i matomo@>
