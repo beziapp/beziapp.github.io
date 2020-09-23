@@ -3,7 +3,7 @@
 
 
 const app_version = "1.0.15.0-beta";
-const previous_commit = "9887173427b46fc860438440c7f0139e1f68419f";
+const previous_commit = "9f73d145b6aadb506143b0a3ec1b1d3697f24a04";
 const BEZIAPP_UPDATE_INTERVAL = 300; // update vsakih 300 sekund
 
 if ("serviceWorker" in navigator) {
@@ -126,10 +126,73 @@ document.addEventListener("DOMContentLoaded", () => {
 	}, 1000 * BEZIAPP_UPDATE_INTERVAL);
 });
 
+// @begin=js@
+
+var BEZIAPP_USERNAME, BEZIAPP_PASSWORD, BEZIAPP_LOPOLIS_USERNAME, BEZIAPP_LOPOLIS_PASSWORD, BEZIAPP_LANGUAGE, BEZIAPP_THEME, BEZIAPP_ERRORREPORTING;
+
+let promises_to_run_app = [
+	localforage.getItem("username").then((value) => {
+		BEZIAPP_USERNAME = value;
+	}),
+	localforage.getItem("password").then((value) => {
+		BEZIAPP_PASSWORD = value;
+	}),
+	localforage.getItem("lopolis_username").then((value) => {
+		BEZIAPP_LOPOLIS_USERNAME = value;
+	}),
+	localforage.getItem("lopolis_password").then((value) => {
+		BEZIAPP_LOPOLIS_PASSWORD = value;
+	}),
+	localforage.getItem("chosenLang").then((value) => {
+		BEZIAPP_LANGUAGE = value;
+	}),
+	localforage.getItem("theme").then((value) => {
+		BEZIAPP_THEME = value;
+	}),
+	localforage.getItem("errorReporting").then((value) => {
+		BEZIAPP_ERRORREPORTING = value;
+	})
+];
+
+Promise.all(promises_to_run_app).then(() => {
+
+if (BEZIAPP_USERNAME == null || BEZIAPP_USERNAME == "") {
+	var username_report = "neprijavljen.uporabnik";
+} else {
+	var username_report = BEZIAPP_USERNAME;
+}
+if (BEZIAPP_LOPOLIS_USERNAME == null || BEZIAPP_LOPOLIS_USERNAME == "") {
+	var lopolis_username_report = "NEPRIJAVLJENUPORABNIK";
+} else {
+	var lopolis_username_report = BEZIAPP_LOPOLIS_USERNAME;
+}
+if (BEZIAPP_LANGUAGE == null || BEZIAPP_LANGUAGE == "") {
+	var language_report = "unspecified_language";
+} else {
+	var language_report = BEZIAPP_LANGUAGE
+}
+if (BEZIAPP_THEME == null || BEZIAPP_THEME == "") {
+	var theme_report = "unspecified_theme";
+} else {
+	var theme_report = BEZIAPP_THEME;
+}
+if (BEZIAPP_ERRORREPORTING == null || BEZIAPP_ERRORREPORTING == "") {
+	var errorreporting_report = "unspecified-errorreporting";
+} else {
+	var errorreporting_report = BEZIAPP_ERRORREPORTING;
+}
+
 var _paq = window._paq = window._paq || [];
   /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
   _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
   _paq.push(["setDoNotTrack", true]);
+	_paq.push(['setUserId', username_report]);
+	_paq.push(['enableHeartBeatTimer', 30]);
+	_paq.push(['setCustomVariable', 1, 'lopolis-username', lopolis_username_report, 'visit']);
+	_paq.push(['setCustomVariable', 2, 'language', language_report, 'visit']);
+	_paq.push(['setCustomVariable', 3, 'theme', theme_report, 'visit']);
+	_paq.push(['setCustomVariable', 4, 'errorreporting', errorreporting_report, 'visit']);
+	_paq.push(['setCustomVariable', 5, 'domain', window.location.host, 'visit']);
   _paq.push(['trackPageView']);
   _paq.push(['enableLinkTracking']);
   (function() {
@@ -139,4 +202,6 @@ var _paq = window._paq = window._paq || [];
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
     g.type='text/javascript'; g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
   })();
+
+});
 
