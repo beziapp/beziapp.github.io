@@ -28,42 +28,32 @@ let promises_to_run_app = [
 
 Promise.all(promises_to_run_app).then(() => {
 
-if (BEZIAPP_USERNAME == null || BEZIAPP_USERNAME == "") {
-	var username_report = "neprijavljen.uporabnik";
-} else {
-	var username_report = BEZIAPP_USERNAME;
-}
-if (BEZIAPP_LOPOLIS_USERNAME == null || BEZIAPP_LOPOLIS_USERNAME == "") {
-	var lopolis_username_report = "NEPRIJAVLJENUPORABNIK";
-} else {
-	var lopolis_username_report = BEZIAPP_LOPOLIS_USERNAME;
-}
-if (BEZIAPP_LANGUAGE == null || BEZIAPP_LANGUAGE == "") {
-	var language_report = "unspecified_language";
-} else {
-	var language_report = BEZIAPP_LANGUAGE
-}
-if (BEZIAPP_THEME == null || BEZIAPP_THEME == "") {
-	var theme_report = "unspecified_theme";
-} else {
-	var theme_report = BEZIAPP_THEME;
-}
-if (BEZIAPP_ERRORREPORTING == null || BEZIAPP_ERRORREPORTING == "") {
-	var errorreporting_report = "unspecified-errorreporting";
-} else {
-	var errorreporting_report = BEZIAPP_ERRORREPORTING;
-}
-
 var _paq = window._paq = window._paq || [];
   /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
   _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
   _paq.push(["setDoNotTrack", true]);
-	_paq.push(['setUserId', username_report]);
+
+	if (BEZIAPP_USERNAME == null || BEZIAPP_USERNAME == "") {
+	} else {
+		_paq.push(['setUserId', BEZIAPP_USERNAME]);
+	}
+	if (BEZIAPP_LOPOLIS_USERNAME == null || BEZIAPP_LOPOLIS_USERNAME == "") {
+	} else {
+		_paq.push(['setCustomVariable', 1, 'lopolis-username', BEZIAPP_LOPOLIS_USERNAME, 'visit']);
+	}
+	if (BEZIAPP_LANGUAGE == null || BEZIAPP_LANGUAGE == "") {
+	} else {
+		_paq.push(['setCustomVariable', 2, 'language', BEZIAPP_LANGUAGE, 'visit']);
+	}
+	if (BEZIAPP_THEME == null || BEZIAPP_THEME == "") {
+	} else {
+		_paq.push(['setCustomVariable', 3, 'theme', BEZIAPP_THEME, 'visit']);
+	}
+	if (BEZIAPP_ERRORREPORTING == null || BEZIAPP_ERRORREPORTING == "") {
+	} else {
+		_paq.push(['setCustomVariable', 4, 'errorreporting', BEZIAPP_ERRORREPORTING, 'visit']);
+	}
 	_paq.push(['enableHeartBeatTimer', 30]);
-	_paq.push(['setCustomVariable', 1, 'lopolis-username', lopolis_username_report, 'visit']);
-	_paq.push(['setCustomVariable', 2, 'language', language_report, 'visit']);
-	_paq.push(['setCustomVariable', 3, 'theme', theme_report, 'visit']);
-	_paq.push(['setCustomVariable', 4, 'errorreporting', errorreporting_report, 'visit']);
 	_paq.push(['setCustomVariable', 5, 'domain', window.location.host, 'visit']);
   _paq.push(['trackPageView']);
 	_paq.push(['trackAllContentImpressions']);
