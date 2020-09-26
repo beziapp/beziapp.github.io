@@ -166,7 +166,7 @@ class lopolisc {
 				for (const [index, property] of Object.entries(odjava_object)) {
 					dataToSend[index] = property;
 				}
-				dataToSend["OdjavaItems["+odjava_object.index+".CheckOut"] =
+				dataToSend["OdjavaItems["+odjava_object.index+"].CheckOut"] =
 					String(odjava_object.checked);
 			} // now we have some excess values, who cares (index, readonly, checked)
 			this.postback(LOPOLIS_URL+"Prehrana/Odjava", dataToSend, null, true).
