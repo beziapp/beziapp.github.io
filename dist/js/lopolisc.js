@@ -7,7 +7,7 @@ const LOPOLISC_ERR_NET = "LOPOLSIC NETWORK ERROR (ajax error)";
 const	LOPOLISC_ERR_NET_POSTBACK_GET = "LOPOLISC NETWORK ERROR (ajax error) in postback GET"
 const LOPOLISC_ERR_NET_POSTBACK_POST = "LOPOLISC NETWORK ERROR (ajax error) in postback POST"
 const LOPOLISC_ERR_LOGIN = "LOPOLISC LOGIN ERROR";
-const LOPOLISC_ERR_CHECKOUTS = "LOPOLISC CHECKOUTS ERROR"
+const LOPOLISC_ERR_NOTAPPLIED = "LOPOLISC DATA NOT APPLIED ERROR"
 const LOPOLISC_SIGNATURE = "lopolisc.js neuradni API - anton<at>sijanec.eu"
 
 class lopolisc {
@@ -15,7 +15,7 @@ class lopolisc {
 	constructor() {
 	}
 
-	parseAndPost(inputHTML, params, formId = null, useDiffAction = null) {
+	parseAndPost(inputHTML, userParams, formId = null, useDiffAction = null) {
 		return new Promise((resolve, reject) => {
 			let parser = new DOMParser();
 			let parsed = parser.parseFromString(inputHTML, "text/html");
@@ -27,13 +27,19 @@ class lopolisc {
 				form = parsed.getElementById(formId);
 			}
 
+			var params = {};
 			var otherParams = $(form).serializeArray();
 			for (const input of otherParams) {
 				if (!(input.name in params)) {
 					params[input.name] = input.value; // so we don't overwrite existing values
 				}
 			}
-		
+
+			for (const [key, value] of Object.entries(userParams)) { // neki me je
+				params[key] = value; // zajebaval, pa sem tkole naredu - še enkrat
+			} // prepišemo vse, kar je v params, z uporabniškimi parametri
+			// POPRAVEK PO 2 min debugganja: ne, nič ni bilo narobe, pozabil sem
+			// passat dataToSend v postback(), passal sem {} :facepalm: </notetoself>
 			var action;
 			if (useDiffAction == null || useDiffAction == false) {
 				action = new URL($(form).attr("action"), LOPOLIS_URL); // absolute == relative + base
@@ -92,9 +98,10 @@ class lopolisc {
 		return new Promise((resolve, reject) => {
 			var dataToSend = {
 				"Uporabnik": usernameToLogin,
-				"Geslo": passwordToLogin
+				"Geslo": passwordToLogin,
+				"OsveziURL": "https://pornhub.com/\"; lopolis=\"boljsi od easistenta",
 			};
-			this.postback(LOPOLIS_URL + "/Uporab/Prijava", dataToSend, null, true).then((response) => { // če je true, bo URL, če je false, bo action
+			this.postback(LOPOLIS_URL + "Uporab/Prijava", dataToSend, null, true).then((response) => { // če je true, bo URL, če je false, bo action
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
 				if (parsed.getElementById("divPrijavaOsvezi") != null) {
@@ -105,25 +112,29 @@ class lopolisc {
 		});
 	}
 
-	fetchCheckouts(date_object = new Date()) {
-		return new Promise((resolve) => {
+	fetchCheckouts(date_object = null) {
+		if (date_object == null) {
+			date_object = new Date();
+		}
+		return new Promise((resolve, reject) => {
 			var dataToSend = {
-				"MesecModel.Mesec": String(date_object.getMonth()),
+				"MesecModel.Mesec": String(date_object.getMonth()+1),
 				"MesecModel.Leto": String(date_object.getFullYear()),
 				"Ukaz": ""
 			};
-			this.postback(LOPOLIS_URL+"/Prehrana/Odjava", dataToSend, "form1", true).then((response) => {
+			this.postback(LOPOLIS_URL+"Prehrana/Odjava", dataToSend, null, true).then((response) => {
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
 				let checkouts = {};
 				for (const element of parsed.getElementsByTagName("tbody")[0].
 															getElementsByTagName("tr")) {
-					checkouts[element.getElementsByTagName("input")[2].value] = {
+					let date_idx = element.getElementsByTagName("input")[2].value;
+					checkouts[date_idx] = {
 						checked: element.getElementsByTagName("input")[0].checked,
 						readonly: element.getElementsByTagName("input")[0].disabled,
 						// spodaj spremenljivke, ki so potrebne za submit (ne-API)
 						index: Number(getStringBetween( // string, start, end
-							element.getElementByTagName("input")[0].name, "[", "]"
+							element.getElementsByTagName("input")[0].name, "[", "]"
 						)),
 						"OsebaModel.ddlOseba":
 							parsed.getElementsByTagName("option")[0].value,
@@ -134,14 +145,14 @@ class lopolisc {
 						"OsebaModel.UstanovaID":
 							parsed.getElementById("OsebaModel_UstanovaID").value,
 						"MesecModel.Mesec": parsed.getElementById("MesecModel_Mesec").value,
-						"MesecModel.Leto": parsed.getElementById("MesecModel_Leto").value,
-						element.getElementByTagName("input")[2].name: // date
-							String(element.getElementByTagName("input")[2].value),
-						element.getElementByTagName("input")[3].name: // prijava id
-							String(elememt.getElementByTagName("input")[3].value),
-						element.getElementByTagName("input")[4].name: // readonly
-							String(element.getElementByTagName("input")[4].value)
+						"MesecModel.Leto": parsed.getElementById("MesecModel_Leto").value
 					}
+					checkouts[date_idx][element.getElementsByTagName("input")[2].name] =
+						String(element.getElementsByTagName("input")[2].value);
+					checkouts[date_idx][element.getElementsByTagName("input")[3].name] =
+						String(element.getElementsByTagName("input")[3].value);
+					checkouts[date_idx][element.getElementsByTagName("input")[4].name] =
+						String(element.getElementsByTagName("input")[4].value);
 				}
 				resolve(checkouts);
 			});
@@ -149,22 +160,22 @@ class lopolisc {
 	}
 
 	setCheckouts(odjava_objects) {
-		return new Promise((resolve) => {
+		return new Promise((resolve, reject) => {
 			var dataToSend = { "Ukaz": "Shrani" };
-			for (const odjava_object of odjava_objects) {
+			for (const [odjava_da, odjava_object] of Object.entries(odjava_objects)) {
 				for (const [index, property] of Object.entries(odjava_object)) {
 					dataToSend[index] = property;
 				}
 				dataToSend["OdjavaItems["+odjava_object.index+".CheckOut"] =
 					String(odjava_object.checked);
 			} // now we have some excess values, who cares (index, readonly, checked)
-			this.postback(LOPOLIS_URL+"/Prehrana/Odjava", dataToSend, null, true).
+			this.postback(LOPOLIS_URL+"Prehrana/Odjava", dataToSend, null, true).
 				then( (response) => {
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
-				for (const odjava_object of odjava_objects) {
-					if (!(parsed.getElementById("OdjavaItems_"+odjava_object.index+"__CheckOut".checked == odjava_object.checked)) {
-						reject(LOPOLISC_ERR_CHECKOUTS);
+				for (const [od_date, odjava_object] of Object.entries(odjava_objects)) {
+					if (!(parsed.getElementById("OdjavaItems_"+odjava_object.index+"__CheckOut").checked == odjava_object.checked)) {
+						reject(LOPOLISC_ERR_NOTAPPLIED);
 					}
 				}
 				resolve(true);
@@ -172,31 +183,35 @@ class lopolisc {
 		});
 	}
 
-	fetchMeals(date_object = new Date()) {//todo: fetchAllMeals naslednja 2 meseca
-		return new Promise((resolve) => {
+	fetchMeals(date_object = null) { // todo: fetchAllMeals(): naslednja 2 meseca
+		if (date_object == null) {
+			date_object = new Date();
+		}
+		return new Promise((resolve, reject) => {
 			var meals = {};
 			var dataToSend = {
 				"Ukaz": "",
-				"MesecModel.Mesec": String(date_object.getMonth()),
+				"MesecModel.Mesec": String(date_object.getMonth()+1),
+				"API-METODA": "fetchMeals",
 				"MesecModel.Leto": String(date_object.getFullYear())
 			}
-			this.postback(LOPOLIS_URL+"/Prehrana/Prednarocanje", {}, null, true).
+			this.postback(LOPOLIS_URL+"Prehrana/Prednarocanje",dataToSend,null,true).
 				then((response) => {
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
 				for (const element of parsed.getElementsByTagName("tbody")[0].
 															getElementsByTagName("tr")) {
-					let menuoptions = {};
+					let menuoptions = [];
 					let is_any_selected = false;
-					for (option of element.getElementsByTagName("select")[0].options) {
-						if (option.value.length > 0 || 1==1) { // tudi prazno opcijo pustimo
+					for (const opt of element.getElementsByTagName("select")[0].options) {
+						if (opt.value.length > 0 || 1==1) { // tudi prazno opcijo pustimo
 							menuoptions.push({
-								value: option.value,
-								text: option.innerText,
-								selected: option.selected
+								value: opt.value,
+								text: opt.innerText,
+								selected: opt.selected
 							});
 						}
-						if (option.selected) {
+						if (opt.selected) {
 							is_any_selected = true;
 						}
 					}
@@ -208,7 +223,8 @@ class lopolisc {
 						// * če noben ni izbran in je readonly se izbere prazna - okej
 						// prazna (index 0) defaulta na meni 1 (index 1) ampak ne bom tvegal
 					}
-					meals[element.getElementsByTagName("input")[0].value] = {	// trying
+					let date_idx = element.getElementsByTagName("input")[0].value;
+					meals[date_idx] = {	// trying to keep same api as rstular's lopolisapi
 						meal: element.getElementsByTagName("td")[1].innerText.trim(),
 						"menu-type": element.getElementsByTagName("td")[2].innerText.trim(),
 						location: element.getElementsByTagName("td")[3].innerText.trim(),
@@ -216,7 +232,7 @@ class lopolisc {
 						menu_options: menuoptions,
 						// properties below are "private" and non-API (undocumented even)
 						index: Number(getStringBetween( // string, start, end
-							element.getElementByTagName("input")[0].name, "[", "]"
+							element.getElementsByTagName("input")[0].name, "[", "]"
 						)),
 						"OsebaModel.ddlOseba":
 							parsed.getElementsByTagName("option")[0].value,
@@ -227,14 +243,14 @@ class lopolisc {
 						"OsebaModel.UstanovaID":
 							parsed.getElementById("OsebaModel_UstanovaID").value,
 						"MesecModel.Mesec": parsed.getElementById("MesecModel_Mesec").value,
-						"MesecModel.Leto": parsed.getElementById("MesecModel_Leto").value,
-						element.getElementByTagName("input")[0].name: // date
-							String(element.getElementByTagName("input")[0].value),
-						element.getElementByTagName("input")[1].name: // prijava id
-							String(elememt.getElementByTagName("input")[1].value),
-						element.getElementByTagName("input")[2].name: // readonly
-							String(element.getElementByTagName("input")[2].value)
+						"MesecModel.Leto": parsed.getElementById("MesecModel_Leto").value
 						}
+						meals[date_idx][element.getElementsByTagName("input")[0].name] =
+							String(element.getElementsByTagName("input")[0].value); // date
+						meals[date_idx][element.getElementsByTagName("input")[1].name] =
+							String(element.getElementsByTagName("input")[1].value); // prijOID?
+						meals[date_idx][element.getElementsByTagName("input")[2].name] =
+							String(element.getElementsByTagName("input")[2].value); // readonly
 				}
 				resolve(meals);
 			});
@@ -242,16 +258,16 @@ class lopolisc {
 	}
 
 	setMeals(meal_objects) {
-		return new Promise((resolve) => {
+		return new Promise((resolve, reject) => {
 			var dataToSend = { "Ukaz": "Shrani" };
-			for (const meal_object of meal_objects) {
-				for (const [meal, property] of Object.entries(meal_object)) {
+			for (const [meal_date, meal_object] of Object.entries(meal_objects)) {
+				for (const [index, property] of Object.entries(meal_object)) {
 					dataToSend[index] = String(property);
 				}
 				for (const menu_option of meal_object.menu_options) {
 					if (menu_option.selected) {
-						dataToSend["PrednarocanjeItems["+odjava_object.index+
-							".MeniIDSkupinaID"] = menu_option.value;
+						dataToSend["PrednarocanjeItems["+meal_object.index+
+							"].MeniIDSkupinaID"] = menu_option.value;
 					}
 				}
 			} // excess values: meal, menu-type, location, readonly, menu_options
@@ -259,9 +275,15 @@ class lopolisc {
 					then( (response) => {
 				let parser = new DOMParser();
 				let parsed = parser.parseFromString(response.data, "text/html");
-				for (const odjava_object of odjava_objects) {
-					if (!(parsed.getElementById("PrednarocanjeItems_"+odjava_object.index+"__CheckOut".checked == odjava_object.checked)) {
-						reject(LOPOLISC_ERR_CHECKOUTS);
+				for (const [meal_date, meal_object] of Object.entries(meal_objects)) {
+					let selected_value;
+					for (const menu_option of meal_object.menu_options) {
+						if (menu_option.selected) {
+							selected_value = menu_option.value;
+						}
+					}
+					if (!(parsed.getElementById("PrednarocanjeItems_"+meal_object.index+"__MeniIDSkupinaID").selectedOptions[0].value == selected_value)) {
+						reject(LOPOLISC_ERR_NOTAPPLIED);
 					}
 				}
 				resolve(true);
@@ -269,3 +291,6 @@ class lopolisc {
 		});
 	}
 }
+
+//   Edited with    \  / o  _ _    this script is     I         /\/\        2020
+//   Improved & free \/  I I I I   vim-powered        my editor \__/  -- sijanec
