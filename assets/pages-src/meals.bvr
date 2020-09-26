@@ -43,6 +43,8 @@
 		<link href="/css/fullcalendar/custom.css" rel="stylesheet" />
 		<script src="/js/lib/fullcalendar/core/main.min.js"></script>
 		<script src="/js/lib/fullcalendar/daygrid/main.min.js"></script>
+		<!-- lopolis client API library - unofficial by sijanec -->
+		<script src="/js/lopolisc.js"></script>
 	</head>
 
 	<body>
