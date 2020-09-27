@@ -84,8 +84,8 @@
 				</a>
 			</li>
 			<li>
-				<div class=switch>
-					<label id=checkbox_label>
+				<div class=switch style=margin-left:0.7cm>
+					<label id=checkbox_label style>
 						<x-su>checkedOut</x-su>
 						<input id=checkout_checkbox type=checkbox>
 						<span class=lever></span>
