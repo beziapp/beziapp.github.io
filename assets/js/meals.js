@@ -179,12 +179,18 @@ var mealClickHandler = (eventClickInfo) => {
 
 	/// ˇˇˇ checkouts
 	$("#checkout_label").show();		let can_do_checkout = true;
+	let checkout_object;
 	try {
-		let checkout_object = checkouts_data_global[meal_date];
+		checkout_object = checkouts_data_global[meal_date];
 	} catch (e) {
 		$("#checkout_label").hide();	let can_do_checkout = false;
 	}
+	if (checkout_object == undefined || checkout_object == null) {
+		can_do_checkout = false;
+	}
+	console.log(checkout_object);
 	if (can_do_checkout) { let cc = $("#checkout_checkbox");
+		cc[0].checked/*in*/ = !(checkout_object.checked/*out*/);
 		cc.off();
 		cc.on("change", ()=>{
 			let l = new lopolisc();
@@ -198,7 +204,7 @@ var mealClickHandler = (eventClickInfo) => {
 				setLoading(false);
 			});
 		});
-		cc.prop("disabled", checkouts_data_global[meal_date].readonly);
+		cc.prop("disabled", checkout_object.readonly);
 	}
 	/// ^^^ checkouts
 	$("#meal-type").text(meal_object.meal);
