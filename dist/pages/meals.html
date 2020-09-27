@@ -20,20 +20,18 @@
 		<script src="/js/lib/jquery.min.js"></script>
 		<!-- localForage -->
 		<script type="text/javascript" src="/js/lib/localforage.min.js"></script>
+		<!-- i18n bundle -->
+		<script src="/js/lang/bundle.js"></script>
 		<!-- mergedeep.js -->
 		<script type="text/javascript" src="/js/lib/mergedeep.js"></script>
 		<!-- stylesheet for custom styles -->
 		<link type="text/css" href="/css/styles.css" rel="stylesheet">
-		<!-- page-specific javascript code -->
-		<script type="text/javascript" src="/js/meals.js"></script>
 		<!-- PWA manifest -->
 		<link rel="manifest" href="/manifest.json">
 		<!-- app global code -->
 		<script src="/js/app.js"></script>
 		<!-- code for custom theme switcher -->
 		<script src="/js/lib/themes.js"></script>
-		<!-- i18n bundle -->
-		<script src="/js/lang/bundle.js"></script>
 		<!-- favicon -->
 		<link rel="shortcut icon" type="image/png" href="/favicon.png" />
 		<!-- iOS support -->
@@ -46,6 +44,10 @@
 		<link href="/css/fullcalendar/custom.css" rel="stylesheet" />
 		<script src="/js/lib/fullcalendar/core/main.min.js"></script>
 		<script src="/js/lib/fullcalendar/daygrid/main.min.js"></script>
+		<!-- lopolis client API library - unofficial by sijanec -->
+		<script src="/js/lopolisc.js"></script>
+		<!-- page-specific javascript code -->
+		<script type="text/javascript" src="/js/meals.js"></script>
 	</head>
 
 	<body>
@@ -63,7 +65,8 @@
 				<div class="indeterminate"></div>
 			</div>
 		</nav>
-		<ul id="side-menu" class="sidenav side-menu">
+		<!-- @begin=html@ -->
+<ul id="side-menu" class="sidenav side-menu">
   <li><a class="subheader"><h4 class="sidenav-beziapp-subheader"><b>Beži</b>App</h4></a></li>
   <li><a href="/pages/timetable.html" class="waves-effect"><i class="material-icons">view_module</i><x-su>timetable</x-su></a></li>
   <li><a href="/pages/gradings.html" class="waves-effect"><i class="material-icons">event</i><x-su>gradings</x-su></a></li>
@@ -73,7 +76,8 @@
   <li><a href="/pages/messaging.html" class="waves-effect"><i class="material-icons">message</i><x-su>messaging</x-su></a></li>
 	<!-- chats not done yet, expecting merge so removing from navigation panel --sijanec -->
 	<!-- <li><a href="/pages/chats.html" class="waves-effect"><i class="material-icons">chat</i><x-su>chat</x-su></a></li> -->
-	<li><a href="/pages/jitsi.html" class="waves-effect"><i class="material-icons">video_call</i><x-su>videoconferences</x-su></a></li>
+	<!-- <li><a href="/pages/jitsi.html" class="waves-effect"><i class="material-icons">video_call</i><x-su>videoconferences</x-su></a></li> -->
+	<!-- jitsi got reverted to jitsi from gimb meet so it's sucky to show this -->
 	<li><a href="/pages/meals.html" class="waves-effect"><i class="material-icons">fastfood</i><x-su>meals</x-su></a></li>
   <li><div class="divider"></div></li>
   <li><a href="/pages/about.html" class="waves-effect"><i class="material-icons">info</i><x-su>about</x-su></a></li>
@@ -100,6 +104,16 @@
 				<a class="subheader" style="color:red" id="meal-readonly">
 					<x-du>readOnly</x-du>
 				</a>
+			</li>
+			<li>
+				<div class=switch style=margin-left:0.7cm>
+					<label id=checkbox_label style>
+						<x-su>checkedOut</x-su>
+						<input id=checkout_checkbox type=checkbox>
+						<span class=lever></span>
+						<x-su>checkedIn</x-su>
+					</label>
+				</div>
 			</li>
 			<div class=divider></div>
 			<li id=meal-options>
