@@ -53,13 +53,24 @@
 				</h3>
 				<ul class="collapsible">
 					<li>
+
+						<div class="collapsible-header">Version 1.0.16-beta</div>
+						<div class="collapsible-body">
+							<ul class="collection">
+								<li class="collection-item">Fixed meals</li>
+								<li class="collection-item">Removed LopolisAPI, created
+								lopolisc.js</li>
+								<li class="collection-item">Removed GimB Meet</li>
+								<li class="collection-item">Added checkout option to meals</li>
+							</ul>
+						</div>
+
 						<div class="collapsible-header">Version 1.0.15-beta</div>
 						<div class="collapsible-body">
 							<ul class="collection">
 								<li class="collection-item">Changed meals layout</li>
 							</ul>
 						</div>
-
 
 						<div class="collapsible-header">Version 1.0.14-beta</div>
 						<div class="collapsible-body">
