@@ -18,9 +18,6 @@ async function refreshLangDOM() {
 		localforage.getItem("chosenLang").then( (value) => {
 			chosenLang = value;
 		})
-		// localforage.getItem("chosenCapitalize").then( (value) => { // poor unused code
-		// 	chosenCapitalize = value;
-		// })
 	];
 	await Promise.all(promises_to_runn);
 	// this could be done nicer. p. s.: lahko bi se uporablil x-s in x-S za razločitev med capitalize in !capitalize queryselectorall ni case sensitive za imena elementov
@@ -58,16 +55,18 @@ async function setLangConfigAndReload() {
 	window.location.reload();
 }
 window.addEventListener("DOMContentLoaded", () => {
-	localforage.getItem("chosenLang").then( (value) => {
-			if(value == null) {
-				setLangConfigAndReload();
-			} else {
-				chosenLang = value;
-			}
-	});
-	refreshLangDOM();
+	find_chosen_lang();
 });
 
+async function find_chosen_lang() {
+	let value = await localforage.getItem("chosenLang");
+	if(value == null) {
+		setLangConfigAndReload();
+	} else {
+		chosenLang = value;
+	}
+	refreshLangDOM();
+}
 
 const capitalize = (s) => {
 	if (typeof s !== 'string') return ''
@@ -253,6 +252,10 @@ var langstrings = {
 		mealSet: "meal set! Reload meals to be sure",
 		selected: "selected",
 		meal: "meal",
+		checkedOut: "checked out",
+		checkedIn: "checked in",
+		successfulCheckingInOut: "successfully checked in/out",
+		errorCheckingInOut: "failed to check in/out",
 		// about
 		version: "version",
 		authors: "authors",
@@ -461,6 +464,10 @@ var langstrings = {
 		mealSet: "obrok nastavljen! osvežite obroke in se prepričajte sami",
 		selected: "izbrano",
 		meal: "obrok",
+		checkedOut: "odjavljen",
+		checkedIn: "prijavljen",
+		errorCheckingInOut: "prijava/odjava na obrok NI uspela",
+		successfulCheckingInOut: "prijava/odjava na obrok je uspela",
 		// about
 		version: "različica",
 		authors: "avtorji",

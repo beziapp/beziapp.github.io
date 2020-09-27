@@ -1,8 +1,8 @@
-const API_ENDPOINT = "https://lopolis-api.gimb.tk/";
+const API_ENDPOINT = "https://lopolis-api.gimb.tk/"; // unused!
 
 var meals_calendar_obj = null;
 var meals_data_global = {};
-
+var checkouts_data_global = {};
 function getDateString() { // ne mene gledat, ne vem, kaj je to.
 	let date = new Date();
 
@@ -50,105 +50,49 @@ async function getToken(callback, callbackparams = []) {
 		})
 	];
 	await Promise.all(promises_to_run);
-
-	$.ajax({
-		url: API_ENDPOINT + "gettoken",
-		crossDomain: true,
-		contentType: "application/json",
-		data: JSON.stringify({
-			"username": username,
-			"password": password
-		}),
-
-		dataType: "json",
-		cache: false,
-		type: "POST",
-
-		success: (dataauth) => {
-			if (dataauth == null || dataauth.error == true) {
-				UIAlert(D("authenticationError"), "getToken(): response error or null");
-				localforage.setItem("logged_in_lopolis", false).then(function() {
-					checkLogin();
-				});
-			} else if (dataauth.error == false) {
-				let empty = {};
-				empty.token = dataauth.data;
-				let argumentsToCallback = [empty].concat(callbackparams);
-				callback(...argumentsToCallback); // poslje token v {token: xxx}
-			} else {
-				UIAlert(D("authenticationError"), "getToken(): invalid response, no condition met");
-			}
-			setLoading(false);
-		},
-		error: () => {
-			UIAlert(D("lopolisAPIConnectionError"), "getToken(): AJAX error");
-			setLoading(false);
-		}
-	});
+	try {
+		var lopolisClient = new lopolisc();
+		var response = await lopolisClient.login(username, password);
+		// če response ni true bo itak exception
+	} catch (e) {
+		console.log(e);
+		UIAlert(D("authenticationError"), "getToken(): invalid response, no condition met");
+		await localforage.setItem("logged_in_lopolis", false);
+		return false;
+	}
+	await localforage.setItem("logged_in_lopolis", true);
+	let empty = {};
+	empty.token = {}; // tokenov NI VEČ! old code pa to
+	let argumentsToCallback = [empty].concat(callbackparams);
+	callback(...argumentsToCallback); // poslje token v {token: xxx}
 }
 
 async function getMenus(dataauth, callback, callbackparams = []) {
 	setLoading(true);
-	let current_date = new Date();
-	// naloži za dva meseca vnaprej (če so zadnji dnevi v mesecu)
-	let mealsgathered = {};
-	let promises_to_wait_for = [];
-	for (let iteration = 1; iteration <= 2; iteration++) {
-
-		promises_to_wait_for[iteration] = $.ajax({
-			url: API_ENDPOINT + "getmenus",
-			crossDomain: true,
-			contentType: "application/json",
-			data: JSON.stringify({
-				"month": current_date.getMonth() + iteration,
-				"year": current_date.getFullYear()
-			}),
-
-			headers: {
-				"Authorization": `Bearer ${dataauth.token}`
-			},
-
-			dataType: "json",
-			cache: false,
-			type: "POST",
-
-			success: (meals) => {
-				if (meals == null || meals.error == true) {
-					UIAlert(D("errorGettingMenus"), "getMenus(): response error or null");
-					setLoading(false);
-					localforage.setItem("logged_in_lopolis", false).then(() => {
-						checkLogin();
-					});
-				} else if (meals.error == false) {
-					setLoading(false);
-					mealsgathered[iteration] = meals;
-				} else {
-					setLoading(false);
-					UIAlert(D("errorUnexpectedResponse"), "getMenus(): invalid response, no condition met");
-				}
-			},
-
-			error: () => {
-				setLoading(false);
-				UIAlert(D("lopolisAPIConnectionError"), "getMenus(): AJAX error");
-			}
-		});
-	}
-
-	await Promise.all(promises_to_wait_for); // javascript is ducking amazing
-
-	let allmeals = {};
 	let passtocallback = {};
-
-	for (const [index, monthmeals] of Object.entries(mealsgathered)) { // although this is not very javascripty
-		allmeals = mergeDeep(allmeals, monthmeals.data);
+	let allmeals, allcheckouts;
+	let tries = 3;
+	while (true) {
+		try {
+			let lopolisClient = new lopolisc();
+			allmeals = await lopolisClient.fetchAllMeals();
+			allcheckouts = await lopolisClient.fetchAllCheckouts();
+		} catch (e) {
+			console.log(e);
+			UIAlert(D("lopolisAPIConnectionError"), "getMenus(): AJAX error");
+			if (tries-- < 0) {
+				return false;
+			} else {
+				continue;
+			}
+		}
+		break;
 	}
-
-	passtocallback.data = allmeals;
-	passtocallback.token = dataauth.token;
+	passtocallback.data = allmeals; // kot po starem apiju so meniji še vedno tu!!
+	passtocallback.checkouts = allcheckouts;
+	passtocallback.token = "tokens-not-used-anymore";
 	let toBePassed = [passtocallback].concat(callbackparams);
 	callback(...toBePassed);
-
 }
 
 async function loadMeals() {
@@ -158,6 +102,7 @@ async function loadMeals() {
 function displayMeals(meals) {
 	// console.log(JSON.stringify(meals)); // debug // dela!
 	meals_data_global = meals.data;
+	checkouts_data_global = meals.checkouts;
 	let transformed_meals = [];
 	for (const [date, mealzz] of Object.entries(meals.data)) {
 		let bg_color = "#877F02";	let fg_color = "#FFFFFF";
@@ -165,7 +110,7 @@ function displayMeals(meals) {
 		let meal_date = new Date(date+"+00:00"); // idk u figure it out. timezones
 		let meal_object = {
 			start: meal_date.toISOString().substring(0,10), // zakaj? poglej gradings.js - NUJNO! poglej, če so timezoni v redu! da slučajno ne preskakuje na naslednji dan!
-			title: S("meal"),
+			title: mealzz.meal,
 			id: date,
 			allDay: true,
 			backgroundColor: bg_color,
@@ -175,6 +120,7 @@ function displayMeals(meals) {
 	}
 	meals_calendar_obj.removeAllEvents();
 	meals_calendar_obj.addEventSource(transformed_meals);
+	setLoading(false);
 	return;
 }
 
@@ -188,116 +134,34 @@ function refreshMeals() {
 }
 
 function lopolisLogout() {
-	localforage.setItem("logged_in_lopolis", false);
-	$("#meals-collapsible").html("");
-	checkLogin();
+	localforage.setItem("logged_in_lopolis", false).then(()=>{
+		clearMeals();
+		checkLogin();
+	});
 }
 
 async function lopolisLogin() {
 	setLoading(true);
 	var usernameEl = $("#meals-username");
 	var passwordEl = $("#meals-password");
-	$.ajax({
-		url: API_ENDPOINT + "gettoken",
-		crossDomain: true,
-		contentType: "application/json",
-		data: JSON.stringify({
-			"username": usernameEl.val(),
-			"password": passwordEl.val()
-		}),
-
-		dataType: "json",
-		cache: false,
-		type: "POST",
-
-		success: async function(data) {
-			if (data == null) {
-				UIAlert(S("requestForAuthenticationFailed"), "lopolisLogin(): date is is null");
-				setLoading(false);
-				usernameEl.val("");
-				passwordEl.val("");
-			} else if (data.error == true) {
-				UIAlert(S("loginFailed"), "lopolisLogin(): login failed. data.error is true");
-				usernameEl.val("");
-				passwordEl.val("");
-				setLoading(false);
-			} else {
-				let promises_to_run = [
-					localforage.setItem("logged_in_lopolis", true),
-					localforage.setItem("lopolis_username", usernameEl.val()),
-					localforage.setItem("lopolis_password", passwordEl.val())
-				];
-				await Promise.all(promises_to_run);
-				checkLogin();
-				UIAlert("Credential match!");
-			}
-		},
-
-		error: () => {
-			UIAlert(D("loginError"), "lopolisLogin(): ajax.error");
-			setLoading(false);
-		}
-	});
-}
-
-async function setMenus(currentmeals = 69, toBeSentChoices) { // currentmeals je getMenus response in vsebuje tudi token.
-
-	if (currentmeals === 69) {
-		getToken(getMenus, [setMenus, toBeSentChoices]);
-		return;
+	try {
+		let l = new lopolisc();
+		await l.login(usernameEl.val(), passwordEl.val());
+	} catch (e) {
+		UIAlert(D("loginError"), "lopolisLogin(): ajax.error");
+		setLoading(false);
+		return false;
 	}
-
-	for (const [mealzzdate, mealzz] of Object.entries(currentmeals.data)) {
-		if (mealzzdate in toBeSentChoices === false) {
-			for (const [mealid, mealdata] of Object.entries(mealzz.menu_options)) {
-				// console.log(mealdata);
-				if (mealdata.selected == true || mealzz.readonly == true) {
-					toBeSentChoices[mealzzdate] = mealdata.value;
-					break;
-				}
-			}
-		}
-	}
-
-	setLoading(true);
-
-	$.ajax({
-		url: API_ENDPOINT + "setmenus",
-		crossDomain: true,
-		contentType: "application/json",
-		data: JSON.stringify({
-			"choices": toBeSentChoices
-		}),
-		headers: {
-			"Authorization": "Bearer " + currentmeals.token
-		},
-		dataType: "json",
-		cache: false,
-		type: "POST",
-
-		success: (response) => {
-			if (response === null || response.error == true) {
-				UIAlert(D("errorSettingMeals"), "setMenus(): response error or null");
-			} else if (response.error == false) {
-				UIAlert(D("mealSet"), "setMenus(): meni nastavljen");
-			} else {
-				UIAlert(D("errorUnexpectedResponse"), "setMenus(): invalid response, no condition met");
-			}
-			setLoading(false);
-		},
-
-		error: () => {
-			setLoading(false);
-			UIAlert(D("lopolisAPIConnectionError"), "setMenus(): AJAX error");
-		}
-	});
+	let promises_to_run = [
+		localforage.setItem("logged_in_lopolis", true),
+		localforage.setItem("lopolis_username", usernameEl.val()),
+		localforage.setItem("lopolis_password", passwordEl.val())
+	];
+	await Promise.all(promises_to_run);
+	checkLogin();
+	UIAlert("Credential match!");
+	return true;
 }
-async function setMenu(date, menu) {
-	let choice = {};
-	choice[date] = menu;
-	getToken(getMenus, [setMenus, choice]);
-}
-
 
 function setupEventListeners() {
 	$("#meals-login").click(() => {
@@ -310,9 +174,33 @@ function setupEventListeners() {
 }
 
 var mealClickHandler = (eventClickInfo) => {
-	// console.log("meal clicked!"); // debug
 	let meal_date = eventClickInfo.event.id;
 	let meal_object = meals_data_global[meal_date];
+
+	/// ˇˇˇ checkouts
+	$("#checkout_label").show();		let can_do_checkout = true;
+	try {
+		let checkout_object = checkouts_data_global[meal_date];
+	} catch (e) {
+		$("#checkout_label").hide();	let can_do_checkout = false;
+	}
+	if (can_do_checkout) { let cc = $("#checkout_checkbox");
+		cc.off();
+		cc.on("change", ()=>{
+			let l = new lopolisc();
+			checkouts_data_global[meal_date].checked/*out*/ = !(cc[0].checked/*in*/);
+			setLoading(true);
+			l.setCheckouts(checkouts_data_global).then(()=>{ // update server checkots
+				UIAlert(D("successfulCheckingInOut"), "successfulcheckinginout");
+				setLoading(false);
+			}).catch(()=>{
+				UIAlert(D("errorCheckingInOut"), "errorcheckinginout");
+				setLoading(false);
+			});
+		});
+		cc.prop("disabled", checkouts_data_global[meal_date].readonly);
+	}
+	/// ^^^ checkouts
 	$("#meal-type").text(meal_object.meal);
 	let meal_date_obj = new Date(meal_date);
 	$("#meal-date").text(dateString.longFormatted(meal_date_obj));
@@ -326,12 +214,9 @@ var mealClickHandler = (eventClickInfo) => {
 		let menu_option_li_el = document.createElement("li");
 		let menu_option_a_el = document.createElement("button");
 		menu_option_a_el.innerText = option_object.text;
-		// console.log(JSON.stringify(meal_object)); // debug
 		let classlist = "";
 		if (option_object.selected != null) {
 			if(option_object.selected) {
-				// console.log("selected"); // debug
-				//
 				classlist = "color: green; font-weight: bold";
 			}
 		}
@@ -339,13 +224,25 @@ var mealClickHandler = (eventClickInfo) => {
 		menu_option_a_el.style = "color: var(--color-text); background-color: rgba(0,0,0,0); line-height: 1.2; height:auto; "+classlist+" !important";
 		menu_option_a_el.id = "menu_index_"+option_index;
 		if(!(meal_object.readonly)) {
-			menu_option_a_el.onclick = () => { 
-				setMenu(meal_date, option_object.value);
+			menu_option_a_el.disabled = false;
+			menu_option_a_el.onclick = () => {
+				setLoading(true);
+				let l = new lopolisc();
+				l.chooseMenu(meals_data_global[meal_date], option_index);
+				l.setMeals(meals_data_global).then(()=>{
+					UIAlert(D("mealSet"), "meal set!");
+					setLoading(false);
+				}).catch(()=>{
+					UIAlert(D("errorSettingMeals"), "error setting meals");
+					setLoading(false);
+				});
 				menu_option_a_el.className = "to-be-selected-meal";
 				let sidenav_element = document.getElementById("meal-info");
 				let sidenav_instance = M.Sidenav.getInstance(sidenav_element);
 				sidenav_instance.close();
 			};
+		} else {
+			menu_option_a_el.disabled = true;
 		}
 		menu_option_li_el.appendChild(menu_option_a_el);
 		document.getElementById("meal-options").appendChild(menu_option_li_el);
@@ -357,6 +254,7 @@ var mealClickHandler = (eventClickInfo) => {
 
 // Initialization code
 document.addEventListener("DOMContentLoaded", async () => {
+	await find_chosen_lang();
 	checkLogin();
 
 	var calendarEl = document.getElementById("meals-calendar");
@@ -377,6 +275,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// Setup refresh handler
 	$("#refresh-icon").click(function() {
+		setLoading(true);
 		refreshMeals();
 	});
 
@@ -408,5 +307,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 		format: "dddd, dd. mmmm yyyy"
 	});
 
-	refreshMeals();
+	// refreshMeals(); // checklogin already does this
 });
