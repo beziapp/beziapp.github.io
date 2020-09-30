@@ -274,7 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
         nowIndicator: true,
         firstDay: 1,
         weekends: false,
-
+				timeFormat: 'H(:mm)', // 24 urni urnik - evropa style
         minTime: "07:10:00",
         maxTime: "19:10:00"
     });
