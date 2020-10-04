@@ -1,3 +1,4 @@
 <@?s bvr_include_path assets/pages-src/ assets/pages-src/misc/@>
 <@?s latest_commit ?u 0 -1 ?i .git/refs/heads/dev@>
-<@?s app_version 1.0.16.1-beta@>
+<@?s app_version 1.0.16.2-beta@>
+<@?s app_default_language sl@>
