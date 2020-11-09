@@ -1,3 +1,5 @@
+<@?i global@>
+// @begin=js@
 async function setupStorage(force = false) {
 	let logged_in;
 	promises_check_if_already_installed = [
@@ -18,9 +20,6 @@ async function setupStorage(force = false) {
 		localforage.setItem("messages", [[], [], []]), // see messages.js:129, commit 8eb9ca9caca30fbbe023243657535ab4088be377
 		localforage.setItem("directory", {}), //\\ well I could remember my own code but I didn't.
 		localforage.setItem("meals", {}),
-		localforage.setItem("chosenLang", "en"),
-		localforage.setItem("theme", "light"),
-		localforage.setItem("errorReporting", "on"),
 		localforage.setItem("lastUpdate", 0),
 		localforage.setItem("triggerWarningAccepted", false)
 	];
@@ -34,6 +33,9 @@ async function setupStorage(force = false) {
 			localforage.setItem("logged_in", false),
 			localforage.setItem("username", ""),
 			localforage.setItem("password", ""),
+			localforage.setItem("chosenLang", "<@?g app_default_language@>"),
+			localforage.setItem("theme", "light"),
+			localforage.setItem("errorReporting", "on"),
 		];
 		await localforage.clear();
 		await Promise.all(promises_first_install);

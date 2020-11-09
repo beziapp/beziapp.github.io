@@ -1,5 +1,5 @@
 <@?i global@>
-// @begin=html@
+// @begin=js@
 const app_version = "<@?g app_version@>";
 const previous_commit = "<@?g latest_commit@>";
 const BEZIAPP_UPDATE_INTERVAL = 300; // update vsakih 300 sekund

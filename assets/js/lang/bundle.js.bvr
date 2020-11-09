@@ -1,3 +1,5 @@
+<@?i global@>
+// @begin=js@
 // there's an DoS backdoor in BežiApp because of this (-:<
 var chosenLang;
 var dateString = {
@@ -49,7 +51,7 @@ async function refreshLangDOM() {
 async function setLangConfigAndReload() {
 	let promises_to_run = [
 		/* localforage.setItem("chosenCapitalize", true), */ // F for unused code
-		localforage.setItem("chosenLang", "en")
+		localforage.setItem("chosenLang", "<@?g app_default_language@>")
 	];
 	await Promise.all(promises_to_run);
 	window.location.reload();
@@ -141,6 +143,7 @@ var langstrings = {
 		theToS: "the terms and conditions",
 		and: "and",
 		thePrivacyPolicy: "the privacy policy",
+		thePrivacyPolicy_rodilnik: "the privacy policy",
 		loginFailed: "login failed",
 		browserNotSupported: "bežiapp won't work on your device, unless you update your Internet browser",
 		// index
@@ -353,6 +356,7 @@ var langstrings = {
 		theToS: "pogoji uporabe (v angleščini)",
 		and: "in",
 		thePrivacyPolicy: "politika zasebnosti (v angleščini)",
+		thePrivacyPolicy_rodilnik: "politiko zasebnosti (v angleščini)",
 		loginFailed: "prijava je spodletela",
 				browserNotSupported: "BežiApp ne bo deloval na vaši napravi, če ne posodobite vašega Internetnega brskalnika",
 		// timetable
