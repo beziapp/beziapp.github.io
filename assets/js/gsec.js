@@ -18,7 +18,7 @@ function slDayToInt(inputString) { // wtf
 	return fourCharDays.indexOf(fourChars);
 }
 
-const GSE_URL = "https://zgimsis.gimb.tk/gse/";
+const GSE_URL = "https://zgimsis.gimb.tk/"; /* sheer fucking luck I didn't put /gse/ as part of every API method URL */
 const GSEC_ERR_NET = "GSEC NETWORK ERROR (ajax error)";
 const GSEC_ERR_NET_POSTBACK_GET = "GSEC NETWORK ERROR (ajax error) in postback GET"
 const GSEC_ERR_NET_POSTBACK_POST = "GSEC NETWORK ERROR (ajax error) in postback POST"

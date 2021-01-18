@@ -2,7 +2,7 @@
 var gseAbsenceTypes=["notProcessed","authorizedAbsence","unauthorizedAbsence","doesNotCount"];function getStringBetween(string,start,end){return string.split(start).pop().split(end)[0];}
 function stripHtml(html){var tmp=document.createElement("DIV");tmp.innerHTML=html;return tmp.textContent||tmp.innerText||"";}
 function slDayToInt(inputString){let fourChars=inputString.substring(1,5);let fourCharDays=["oned","orek","reda","etrt","etek","obot","edel"];return fourCharDays.indexOf(fourChars);}
-const GSE_URL="https://zgimsis.gimb.tk/gse/";const GSEC_ERR_NET="GSEC NETWORK ERROR (ajax error)";const GSEC_ERR_NET_POSTBACK_GET="GSEC NETWORK ERROR (ajax error) in postback GET"
+const GSE_URL="https://zgimsis.gimb.tk/";const GSEC_ERR_NET="GSEC NETWORK ERROR (ajax error)";const GSEC_ERR_NET_POSTBACK_GET="GSEC NETWORK ERROR (ajax error) in postback GET"
 const GSEC_ERR_NET_POSTBACK_POST="GSEC NETWORK ERROR (ajax error) in postback POST"
 const GSEC_MSGTYPE_RECEIVED=0;const GSEC_MSGTYPE_SENT=1;const GSEC_MSGTYPE_DELETED=2;const GSEC_ERR_LOGIN="GSEC LOGIN ERROR";const GSEC_NO_ABSENCES="noAbsences";const GSEC_MSGTYPES=["msgReceived","msgSent","msgDeleted"];const GSEC_NORMAL_GRADE="GSEC NORMAL GRADE";const GSEC_ZAKLJUCNA_GRADE="GSEC ZAKLJUCNA GRADE";class gsec{constructor(){}
 parseAndPost(inputHTML,params,formId=null,useDiffAction=null){return new Promise((resolve,reject)=>{let parser=new DOMParser();let parsed=parser.parseFromString(inputHTML,"text/html");var form;if(formId==null){form=parsed.getElementsByTagName("form")[0];}else{form=parsed.getElementById(formId);}
